@@ -16,55 +16,51 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="fixed left-0 top-0 h-screen w-12 md:w-48 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col py-6">
-      <div className="px-3 mb-6">
-        <h1 className="text-lg font-bold hidden md:block">NewsApp</h1>
-        <span className="md:hidden text-lg font-bold">N</span>
-      </div>
-      
-      {/* Main Navigation */}
-      <ul className="space-y-1 px-2 flex-grow">
-        {navItems.map((item, index) => (
-          <li key={index}>
-            <Link
-              to={item.path}
-              className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            >
-              {item.icon}
-              <span className="hidden md:inline-block text-sm">{item.label}</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-
-      {/* Bottom Actions */}
-      <div className="mt-auto px-2 space-y-2">
+    <>
+      {/* Header */}
+      <div className="fixed top-0 right-0 h-16 flex items-center gap-2 px-4 z-50">
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          className="w-full flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
         >
           {theme === 'dark' ? (
-            <>
-              <Sun className="w-5 h-5" />
-              <span className="hidden md:inline-block text-sm">Light Mode</span>
-            </>
+            <Sun className="w-5 h-5" />
           ) : (
-            <>
-              <Moon className="w-5 h-5" />
-              <span className="hidden md:inline-block text-sm">Dark Mode</span>
-            </>
+            <Moon className="w-5 h-5" />
           )}
         </button>
 
         <Link
           to="/login"
-          className="w-full flex items-center space-x-2 p-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors"
+          className="flex items-center gap-2 p-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors"
         >
           <LogIn className="w-5 h-5" />
-          <span className="hidden md:inline-block text-sm">Login</span>
+          <span className="hidden sm:inline text-sm">Login</span>
         </Link>
       </div>
-    </nav>
+
+      {/* Navigation Sidebar */}
+      <nav className="fixed left-0 top-0 h-screen w-12 md:w-48 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col py-6">
+        <div className="px-3 mb-6">
+          <h1 className="text-lg font-bold hidden md:block">NewsApp</h1>
+          <span className="md:hidden text-lg font-bold">N</span>
+        </div>
+        
+        <ul className="space-y-1 px-2">
+          {navItems.map((item, index) => (
+            <li key={index}>
+              <Link
+                to={item.path}
+                className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                {item.icon}
+                <span className="hidden md:inline-block text-sm">{item.label}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </>
   );
 };
 
