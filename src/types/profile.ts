@@ -13,7 +13,11 @@ export interface Profile {
   income: string;
   
   // Personal
+  interests: string[];
   politicalLeaning: string;
+  hobbies: string[];
+  personalityTraits: string[];
+  healthGoals: string[];
 }
 
 export type FormSection = {
@@ -25,6 +29,6 @@ export type FormSection = {
 export type FormField = {
   name: keyof Profile;
   label: string;
-  type: 'text' | 'number' | 'select';
+  type: 'text' | 'number' | 'select' | 'multiselect';
   options?: string[];
 };
