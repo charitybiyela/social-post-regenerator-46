@@ -1,6 +1,7 @@
 import React from 'react';
 import { NewsItem } from '@/types/news';
 import { NewsGrid } from './NewsGrid';
+import { NewsCard } from './NewsCard';
 
 interface ScrollableNewsContainerProps {
   newsItems: NewsItem[];
