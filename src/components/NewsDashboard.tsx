@@ -16,37 +16,85 @@ export default function NewsDashboard() {
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Sample news data
+  // Enhanced news data with diverse content types
   const newsItems: NewsItem[] = [
     {
       id: 1,
-      title: "Jamaica's FinTech Sector Sees Major Growth",
-      category: "Financial Technology",
+      title: "Tech Innovation in Caribbean Markets",
+      category: "Technology",
       importance: "high",
-      content: "Leading financial institutions in Jamaica are reporting unprecedented adoption of digital banking solutions...",
-      tags: ["FinTech", "Banking", "Jamaica"],
+      content: "Revolutionary AI solutions are transforming how Caribbean businesses operate, with a 200% increase in adoption rates across key sectors...",
+      tags: ["AI", "Innovation", "Caribbean"],
       time: "2 minutes ago",
       media: {
         type: "chart",
         data: {
           labels: ["Q1", "Q2", "Q3", "Q4"],
-          values: [120, 180, 240, 350],
-          title: "Digital Banking Growth"
+          values: [45, 85, 150, 200],
+          title: "AI Adoption Growth (%)"
         }
       }
     },
     {
       id: 2,
-      title: "Caribbean Forex Markets Update",
-      category: "Financial Markets",
+      title: "Sustainable Tourism Initiative Launches",
+      category: "Environment",
       importance: "medium",
-      content: "New trade policies across the Caribbean region are creating ripples in the forex markets...",
-      tags: ["Forex", "Caribbean", "Economic Policy"],
+      content: "A groundbreaking eco-tourism program is set to transform the Caribbean tourism sector, focusing on environmental preservation while boosting local economies...",
+      tags: ["Tourism", "Sustainability", "Economy"],
       time: "15 minutes ago",
       media: {
         type: "image",
-        src: "/placeholder.svg",
-        alt: "Caribbean Forex Market Trends"
+        src: "https://images.unsplash.com/photo-1501854140801-50d01698950b",
+        alt: "Aerial view of pristine Caribbean beach"
+      }
+    },
+    {
+      id: 3,
+      title: "Digital Banking Revolution",
+      category: "Finance",
+      importance: "high",
+      content: "Mobile banking adoption in the Caribbean reaches unprecedented levels, with over 5 million new users in the past quarter...",
+      tags: ["Banking", "Digital", "Growth"],
+      time: "1 hour ago",
+      media: {
+        type: "chart",
+        data: {
+          labels: ["Jan", "Feb", "Mar", "Apr"],
+          values: [1.2, 2.5, 4.0, 5.0],
+          title: "Mobile Banking Users (Millions)"
+        }
+      }
+    },
+    {
+      id: 4,
+      title: "Marine Conservation Breakthrough",
+      category: "Science",
+      importance: "medium",
+      content: "Scientists discover new coral restoration technique that could revitalize Caribbean reef systems within decades...",
+      tags: ["Marine", "Conservation", "Research"],
+      time: "2 hours ago",
+      media: {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1518877593221-1f28583780b4",
+        alt: "Vibrant coral reef ecosystem"
+      }
+    },
+    {
+      id: 5,
+      title: "Renewable Energy Milestone",
+      category: "Energy",
+      importance: "high",
+      content: "Caribbean nations achieve 40% renewable energy adoption, setting new global standards for sustainable power generation...",
+      tags: ["Energy", "Sustainability", "Progress"],
+      time: "3 hours ago",
+      media: {
+        type: "chart",
+        data: {
+          labels: ["2020", "2021", "2022", "2023"],
+          values: [15, 25, 35, 40],
+          title: "Renewable Energy Adoption (%)"
+        }
       }
     }
   ];
@@ -85,7 +133,7 @@ export default function NewsDashboard() {
     };
   }, [scrollActive, scrollSpeed, scrollStyle]);
 
-  // Handle one-at-a-time scroll
+  // Handle one-at-a-time scroll with smooth transitions
   useEffect(() => {
     let interval: NodeJS.Timeout;
     
