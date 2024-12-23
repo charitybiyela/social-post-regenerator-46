@@ -254,7 +254,6 @@ export default function NewsDashboard() {
 
         <div className="col-span-4 space-y-4">
           {/* Sports Ticker */}
-
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-sm font-medium">
@@ -332,25 +331,6 @@ export default function NewsDashboard() {
           </Card>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes ticker {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-        
-        .animate-ticker {
-          animation: ticker 20s linear infinite;
-        }
-        
-        .animate-ticker:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
     </div>
   );
 }
