@@ -6,7 +6,7 @@ import { saveProfile, loadProfile } from "@/utils/profileStorage";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
-const formSections = [
+const formSections: FormSection[] = [
   {
     title: "Demographics",
     description: "Basic information about yourself",
@@ -39,6 +39,10 @@ const formSections = [
       { name: "politicalLeaning", label: "Political Leaning", type: "select", options: [
         "Left", "Center-Left", "Center", "Center-Right", "Right"
       ]},
+      { name: "interests", label: "Interests", type: "text" },
+      { name: "hobbies", label: "Hobbies", type: "text" },
+      { name: "personalityTraits", label: "Personality Traits", type: "text" },
+      { name: "healthGoals", label: "Health Goals", type: "text" },
     ],
   },
 ];
@@ -54,7 +58,7 @@ export const ProfileForm = () => {
     }
   }, []);
 
-  const handleChange = (name: string, value: any) => {
+  const handleChange = (name: keyof Profile, value: any) => {
     setProfile((prev) => {
       const updated = { ...prev, [name]: value };
       saveProfile(updated as Profile);
