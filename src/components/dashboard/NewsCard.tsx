@@ -50,9 +50,15 @@ export const NewsCard = ({ article, darkMode, viewMode }: NewsCardProps) => {
   };
 
   return (
-    <Card className={`overflow-hidden border ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-      {viewMode !== 'text' && article.media && renderMedia(article.media)}
-      <div className="p-6">
+    <Card className={`h-full overflow-hidden border ${
+      darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+    }`}>
+      {viewMode !== 'text' && article.media && (
+        <div className="relative">
+          {renderMedia(article.media)}
+        </div>
+      )}
+      <div className="p-4">
         <div className="flex justify-between items-start mb-4">
           <span className={`px-2 py-1 rounded-full text-xs ${
             article.importance === 'high' 
@@ -64,9 +70,9 @@ export const NewsCard = ({ article, darkMode, viewMode }: NewsCardProps) => {
           <span className="text-sm opacity-60">{article.time}</span>
         </div>
 
-        <h3 className="text-xl font-bold mb-2">{article.title}</h3>
-        <div className="text-sm text-blue-400 mb-3">{article.category}</div>
-        <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} mb-4`}>
+        <h3 className="text-lg font-bold mb-2 line-clamp-2">{article.title}</h3>
+        <div className="text-sm text-blue-400 mb-2">{article.category}</div>
+        <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} text-sm line-clamp-3 mb-3`}>
           {article.content}
         </p>
         
