@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Profile } from "@/types/profile";
-import { FormSection } from "./FormSection";
+import { Profile, FormSection } from "@/types/profile";
+import { FormSection as FormSectionComponent } from "./FormSection";
 import { ProfilePreview } from "./ProfilePreview";
 import { saveProfile, loadProfile } from "@/utils/profileStorage";
 import { Button } from "@/components/ui/button";
@@ -82,7 +82,7 @@ export const ProfileForm = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="space-y-6">
           {formSections.map((section, index) => (
-            <FormSection
+            <FormSectionComponent
               key={index}
               section={section}
               values={profile}

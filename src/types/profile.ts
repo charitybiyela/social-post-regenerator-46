@@ -20,15 +20,15 @@ export interface Profile {
   healthGoals: string[];
 }
 
-export type FormSection = {
-  title: string;
-  description: string;
-  fields: FormField[];
-};
-
-export type FormField = {
+export interface FormField {
   name: keyof Profile;
   label: string;
   type: 'text' | 'number' | 'select' | 'multiselect';
   options?: string[];
-};
+}
+
+export interface FormSection {
+  title: string;
+  description: string;
+  fields: FormField[];
+}
