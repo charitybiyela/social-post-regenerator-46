@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Globe, BarChart2, Newspaper, Image, Layout,
-  Sun, Moon, Clock, Activity
+  Clock, Activity
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function NewsDashboard() {
   const [scrollStyle, setScrollStyle] = useState('continuous');
-  const [darkMode, setDarkMode] = useState(true);
   const [scrollActive, setScrollActive] = useState(false);
   const [scrollSpeed, setScrollSpeed] = useState(5);
   const [viewMode, setViewMode] = useState('hybrid');
@@ -140,87 +139,74 @@ export default function NewsDashboard() {
 
   return (
     <div className={`w-full min-h-screen p-4 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
-      {/* Controls */}
-      <div className={`flex items-center gap-4 p-2 rounded-lg mb-4 ${darkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
-        <select 
-          value={scrollStyle}
-          onChange={(e) => setScrollStyle(e.target.value)}
-          className={`rounded-md px-3 py-1.5 text-sm ${
-            darkMode ? 'bg-gray-700 text-white border-gray-600' : 'bg-white text-gray-900 border-gray-300'
-          } border outline-none`}
-        >
-          <option value="continuous">Continuous</option>
-          <option value="oneAtATime">One at a Time</option>
-        </select>
+      {/* Controls - Now constrained to match news feed width */}
+      <div className="max-w-2xl mx-auto mb-4">
+        <div className="flex items-center gap-4 p-2 rounded-lg bg-popover">
+          <select 
+            value={scrollStyle}
+            onChange={(e) => setScrollStyle(e.target.value)}
+            className="rounded-md px-3 py-1.5 text-sm bg-background border border-input outline-none"
+          >
+            <option value="continuous">Continuous</option>
+            <option value="oneAtATime">One at a Time</option>
+          </select>
 
-        <div className={`flex rounded-md border ${
-          darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'
-        }`}>
+          <div className="flex rounded-md border border-input bg-background">
+            <button
+              onClick={() => setViewMode('text')}
+              className={`p-1.5 rounded-l transition-colors ${
+                viewMode === 'text' 
+                  ? 'bg-primary text-primary-foreground' 
+                  : 'text-foreground'
+              }`}
+            >
+              <Newspaper className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setViewMode('media')}
+              className={`p-1.5 transition-colors ${
+                viewMode === 'media' 
+                  ? 'bg-primary text-primary-foreground' 
+                  : 'text-foreground'
+              }`}
+            >
+              <Image className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setViewMode('hybrid')}
+              className={`p-1.5 rounded-r transition-colors ${
+                viewMode === 'hybrid' 
+                  ? 'bg-primary text-primary-foreground' 
+                  : 'text-foreground'
+              }`}
+            >
+              <Layout className="w-4 h-4" />
+            </button>
+          </div>
+
           <button
-            onClick={() => setViewMode('text')}
-            className={`p-1.5 rounded-l transition-colors ${
-              viewMode === 'text' 
-                ? 'bg-blue-500 text-white' 
-                : darkMode ? 'text-gray-300' : 'text-gray-600'
+            onClick={() => setScrollActive(!scrollActive)}
+            className={`px-4 py-1.5 rounded-md text-sm transition-colors ${
+              scrollActive 
+                ? 'bg-primary text-primary-foreground' 
+                : 'bg-background text-foreground border border-input'
             }`}
           >
-            <Newspaper className="w-4 h-4" />
+            {scrollActive ? '⏸️' : '▶️'}
           </button>
-          <button
-            onClick={() => setViewMode('media')}
-            className={`p-1.5 transition-colors ${
-              viewMode === 'media' 
-                ? 'bg-blue-500 text-white' 
-                : darkMode ? 'text-gray-300' : 'text-gray-600'
-            }`}
-          >
-            <Image className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => setViewMode('hybrid')}
-            className={`p-1.5 rounded-r transition-colors ${
-              viewMode === 'hybrid' 
-                ? 'bg-blue-500 text-white' 
-                : darkMode ? 'text-gray-300' : 'text-gray-600'
-            }`}
-          >
-            <Layout className="w-4 h-4" />
-          </button>
+
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-foreground">Speed:</span>
+            <input
+              type="range"
+              min="1"
+              max="10"
+              value={scrollSpeed}
+              onChange={(e) => setScrollSpeed(Number(e.target.value))}
+              className="w-24"
+            />
+          </div>
         </div>
-
-        <button
-          onClick={() => setScrollActive(!scrollActive)}
-          className={`px-4 py-1.5 rounded-md text-sm transition-colors ${
-            scrollActive 
-              ? 'bg-blue-500 text-white' 
-              : darkMode ? 'bg-gray-700 text-gray-300 border-gray-600' : 'bg-white text-gray-600 border-gray-300'
-          } border`}
-        >
-          {scrollActive ? '⏸️' : '▶️'}
-        </button>
-
-        <div className="flex items-center gap-2">
-          <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-            Speed:
-          </span>
-          <input
-            type="range"
-            min="1"
-            max="10"
-            value={scrollSpeed}
-            onChange={(e) => setScrollSpeed(Number(e.target.value))}
-            className="w-24"
-          />
-        </div>
-
-        <button
-          onClick={() => setDarkMode(!darkMode)}
-          className={`p-1.5 rounded-md transition-colors ${
-            darkMode ? 'bg-gray-700 text-gray-300' : 'bg-white text-gray-600'
-          } border ${darkMode ? 'border-gray-600' : 'border-gray-300'}`}
-        >
-          {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-        </button>
       </div>
 
       {/* Main Content */}
