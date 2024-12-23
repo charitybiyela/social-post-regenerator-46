@@ -1,9 +1,9 @@
-import { ProfileForm } from "@/components/ProfileForm";
+import NewsDashboard from "@/components/NewsDashboard";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <ProfileForm />
+      <NewsDashboard />
     </div>
   );
 };
