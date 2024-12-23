@@ -99,26 +99,23 @@ export default function NewsDashboard() {
     }
   ];
 
-  // Handle continuous scroll
+  // Enhanced continuous scroll with smooth behavior
   useEffect(() => {
-    if (!scrollActive || !scrollContainerRef.current) return;
+    if (!scrollActive || !scrollContainerRef.current || scrollStyle !== 'continuous') return;
 
     let animationFrameId: number;
-    let startTime: number;
     const scrollContainer = scrollContainerRef.current;
     const baseSpeed = 0.5; // Base scroll speed in pixels per frame
     const speedMultiplier = scrollSpeed; // User's speed setting
 
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      
-      if (scrollStyle === 'continuous') {
-        scrollContainer.scrollTop += (baseSpeed * speedMultiplier);
+    const animate = () => {
+      if (!scrollContainer) return;
 
-        // Reset scroll position when reaching bottom
-        if (scrollContainer.scrollTop >= scrollContainer.scrollHeight - scrollContainer.clientHeight) {
-          scrollContainer.scrollTop = 0;
-        }
+      scrollContainer.scrollTop += (baseSpeed * speedMultiplier);
+
+      // Reset scroll position when reaching bottom for seamless loop
+      if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 10) {
+        scrollContainer.scrollTop = 0;
       }
 
       animationFrameId = requestAnimationFrame(animate);
@@ -133,18 +130,25 @@ export default function NewsDashboard() {
     };
   }, [scrollActive, scrollSpeed, scrollStyle]);
 
-  // Handle one-at-a-time scroll with smooth transitions
+  // Enhanced one-at-a-time scroll with smooth transitions
   useEffect(() => {
     let interval: NodeJS.Timeout;
     
     if (scrollActive && scrollStyle === 'oneAtATime') {
-      const scrollDuration = 5000 / scrollSpeed; // Adjust timing based on speed
+      const scrollDuration = 8000 / scrollSpeed; // Adjust timing based on speed
       interval = setInterval(() => {
-        setCurrentArticleIndex(prev => (prev + 1) % newsItems.length);
+        setCurrentArticleIndex((prev) => {
+          const nextIndex = (prev + 1) % newsItems.length;
+          return nextIndex;
+        });
       }, scrollDuration);
     }
 
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
   }, [scrollActive, scrollStyle, scrollSpeed, newsItems.length]);
 
   return (
@@ -175,9 +179,11 @@ export default function NewsDashboard() {
                   className="space-y-6 overflow-y-hidden h-full"
                   style={{ scrollBehavior: 'smooth' }}
                 >
-                  {/* Duplicate items for seamless scrolling */}
-                  {[...newsItems, ...newsItems].map((article, index) => (
-                    <div key={`${article.id}-${index}`} className="max-w-2xl mx-auto">
+                  {[...newsItems, ...newsItems, ...newsItems].map((article, index) => (
+                    <div 
+                      key={`${article.id}-${index}`} 
+                      className="max-w-2xl mx-auto transition-opacity duration-500"
+                    >
                       <NewsCard 
                         article={article}
                         darkMode={darkMode}
@@ -188,7 +194,7 @@ export default function NewsDashboard() {
                 </div>
               ) : (
                 <div className="h-full flex items-center justify-center">
-                  <div className="max-w-2xl w-full animate-fadeIn">
+                  <div className="max-w-2xl w-full transition-opacity duration-500 animate-fadeIn">
                     <NewsCard 
                       article={newsItems[currentArticleIndex]}
                       darkMode={darkMode}
