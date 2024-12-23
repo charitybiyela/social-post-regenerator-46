@@ -331,24 +331,22 @@ export default function NewsDashboard() {
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes ticker {
-          0% {
-            transform: translateX(0);
+      <style>
+        {`
+          @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
           }
-          100% {
-            transform: translateX(-50%);
+          
+          .animate-ticker {
+            animation: ticker 20s linear infinite;
           }
-        }
-        
-        .animate-ticker {
-          animation: ticker 20s linear infinite;
-        }
-        
-        .animate-ticker:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
+          
+          .animate-ticker:hover {
+            animation-play-state: paused;
+          }
+        `}
+      </style>
     </div>
   );
 }
