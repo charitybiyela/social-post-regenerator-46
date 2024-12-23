@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Globe, BarChart2, Newspaper, Image, Layout,
-  Clock, Activity
-} from 'lucide-react';
+import { Newspaper, Image, Layout } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useTheme } from 'next-themes';
+import { NewsCard } from './dashboard/NewsCard';
+import { SportsTicker } from './dashboard/SportsTicker';
+import { WeatherWidget } from './dashboard/WeatherWidget';
+import { MarketsWidget } from './dashboard/MarketsWidget';
 
 export default function NewsDashboard() {
   const [scrollStyle, setScrollStyle] = useState('continuous');
@@ -11,6 +13,7 @@ export default function NewsDashboard() {
   const [scrollSpeed, setScrollSpeed] = useState(5);
   const [viewMode, setViewMode] = useState('hybrid');
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
+  const { theme } = useTheme();
 
   // Sample news data
   const newsItems = [
@@ -49,7 +52,7 @@ export default function NewsDashboard() {
 
   // Continuous scroll effect
   useEffect(() => {
-    let interval;
+    let interval: NodeJS.Timeout;
     if (scrollActive && scrollStyle === 'oneAtATime') {
       interval = setInterval(() => {
         setCurrentArticleIndex(prev => (prev + 1) % newsItems.length);
@@ -58,87 +61,8 @@ export default function NewsDashboard() {
     return () => clearInterval(interval);
   }, [scrollActive, scrollStyle, newsItems.length]);
 
-  const renderMedia = (media) => {
-    if (!media || viewMode === 'text') return null;
-
-    switch (media.type) {
-      case 'chart':
-        return (
-          <div className="aspect-square w-full bg-gray-800 p-4">
-            <h4 className="text-sm font-semibold mb-4 text-center text-white">
-              {media.data.title}
-            </h4>
-            <div className="h-[calc(100%-2rem)] flex items-end justify-between gap-2">
-              {media.data.values.map((value, i) => (
-                <div key={i} className="flex flex-col items-center flex-1">
-                  <div 
-                    className="w-full bg-blue-500 rounded-t transition-all duration-500"
-                    style={{ height: `${(value/350)*100}%` }}
-                  />
-                  <span className="text-xs mt-2 text-white">{media.data.labels[i]}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      
-      case 'image':
-        return (
-          <div className="aspect-square w-full overflow-hidden">
-            <img 
-              src={media.src} 
-              alt={media.alt}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        );
-      
-      default:
-        return null;
-    }
-  };
-
-  const renderNewsCard = (article) => (
-    <div className={`rounded-lg overflow-hidden ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
-      {viewMode !== 'text' && article.media && renderMedia(article.media)}
-      <div className="p-6">
-        <div className="flex justify-between items-start mb-4">
-          <span className={`px-2 py-1 rounded-full text-xs ${
-            article.importance === 'high' 
-              ? 'bg-red-500/20 text-red-500' 
-              : 'bg-blue-500/20 text-blue-500'
-          }`}>
-            {article.importance.toUpperCase()}
-          </span>
-          <span className="text-sm opacity-60">{article.time}</span>
-        </div>
-
-        <h3 className="text-xl font-bold mb-2">{article.title}</h3>
-        <div className="text-sm text-blue-400 mb-3">{article.category}</div>
-        <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} mb-4`}>
-          {article.content}
-        </p>
-        
-        <div className="flex flex-wrap gap-2">
-          {article.tags.map((tag, i) => (
-            <span 
-              key={i}
-              className={`px-2 py-1 rounded-full text-xs ${
-                darkMode 
-                  ? 'bg-gray-600 text-gray-300' 
-                  : 'bg-gray-200 text-gray-600'
-              }`}
-            >
-              #{tag}
-            </span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-
   return (
-    <div className={`w-full min-h-screen p-4 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
+    <div className="w-full min-h-screen p-4 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
       {/* Controls - Now constrained to match news feed width */}
       <div className="max-w-2xl mx-auto mb-4">
         <div className="flex items-center gap-4 p-2 rounded-lg bg-popover">
@@ -213,7 +137,7 @@ export default function NewsDashboard() {
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-8">
           {/* News Feed */}
-          <Card className={`${darkMode ? 'bg-gray-800' : 'bg-white'} mb-4`}>
+          <Card>
             <CardHeader>
               <CardTitle>Latest Updates</CardTitle>
             </CardHeader>
@@ -222,14 +146,14 @@ export default function NewsDashboard() {
                 <div className="space-y-6">
                   {newsItems.map((article) => (
                     <div key={article.id} className="max-w-2xl mx-auto">
-                      {renderNewsCard(article)}
+                      <NewsCard article={article} viewMode={viewMode} />
                     </div>
                   ))}
                 </div>
               ) : (
                 <div className="h-full flex items-center justify-center">
                   <div className="max-w-2xl w-full">
-                    {renderNewsCard(newsItems[currentArticleIndex])}
+                    <NewsCard article={newsItems[currentArticleIndex]} viewMode={viewMode} />
                   </div>
                 </div>
               )}
@@ -238,82 +162,9 @@ export default function NewsDashboard() {
         </div>
 
         <div className="col-span-4 space-y-4">
-          {/* Sports Ticker */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-sm font-medium">
-                <Activity className="w-4 h-4" />
-                Live Sports
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="overflow-hidden pt-0">
-              <div className="flex whitespace-nowrap animate-ticker">
-                {[
-                  { teams: "MUN vs ARS", score: "2-1", time: "85'" },
-                  { teams: "LAL vs GSW", score: "98-92", time: "Q4" },
-                  { teams: "WI vs ENG", score: "245/6", time: "LIVE" },
-                  { teams: "MUN vs ARS", score: "2-1", time: "85'" },
-                  { teams: "LAL vs GSW", score: "98-92", time: "Q4" },
-                  { teams: "WI vs ENG", score: "245/6", time: "LIVE" }
-                ].map((game, index) => (
-                  <div key={index} className="inline-flex items-center gap-3 px-4">
-                    <span className={`px-2 py-1 text-xs rounded ${
-                      darkMode ? 'bg-gray-700' : 'bg-gray-100'
-                    }`}>
-                      {game.time}
-                    </span>
-                    <span className="font-medium">{game.teams}</span>
-                    <span className="text-blue-500 font-bold">{game.score}</span>
-                    <span className="text-gray-400 px-2">|</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Weather */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Globe className="w-5 h-5" />
-                Weather
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-3xl font-bold">28°C</div>
-                  <div className="text-sm text-gray-500">Feels like 30°C</div>
-                </div>
-                <div className="text-right">
-                  <div className="text-lg">Partly Cloudy</div>
-                  <div className="text-sm text-gray-500">Kingston, JA</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Markets */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart2 className="w-5 h-5" />
-                Markets
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">JSE</span>
-                  <span className="text-green-500">+1.2%</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">USD/JMD</span>
-                  <span>156.75</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <SportsTicker />
+          <WeatherWidget />
+          <MarketsWidget />
         </div>
       </div>
 
