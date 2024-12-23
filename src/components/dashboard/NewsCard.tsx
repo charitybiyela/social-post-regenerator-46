@@ -1,5 +1,6 @@
 import React from 'react';
 import { NewsItem } from '@/types/news';
+import { Card } from '@/components/ui/card';
 
 interface NewsCardProps {
   article: NewsItem;
@@ -49,7 +50,7 @@ export const NewsCard = ({ article, darkMode, viewMode }: NewsCardProps) => {
   };
 
   return (
-    <div className={`rounded-lg overflow-hidden ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
+    <Card className={`overflow-hidden border ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
       {viewMode !== 'text' && article.media && renderMedia(article.media)}
       <div className="p-6">
         <div className="flex justify-between items-start mb-4">
@@ -75,8 +76,8 @@ export const NewsCard = ({ article, darkMode, viewMode }: NewsCardProps) => {
               key={i}
               className={`px-2 py-1 rounded-full text-xs ${
                 darkMode 
-                  ? 'bg-gray-600 text-gray-300' 
-                  : 'bg-gray-200 text-gray-600'
+                  ? 'bg-gray-700 text-gray-300' 
+                  : 'bg-gray-100 text-gray-600'
               }`}
             >
               #{tag}
@@ -84,6 +85,6 @@ export const NewsCard = ({ article, darkMode, viewMode }: NewsCardProps) => {
           ))}
         </div>
       </div>
-    </div>
+    </Card>
   );
 };

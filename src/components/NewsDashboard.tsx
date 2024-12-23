@@ -112,6 +112,7 @@ export default function NewsDashboard() {
 
       scrollContainer.scrollTop += (baseSpeed * speedMultiplier);
 
+      // Reset scroll position when reaching bottom
       if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 10) {
         scrollContainer.scrollTop = 0;
       }
@@ -147,10 +148,10 @@ export default function NewsDashboard() {
   }, [scrollActive, scrollStyle, scrollSpeed, newsItems.length]);
 
   return (
-    <div className={`w-full min-h-screen ${darkMode ? 'dark' : ''}`}>
-      <div className="container py-4">
-        <div className="grid grid-cols-12 gap-4">
-          <div className="col-span-12 lg:col-span-8">
+    <div className={`min-h-screen w-full ${darkMode ? 'dark' : ''} bg-background`}>
+      <div className="container py-4 min-h-screen">
+        <div className="grid grid-cols-12 gap-4 min-h-[calc(100vh-2rem)]">
+          <div className="col-span-12 lg:col-span-8 flex flex-col">
             <DashboardControls 
               scrollStyle={scrollStyle}
               setScrollStyle={setScrollStyle}
@@ -164,15 +165,15 @@ export default function NewsDashboard() {
               setDarkMode={setDarkMode}
             />
 
-            <Card className="mt-4">
+            <Card className="mt-4 flex-1">
               <CardHeader>
                 <CardTitle>Latest Updates</CardTitle>
               </CardHeader>
-              <CardContent className="h-[calc(100vh-280px)] relative">
+              <CardContent className="relative h-[calc(100vh-16rem)]">
                 {scrollStyle === 'continuous' ? (
                   <div 
                     ref={scrollContainerRef}
-                    className="absolute inset-0 overflow-hidden"
+                    className="absolute inset-0 overflow-hidden bg-background"
                   >
                     <div className="space-y-6 p-4">
                       {[...newsItems, ...newsItems, ...newsItems].map((article, index) => (
@@ -190,7 +191,7 @@ export default function NewsDashboard() {
                     </div>
                   </div>
                 ) : (
-                  <div className="absolute inset-0 flex items-center justify-center p-4">
+                  <div className="absolute inset-0 flex items-center justify-center p-4 bg-background">
                     <div className="w-full transition-opacity duration-500 animate-fadeIn">
                       <NewsCard 
                         article={newsItems[currentArticleIndex]}
