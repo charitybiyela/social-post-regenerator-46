@@ -7,16 +7,6 @@ import { WeatherWidget } from './dashboard/WeatherWidget';
 import { MarketsWidget } from './dashboard/MarketsWidget';
 import { NewsItem } from '@/types/news';
 
-export default function NewsDashboard() {
-  const [scrollStyle, setScrollStyle] = useState('continuous');
-  const [darkMode, setDarkMode] = useState(true);
-  const [scrollActive, setScrollActive] = useState(false);
-  const [scrollSpeed, setScrollSpeed] = useState(5);
-  const [viewMode, setViewMode] = useState('hybrid');
-  const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  // Enhanced news data with diverse content types
   const newsItems: NewsItem[] = [
     {
       id: 1,
@@ -99,21 +89,29 @@ export default function NewsDashboard() {
     }
   ];
 
+export default function NewsDashboard() {
+  const [scrollStyle, setScrollStyle] = useState('continuous');
+  const [darkMode, setDarkMode] = useState(true);
+  const [scrollActive, setScrollActive] = useState(false);
+  const [scrollSpeed, setScrollSpeed] = useState(5);
+  const [viewMode, setViewMode] = useState('hybrid');
+  const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   // Enhanced continuous scroll with smooth behavior
   useEffect(() => {
     if (!scrollActive || !scrollContainerRef.current || scrollStyle !== 'continuous') return;
 
     let animationFrameId: number;
     const scrollContainer = scrollContainerRef.current;
-    const baseSpeed = 0.5; // Base scroll speed in pixels per frame
-    const speedMultiplier = scrollSpeed; // User's speed setting
+    const baseSpeed = 0.5;
+    const speedMultiplier = scrollSpeed;
 
     const animate = () => {
       if (!scrollContainer) return;
 
       scrollContainer.scrollTop += (baseSpeed * speedMultiplier);
 
-      // Reset scroll position when reaching bottom for seamless loop
       if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 10) {
         scrollContainer.scrollTop = 0;
       }
@@ -135,12 +133,9 @@ export default function NewsDashboard() {
     let interval: NodeJS.Timeout;
     
     if (scrollActive && scrollStyle === 'oneAtATime') {
-      const scrollDuration = 8000 / scrollSpeed; // Adjust timing based on speed
+      const scrollDuration = 8000 / scrollSpeed;
       interval = setInterval(() => {
-        setCurrentArticleIndex((prev) => {
-          const nextIndex = (prev + 1) % newsItems.length;
-          return nextIndex;
-        });
+        setCurrentArticleIndex((prev) => (prev + 1) % newsItems.length);
       }, scrollDuration);
     }
 
@@ -152,65 +147,68 @@ export default function NewsDashboard() {
   }, [scrollActive, scrollStyle, scrollSpeed, newsItems.length]);
 
   return (
-    <div className={`w-full min-h-screen p-4 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
-      <DashboardControls 
-        scrollStyle={scrollStyle}
-        setScrollStyle={setScrollStyle}
-        viewMode={viewMode}
-        setViewMode={setViewMode}
-        scrollActive={scrollActive}
-        setScrollActive={setScrollActive}
-        scrollSpeed={scrollSpeed}
-        setScrollSpeed={setScrollSpeed}
-        darkMode={darkMode}
-        setDarkMode={setDarkMode}
-      />
+    <div className={`w-full min-h-screen ${darkMode ? 'dark' : ''}`}>
+      <div className="container py-4">
+        <div className="grid grid-cols-12 gap-4">
+          <div className="col-span-12 lg:col-span-8">
+            <DashboardControls 
+              scrollStyle={scrollStyle}
+              setScrollStyle={setScrollStyle}
+              viewMode={viewMode}
+              setViewMode={setViewMode}
+              scrollActive={scrollActive}
+              setScrollActive={setScrollActive}
+              scrollSpeed={scrollSpeed}
+              setScrollSpeed={setScrollSpeed}
+              darkMode={darkMode}
+              setDarkMode={setDarkMode}
+            />
 
-      <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-8">
-          <Card className={`${darkMode ? 'bg-gray-800' : 'bg-white'} mb-4`}>
-            <CardHeader>
-              <CardTitle>Latest Updates</CardTitle>
-            </CardHeader>
-            <CardContent className="h-[calc(100vh-280px)] overflow-hidden">
-              {scrollStyle === 'continuous' ? (
-                <div 
-                  ref={scrollContainerRef}
-                  className="space-y-6 overflow-y-hidden h-full"
-                  style={{ scrollBehavior: 'smooth' }}
-                >
-                  {[...newsItems, ...newsItems, ...newsItems].map((article, index) => (
-                    <div 
-                      key={`${article.id}-${index}`} 
-                      className="max-w-2xl mx-auto transition-opacity duration-500"
-                    >
+            <Card className="mt-4">
+              <CardHeader>
+                <CardTitle>Latest Updates</CardTitle>
+              </CardHeader>
+              <CardContent className="h-[calc(100vh-280px)] relative">
+                {scrollStyle === 'continuous' ? (
+                  <div 
+                    ref={scrollContainerRef}
+                    className="absolute inset-0 overflow-hidden"
+                  >
+                    <div className="space-y-6 p-4">
+                      {[...newsItems, ...newsItems, ...newsItems].map((article, index) => (
+                        <div 
+                          key={`${article.id}-${index}`} 
+                          className="transition-opacity duration-500"
+                        >
+                          <NewsCard 
+                            article={article}
+                            darkMode={darkMode}
+                            viewMode={viewMode}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center p-4">
+                    <div className="w-full transition-opacity duration-500 animate-fadeIn">
                       <NewsCard 
-                        article={article}
+                        article={newsItems[currentArticleIndex]}
                         darkMode={darkMode}
                         viewMode={viewMode}
                       />
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="h-full flex items-center justify-center">
-                  <div className="max-w-2xl w-full transition-opacity duration-500 animate-fadeIn">
-                    <NewsCard 
-                      article={newsItems[currentArticleIndex]}
-                      darkMode={darkMode}
-                      viewMode={viewMode}
-                    />
                   </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
 
-        <div className="col-span-4 space-y-4">
-          <SportsTicker darkMode={darkMode} />
-          <WeatherWidget />
-          <MarketsWidget />
+          <div className="col-span-12 lg:col-span-4 space-y-4">
+            <SportsTicker darkMode={darkMode} />
+            <WeatherWidget />
+            <MarketsWidget />
+          </div>
         </div>
       </div>
     </div>
