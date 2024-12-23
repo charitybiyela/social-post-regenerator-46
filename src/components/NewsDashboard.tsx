@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DashboardControls } from './dashboard/DashboardControls';
 import { NewsCard } from './dashboard/NewsCard';
@@ -14,6 +14,7 @@ export default function NewsDashboard() {
   const [scrollSpeed, setScrollSpeed] = useState(5);
   const [viewMode, setViewMode] = useState('hybrid');
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Sample news data
   const newsItems: NewsItem[] = [
@@ -50,16 +51,53 @@ export default function NewsDashboard() {
     }
   ];
 
-  // Continuous scroll effect
+  // Handle continuous scroll
+  useEffect(() => {
+    if (!scrollActive || !scrollContainerRef.current) return;
+
+    let animationFrameId: number;
+    let startTime: number;
+    const scrollContainer = scrollContainerRef.current;
+    const baseSpeed = 0.5; // Base scroll speed in pixels per frame
+    const speedMultiplier = scrollSpeed; // User's speed setting
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      
+      if (scrollStyle === 'continuous') {
+        scrollContainer.scrollTop += (baseSpeed * speedMultiplier);
+
+        // Reset scroll position when reaching bottom
+        if (scrollContainer.scrollTop >= scrollContainer.scrollHeight - scrollContainer.clientHeight) {
+          scrollContainer.scrollTop = 0;
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [scrollActive, scrollSpeed, scrollStyle]);
+
+  // Handle one-at-a-time scroll
   useEffect(() => {
     let interval: NodeJS.Timeout;
+    
     if (scrollActive && scrollStyle === 'oneAtATime') {
+      const scrollDuration = 5000 / scrollSpeed; // Adjust timing based on speed
       interval = setInterval(() => {
         setCurrentArticleIndex(prev => (prev + 1) % newsItems.length);
-      }, 3000);
+      }, scrollDuration);
     }
+
     return () => clearInterval(interval);
-  }, [scrollActive, scrollStyle, newsItems.length]);
+  }, [scrollActive, scrollStyle, scrollSpeed, newsItems.length]);
 
   return (
     <div className={`w-full min-h-screen p-4 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
@@ -84,9 +122,14 @@ export default function NewsDashboard() {
             </CardHeader>
             <CardContent className="h-[calc(100vh-280px)] overflow-hidden">
               {scrollStyle === 'continuous' ? (
-                <div className="space-y-6">
-                  {newsItems.map((article) => (
-                    <div key={article.id} className="max-w-2xl mx-auto">
+                <div 
+                  ref={scrollContainerRef}
+                  className="space-y-6 overflow-y-hidden h-full"
+                  style={{ scrollBehavior: 'smooth' }}
+                >
+                  {/* Duplicate items for seamless scrolling */}
+                  {[...newsItems, ...newsItems].map((article, index) => (
+                    <div key={`${article.id}-${index}`} className="max-w-2xl mx-auto">
                       <NewsCard 
                         article={article}
                         darkMode={darkMode}
@@ -97,7 +140,7 @@ export default function NewsDashboard() {
                 </div>
               ) : (
                 <div className="h-full flex items-center justify-center">
-                  <div className="max-w-2xl w-full">
+                  <div className="max-w-2xl w-full animate-fadeIn">
                     <NewsCard 
                       article={newsItems[currentArticleIndex]}
                       darkMode={darkMode}
