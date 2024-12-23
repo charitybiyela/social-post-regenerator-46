@@ -4,6 +4,7 @@ import {
   Sun, Moon, Clock, Activity
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import styles from '../styles/ticker.module.css';
 
 export default function NewsDashboard() {
   const [scrollStyle, setScrollStyle] = useState('continuous');
@@ -253,6 +254,7 @@ export default function NewsDashboard() {
 
         <div className="col-span-4 space-y-4">
           {/* Sports Ticker */}
+
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-sm font-medium">
@@ -261,7 +263,7 @@ export default function NewsDashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent className="overflow-hidden pt-0">
-              <div className="flex whitespace-nowrap animate-ticker">
+              <div className={`flex whitespace-nowrap ${styles.animateTicker}`}>
                 {[
                   { teams: "MUN vs ARS", score: "2-1", time: "85'" },
                   { teams: "LAL vs GSW", score: "98-92", time: "Q4" },
