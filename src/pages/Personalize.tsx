@@ -1,4 +1,4 @@
-import { PersonalizationPanel } from "@/components/PersonalizationPanel";
+import { ProfileForm } from "@/components/ProfileForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,8 +35,6 @@ export default function Personalize() {
   const handleUpload = async () => {
     if (!file) return;
     
-    // Here we're just showing a success message
-    // In a real implementation, you would handle the file upload to a server
     toast({
       title: "Resume uploaded successfully",
       description: "We'll analyze your interests and update your feed preferences.",
@@ -85,7 +83,7 @@ export default function Personalize() {
         </CardContent>
       </Card>
 
-      <PersonalizationPanel />
+      <ProfileForm />
     </div>
   );
 }
