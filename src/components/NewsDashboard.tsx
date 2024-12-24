@@ -199,28 +199,30 @@ export default function NewsDashboard() {
         </div>
       </div>
 
-      <style jsx>{`
-        .scroll-container {
-          transition: transform 0.5s ease;
-        }
-        
-        .scroll-container.scrolling {
-          animation: scroll linear infinite;
-        }
-        
-        @keyframes scroll {
-          0% {
-            transform: translateY(0);
+      <style>
+        {`
+          .scroll-container {
+            transition: transform 0.5s ease;
           }
-          100% {
-            transform: translateY(-50%);
+          
+          .scroll-container.scrolling {
+            animation: scroll linear infinite;
           }
-        }
-        
-        .scroll-container:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
+          
+          @keyframes scroll {
+            0% {
+              transform: translateY(0);
+            }
+            100% {
+              transform: translateY(-50%);
+            }
+          }
+          
+          .scroll-container:hover {
+            animation-play-state: paused;
+          }
+        `}
+      </style>
     </div>
   );
 }
