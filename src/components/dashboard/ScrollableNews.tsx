@@ -27,8 +27,8 @@ export const ScrollableNews = ({
     let animationFrameId: number;
     let lastTimestamp: number;
     
-    // Base speed of 30 pixels per second, multiplied by speed setting
-    const pixelsPerSecond = scrollSpeed * 30;
+    // Increased base speed to 60 pixels per second for smoother scrolling
+    const pixelsPerSecond = scrollSpeed * 60;
 
     const animate = (timestamp: number) => {
       if (!lastTimestamp) lastTimestamp = timestamp;
@@ -65,7 +65,6 @@ export const ScrollableNews = ({
       <div 
         ref={scrollContainerRef}
         className="h-full overflow-y-auto"
-        style={{ scrollBehavior: 'smooth' }}
       >
         <div className="space-y-6 px-6">
           {newsItems.map((article) => (
@@ -89,7 +88,11 @@ export const ScrollableNews = ({
     <div className="h-full flex items-center justify-center px-6">
       <div 
         key={currentArticleIndex} 
-        className="w-full max-w-2xl animate-fadeIn"
+        className="w-full max-w-2xl transition-opacity duration-300 ease-in-out"
+        style={{
+          opacity: 1,
+          animation: 'fadeIn 0.3s ease-in-out'
+        }}
       >
         <NewsCard 
           article={newsItems[currentArticleIndex]} 
