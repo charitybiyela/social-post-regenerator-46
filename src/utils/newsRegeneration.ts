@@ -1,7 +1,24 @@
-import { ExtendedProfile, EmotionalState, Circumstances } from '@/types/profile';
 import _ from 'lodash';
+import { GeoMapping, ProfileCategories } from '@/types/newsEngine';
+import { ExtendedProfile } from '@/types/profile';
 
-// ... keep existing code (GeoMapping and ProfileCategories)
+class TextContentAdapter {
+  adapt(content: any, profile: any) {
+    return {
+      ...content,
+      readingLevel: this.calculateReadingLevel(content, profile),
+      culturalContext: this.adaptCulturalContext(content, profile),
+    };
+  }
+
+  private calculateReadingLevel(content: any, profile: ExtendedProfile) {
+    return profile.education || 'intermediate';
+  }
+
+  private adaptCulturalContext(content: any, profile: ExtendedProfile) {
+    return content;
+  }
+}
 
 class AdvancedNewsRegenerationEngine {
   private contentAdapters: Map<string, any>;
@@ -12,12 +29,22 @@ class AdvancedNewsRegenerationEngine {
     this.contentAdapters.set('text', new TextContentAdapter());
     
     this.weightings = {
+      language: 10,
       regional: 8,
       interests: 15,
+      political: 5,
+      demographic: 7,
       emotional: 10,
-      circumstances: 12,
-      professional: 10,
-      lifestyle: 8,
+      style: 6,
+      timeliness: 10,
+      professionalRelevance: 12,
+      industryTrends: 9,
+      topicalDepth: 8,
+      circumstances: 11,
+      culturalRelevance: 8,
+      healthAlignment: 6,
+      lifestyleMatch: 7,
+      personalGoals: 9
     };
   }
 
@@ -42,7 +69,7 @@ class AdvancedNewsRegenerationEngine {
     let score = 0;
     
     // Regional relevance
-    if (content.region === profile.region) {
+    if (content.region === profile.localContext?.culturalRegion) {
       score += this.weightings.regional;
     }
 
@@ -69,7 +96,6 @@ class AdvancedNewsRegenerationEngine {
   private matchesEmotionalState(content: any, profile: ExtendedProfile): boolean {
     if (!profile.emotionalState?.currentMood) return false;
     
-    // Check if content tone matches preferred tones
     return profile.emotionalState.contentSensitivity.preferredTones.some(
       tone => content.tone === tone
     );
@@ -78,7 +104,6 @@ class AdvancedNewsRegenerationEngine {
   private matchesCircumstances(content: any, profile: ExtendedProfile): boolean {
     if (!profile.circumstances) return false;
 
-    // Check relevance to current life events
     return profile.circumstances.lifeEvents.recent.some(
       event => content.tags?.includes(event)
     );
@@ -92,13 +117,11 @@ class AdvancedNewsRegenerationEngine {
     };
   }
 
-  private adjustTone(contentTone: string, emotionalState: EmotionalState) {
-    // Adjust content tone based on emotional state
+  private adjustTone(contentTone: string, emotionalState: any) {
     return contentTone;
   }
 
-  private adjustIntensity(contentIntensity: number, emotionalState: EmotionalState) {
-    // Adjust content intensity based on stress level and emotional resilience
+  private adjustIntensity(contentIntensity: number, emotionalState: any) {
     return contentIntensity;
   }
 
@@ -110,34 +133,12 @@ class AdvancedNewsRegenerationEngine {
     };
   }
 
-  private findRelevantEvents(content: any, circumstances: Circumstances) {
-    // Find events in circumstances that relate to content
+  private findRelevantEvents(content: any, circumstances: any) {
     return [];
   }
 
-  private evaluateSupportAlignment(content: any, circumstances: Circumstances) {
-    // Evaluate how content aligns with current support needs
+  private evaluateSupportAlignment(content: any, circumstances: any) {
     return 'medium';
-  }
-}
-
-class TextContentAdapter {
-  adapt(content: any, profile: ExtendedProfile) {
-    return {
-      ...content,
-      readingLevel: this.calculateReadingLevel(content, profile),
-      culturalContext: this.adaptCulturalContext(content, profile),
-    };
-  }
-
-  private calculateReadingLevel(content: any, profile: ExtendedProfile) {
-    // Implementation based on profile.education and content complexity
-    return 'intermediate';
-  }
-
-  private adaptCulturalContext(content: any, profile: ExtendedProfile) {
-    // Adapt based on profile.localContext and cultural preferences
-    return content;
   }
 }
 
