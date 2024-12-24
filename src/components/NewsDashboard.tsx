@@ -53,17 +53,45 @@ export default function NewsDashboard() {
   // Continuous scroll effect
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (scrollActive && scrollStyle === 'oneAtATime') {
-      interval = setInterval(() => {
-        setCurrentArticleIndex(prev => (prev + 1) % newsItems.length);
-      }, 3000);
+    
+    if (scrollActive) {
+      const scrollInterval = 11000 - (scrollSpeed * 1000); // Convert speed 1-10 to milliseconds
+      
+      if (scrollStyle === 'oneAtATime') {
+        interval = setInterval(() => {
+          setCurrentArticleIndex(prev => (prev + 1) % newsItems.length);
+        }, scrollInterval);
+      } else if (scrollStyle === 'continuous') {
+        // For continuous mode, we'll use CSS animation with a dynamic speed
+        const scrollContainer = document.querySelector('.scroll-container');
+        if (scrollContainer) {
+          scrollContainer.classList.add('scrolling');
+          (scrollContainer as HTMLElement).style.animationDuration = `${scrollInterval}ms`;
+        }
+      }
+    } else {
+      // When paused, remove scrolling class in continuous mode
+      if (scrollStyle === 'continuous') {
+        const scrollContainer = document.querySelector('.scroll-container');
+        if (scrollContainer) {
+          scrollContainer.classList.remove('scrolling');
+        }
+      }
     }
-    return () => clearInterval(interval);
-  }, [scrollActive, scrollStyle, newsItems.length]);
+
+    return () => {
+      clearInterval(interval);
+      // Cleanup scrolling class
+      const scrollContainer = document.querySelector('.scroll-container');
+      if (scrollContainer) {
+        scrollContainer.classList.remove('scrolling');
+      }
+    };
+  }, [scrollActive, scrollStyle, scrollSpeed, newsItems.length]);
 
   return (
     <div className="w-full min-h-screen p-4 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
-      {/* Controls - Now constrained to match news feed width */}
+      {/* Controls */}
       <div className="max-w-2xl mx-auto mb-4">
         <div className="flex items-center gap-4 p-2 rounded-lg bg-popover">
           <select 
@@ -143,7 +171,7 @@ export default function NewsDashboard() {
             </CardHeader>
             <CardContent className="h-[calc(100%-4rem)] overflow-hidden">
               {scrollStyle === 'continuous' ? (
-                <div className="space-y-6 overflow-y-auto h-full">
+                <div className={`space-y-6 scroll-container ${scrollActive ? 'scrolling' : ''}`}>
                   {newsItems.map((article) => (
                     <div key={article.id} className="max-w-2xl mx-auto">
                       <NewsCard article={article} viewMode={viewMode} />
@@ -171,22 +199,28 @@ export default function NewsDashboard() {
         </div>
       </div>
 
-      <style>
-        {`
-          @keyframes ticker {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+      <style jsx>{`
+        .scroll-container {
+          transition: transform 0.5s ease;
+        }
+        
+        .scroll-container.scrolling {
+          animation: scroll linear infinite;
+        }
+        
+        @keyframes scroll {
+          0% {
+            transform: translateY(0);
           }
-          
-          .animate-ticker {
-            animation: ticker 20s linear infinite;
+          100% {
+            transform: translateY(-50%);
           }
-          
-          .animate-ticker:hover {
-            animation-play-state: paused;
-          }
-        `}
-      </style>
+        }
+        
+        .scroll-container:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
     </div>
   );
 }
