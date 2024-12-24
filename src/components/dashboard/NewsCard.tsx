@@ -1,8 +1,7 @@
 import React from 'react';
-import { useTheme } from 'next-themes';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { MessageSquare, Share2, ThumbsUp } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { NewsCardHeader } from './news/NewsCardHeader';
+import { NewsCardMedia } from './news/NewsCardMedia';
+import { NewsCardFooter } from './news/NewsCardFooter';
 
 interface NewsCardProps {
   article: {
@@ -28,93 +27,26 @@ interface NewsCardProps {
 }
 
 export const NewsCard = ({ article, viewMode }: NewsCardProps) => {
-  const { theme } = useTheme();
-  
-  const renderMedia = (media: NewsCardProps['article']['media']) => {
-    if (!media || viewMode === 'text') return null;
-
-    return (
-      <div className="w-full mb-6">
-        <AspectRatio ratio={1 / 1} className="bg-muted rounded-lg overflow-hidden">
-          {media.type === 'chart' ? (
-            <div className="w-full h-full bg-gray-800 p-4">
-              <h4 className="text-sm font-semibold mb-4 text-center text-white">
-                {media.data?.title}
-              </h4>
-              <div className="h-[calc(100%-2rem)] flex items-end justify-between gap-2">
-                {media.data?.values.map((value, i) => (
-                  <div key={i} className="flex flex-col items-center flex-1">
-                    <div 
-                      className="w-full bg-blue-500 rounded-t transition-all duration-500"
-                      style={{ height: `${(value/350)*100}%` }}
-                    />
-                    <span className="text-xs mt-2 text-white">{media.data.labels[i]}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <img 
-              src={media.src || '/placeholder.svg'} 
-              alt={media.alt || article.title}
-              className="object-cover w-full h-full"
-            />
-          )}
-        </AspectRatio>
-      </div>
-    );
-  };
-
   return (
-    <div className="rounded-lg overflow-hidden bg-background border animate-fadeIn">
+    <div className="bg-background border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 animate-fadeIn">
       <div className="p-6">
-        <div className="flex justify-between items-start mb-4">
-          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-            article.importance === 'high' 
-              ? 'bg-red-100 text-red-500 dark:bg-red-500/20' 
-              : 'bg-blue-100 text-blue-500 dark:bg-blue-500/20'
-          }`}>
-            {article.importance.toUpperCase()}
-          </span>
-          <span className="text-sm text-muted-foreground">{article.time}</span>
+        <NewsCardHeader importance={article.importance} time={article.time} />
+        
+        <h3 className="text-xl font-bold mb-2 line-clamp-2 hover:line-clamp-none">
+          {article.title}
+        </h3>
+        
+        <div className="text-sm text-[#0EA5E9] mb-4">
+          {article.category}
         </div>
-
-        <h3 className="text-xl font-bold mb-2 line-clamp-2">{article.title}</h3>
-        <div className="text-sm text-blue-400 mb-4">{article.category}</div>
         
-        {renderMedia(article.media)}
+        <NewsCardMedia media={article.media} viewMode={viewMode} />
         
-        <p className="text-muted-foreground mb-6 line-clamp-3">
+        <p className="text-muted-foreground mb-6 line-clamp-3 hover:line-clamp-none">
           {article.content}
         </p>
         
-        <div className="space-y-4">
-          <div className="flex flex-wrap gap-2">
-            {article.tags.map((tag, i) => (
-              <span 
-                key={i}
-                className="px-2 py-1 rounded-full text-xs bg-muted text-muted-foreground"
-              >
-                #{tag}
-              </span>
-            ))}
-          </div>
-          
-          <div className="flex justify-between items-center pt-4 border-t">
-            <Button variant="ghost" size="sm" className="text-muted-foreground">
-              <ThumbsUp className="w-4 h-4 mr-2" />
-              <span>Like</span>
-            </Button>
-            <Button variant="ghost" size="sm" className="text-muted-foreground">
-              <MessageSquare className="w-4 h-4 mr-2" />
-              <span>Comment</span>
-            </Button>
-            <Button variant="ghost" size="sm" className="text-muted-foreground">
-              <Share2 className="w-4 h-4 mr-2" />
-              <span>Share</span>
-            </Button>
-          </div>
-        </div>
+        <NewsCardFooter tags={article.tags} />
       </div>
     </div>
   );
