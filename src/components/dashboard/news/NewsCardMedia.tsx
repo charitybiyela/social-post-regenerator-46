@@ -19,8 +19,8 @@ export const NewsCardMedia = ({ media, viewMode }: NewsCardMediaProps) => {
   if (!media || viewMode === 'text') return null;
 
   return (
-    <div className="mb-6">
-      <AspectRatio ratio={1} className="bg-muted rounded-lg overflow-hidden">
+    <div className="w-full">
+      <AspectRatio ratio={16/9} className="bg-muted rounded-lg overflow-hidden">
         {media.type === 'chart' ? (
           <div className="w-full h-full bg-gray-800 p-4">
             <h4 className="text-sm font-semibold mb-4 text-center text-white">

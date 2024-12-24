@@ -6,7 +6,7 @@ interface NewsCardHeaderProps {
 }
 
 export const NewsCardHeader = ({ importance, time }: NewsCardHeaderProps) => (
-  <div className="flex justify-between items-center mb-4">
+  <div className="flex justify-between items-center">
     <span className={`px-3 py-1 rounded-full text-xs font-medium ${
       importance === 'high' 
         ? 'bg-[#FFDEE2] text-red-500 dark:bg-red-500/20' 
