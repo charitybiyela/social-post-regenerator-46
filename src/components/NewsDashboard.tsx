@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTheme } from 'next-themes';
 import { SportsTicker } from './dashboard/SportsTicker';
@@ -10,6 +10,9 @@ import { ScrollableNews } from './dashboard/ScrollableNews';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PersonalizationLink } from './PersonalizationLink';
+import { usePersonalization } from '@/contexts/PersonalizationContext';
+import { loadProfile } from '@/utils/profileStorage';
+import { newsRegenerationEngine } from '@/utils/newsRegeneration';
 
 export default function NewsDashboard() {
   const [scrollStyle, setScrollStyle] = useState('continuous');
@@ -18,57 +21,23 @@ export default function NewsDashboard() {
   const [viewMode, setViewMode] = useState('hybrid');
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
   const { theme } = useTheme();
+  const { userInterests } = usePersonalization();
+  const [profile, setProfile] = useState<ExtendedProfile | null>(null);
 
-  // Sample news data
-  const newsItems = [
-    {
-      id: 1,
-      title: "Jamaica's FinTech Sector Sees Major Growth",
-      category: "Financial Technology",
-      importance: "high",
-      content: "Leading financial institutions in Jamaica are reporting unprecedented adoption of digital banking solutions...",
-      tags: ["FinTech", "Banking", "Jamaica"],
-      time: "2 minutes ago",
-      media: {
-        type: "chart",
-        data: {
-          labels: ["Q1", "Q2", "Q3", "Q4"],
-          values: [120, 180, 240, 350],
-          title: "Digital Banking Growth"
-        }
-      }
-    },
-    {
-      id: 2,
-      title: "Caribbean Forex Markets Update",
-      category: "Financial Markets",
-      importance: "medium",
-      content: "New trade policies across the Caribbean region are creating ripples in the forex markets...",
-      tags: ["Forex", "Caribbean", "Economic Policy"],
-      time: "15 minutes ago",
-      media: {
-        type: "image",
-        src: "/placeholder.svg",
-        alt: "Caribbean Forex Market Trends"
-      }
-    }
-  ];
-
-  // Handle one-at-a-time scrolling
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-    
-    if (scrollActive && scrollStyle === 'oneAtATime') {
-      const scrollInterval = 11000 - (scrollSpeed * 1000);
-      interval = setInterval(() => {
-        setCurrentArticleIndex(prev => (prev + 1) % newsItems.length);
-      }, scrollInterval);
+    const savedProfile = loadProfile();
+    if (savedProfile) {
+      setProfile(savedProfile as ExtendedProfile);
     }
+  }, []);
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, [scrollActive, scrollStyle, scrollSpeed, newsItems.length]);
+  const processNewsItems = useCallback((items: any[]) => {
+    if (!profile) return items;
+
+    return items.map(item => 
+      newsRegenerationEngine.adaptContent(item, profile)
+    ).sort((a, b) => b.relevanceScore - a.relevanceScore);
+  }, [profile]);
 
   const goToPreviousArticle = () => {
     setCurrentArticleIndex(prev => 
@@ -124,7 +93,7 @@ export default function NewsDashboard() {
             </CardHeader>
             <CardContent className="h-[calc(100%-4rem)] overflow-y-auto">
               <ScrollableNews 
-                newsItems={newsItems}
+                newsItems={processNewsItems(newsItems)}
                 scrollStyle={scrollStyle}
                 scrollActive={scrollActive}
                 scrollSpeed={scrollSpeed}
