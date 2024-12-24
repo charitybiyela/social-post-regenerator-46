@@ -22,7 +22,7 @@ interface Impact {
 
 interface MoodOption {
   label: string;
-  icon: React.ComponentType;
+  icon: React.ComponentType<any>;
   color: string;
 }
 
@@ -109,16 +109,19 @@ const ProfileDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {moodOptions.map((mood) => (
-                <button
-                  key={mood.label}
-                  onClick={() => handleMoodUpdate(mood)}
-                  className="flex flex-col items-center p-4 rounded-lg hover:bg-white/50 dark:hover:bg-white/10 transition-colors"
-                >
-                  <mood.icon className={`w-8 h-8 ${mood.color}`} />
-                  <span className="mt-2 text-sm font-medium">{mood.label}</span>
-                </button>
-              ))}
+              {moodOptions.map((mood) => {
+                const IconComponent = mood.icon;
+                return (
+                  <button
+                    key={mood.label}
+                    onClick={() => handleMoodUpdate(mood)}
+                    className="flex flex-col items-center p-4 rounded-lg hover:bg-white/50 dark:hover:bg-white/10 transition-colors"
+                  >
+                    <IconComponent className={`w-8 h-8 ${mood.color}`} />
+                    <span className="mt-2 text-sm font-medium">{mood.label}</span>
+                  </button>
+                );
+              })}
             </div>
           </CardContent>
         </Card>
