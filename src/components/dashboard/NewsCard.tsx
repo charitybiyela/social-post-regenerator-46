@@ -34,8 +34,8 @@ export const NewsCard = ({ article, viewMode }: NewsCardProps) => {
     if (!media || viewMode === 'text') return null;
 
     return (
-      <div className="w-full max-w-xl mx-auto mb-6">
-        <AspectRatio ratio={1 / 1} className="bg-muted">
+      <div className="w-full mb-6">
+        <AspectRatio ratio={1 / 1} className="bg-muted rounded-lg overflow-hidden">
           {media.type === 'chart' ? (
             <div className="w-full h-full bg-gray-800 p-4">
               <h4 className="text-sm font-semibold mb-4 text-center text-white">
@@ -57,7 +57,7 @@ export const NewsCard = ({ article, viewMode }: NewsCardProps) => {
             <img 
               src={media.src || '/placeholder.svg'} 
               alt={media.alt || article.title}
-              className="object-cover w-full h-full rounded-lg"
+              className="object-cover w-full h-full"
             />
           )}
         </AspectRatio>
@@ -69,22 +69,22 @@ export const NewsCard = ({ article, viewMode }: NewsCardProps) => {
     <div className="rounded-lg overflow-hidden bg-background border animate-fadeIn">
       <div className="p-6">
         <div className="flex justify-between items-start mb-4">
-          <span className={`px-2 py-1 rounded-full text-xs ${
+          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
             article.importance === 'high' 
-              ? 'bg-red-500/20 text-red-500' 
-              : 'bg-blue-500/20 text-blue-500'
+              ? 'bg-red-100 text-red-500 dark:bg-red-500/20' 
+              : 'bg-blue-100 text-blue-500 dark:bg-blue-500/20'
           }`}>
             {article.importance.toUpperCase()}
           </span>
           <span className="text-sm text-muted-foreground">{article.time}</span>
         </div>
 
-        <h3 className="text-xl font-bold mb-2">{article.title}</h3>
-        <div className="text-sm text-blue-400 mb-3">{article.category}</div>
+        <h3 className="text-xl font-bold mb-2 line-clamp-2">{article.title}</h3>
+        <div className="text-sm text-blue-400 mb-4">{article.category}</div>
         
         {renderMedia(article.media)}
         
-        <p className="text-muted-foreground mb-6">
+        <p className="text-muted-foreground mb-6 line-clamp-3">
           {article.content}
         </p>
         
