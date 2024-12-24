@@ -20,12 +20,12 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <PersonalizationProvider>
       <TooltipProvider>
-        <div className="flex flex-col min-h-screen">
+        <div className="min-h-screen flex flex-col bg-background">
           <Toaster />
           <Sonner />
           <BrowserRouter>
             <ScrollToTop />
-            <div className="flex-grow">
+            <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/about" element={<About />} />
@@ -35,7 +35,7 @@ const App = () => (
                 <Route path="/personalize" element={<Personalize />} />
                 <Route path="/news-engine" element={<NewsEngine />} />
               </Routes>
-            </div>
+            </main>
             <Footer />
           </BrowserRouter>
         </div>

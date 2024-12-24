@@ -55,12 +55,12 @@ export default function NewsDashboard() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
-      <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-8">
-          <Card className="min-h-[500px] max-h-[80vh] h-full">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-              <div className="flex items-center justify-between w-full">
+    <div className="w-full min-h-screen bg-background">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-4 sm:p-6">
+        <div className="lg:col-span-8 space-y-6">
+          <Card className="overflow-hidden border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+            <CardHeader className="border-b bg-card">
+              <div className="flex items-center justify-between space-y-0 pb-2">
                 <div className="flex items-center gap-4">
                   <CardTitle>Latest Updates</CardTitle>
                   <div className="flex items-center gap-2">
@@ -69,6 +69,7 @@ export default function NewsDashboard() {
                       size="icon"
                       onClick={goToPreviousArticle}
                       title="Previous article"
+                      className="h-8 w-8"
                     >
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
@@ -77,6 +78,7 @@ export default function NewsDashboard() {
                       size="icon"
                       onClick={goToNextArticle}
                       title="Next article"
+                      className="h-8 w-8"
                     >
                       <ChevronRight className="h-4 w-4" />
                     </Button>
@@ -94,21 +96,23 @@ export default function NewsDashboard() {
                 />
               </div>
             </CardHeader>
-            <CardContent className="h-[calc(100%-4rem)] overflow-y-auto">
-              <ScrollableNews 
-                newsItems={processNewsItems(newsItems)}
-                scrollStyle={scrollStyle}
-                scrollActive={scrollActive}
-                scrollSpeed={scrollSpeed}
-                viewMode={viewMode}
-                currentArticleIndex={currentArticleIndex}
-              />
+            <CardContent className="p-0">
+              <div className="h-[calc(100vh-16rem)] overflow-y-auto">
+                <ScrollableNews 
+                  newsItems={processNewsItems(newsItems)}
+                  scrollStyle={scrollStyle}
+                  scrollActive={scrollActive}
+                  scrollSpeed={scrollSpeed}
+                  viewMode={viewMode}
+                  currentArticleIndex={currentArticleIndex}
+                />
+              </div>
             </CardContent>
           </Card>
         </div>
 
-        <div className="col-span-4">
-          <div className="space-y-4 max-h-[80vh] overflow-y-auto">
+        <div className="lg:col-span-4 space-y-6">
+          <div className="sticky top-6 space-y-6">
             <BreakingNews />
             <SportsTicker />
             <WeatherWidget />
@@ -117,32 +121,6 @@ export default function NewsDashboard() {
           </div>
         </div>
       </div>
-
-      <style>
-        {`
-          .scroll-container {
-            transition: transform 0.5s ease;
-            position: relative;
-          }
-          
-          .scroll-container.scrolling {
-            animation: scroll linear infinite;
-          }
-          
-          @keyframes scroll {
-            0% {
-              transform: translateY(0);
-            }
-            100% {
-              transform: translateY(-50%);
-            }
-          }
-          
-          .scroll-container:hover {
-            animation-play-state: paused;
-          }
-        `}
-      </style>
     </div>
   );
 }
