@@ -1,4 +1,5 @@
 import { ProfileForm } from "@/components/ProfileForm";
+import { PersonalizationPanel } from "@/components/PersonalizationPanel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -83,7 +84,10 @@ export default function Personalize() {
         </CardContent>
       </Card>
 
-      <ProfileForm />
+      <div className="space-y-8">
+        <ProfileForm />
+        <PersonalizationPanel />
+      </div>
     </div>
   );
 }
