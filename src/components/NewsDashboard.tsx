@@ -93,9 +93,9 @@ export default function NewsDashboard() {
         setScrollSpeed={setScrollSpeed}
       />
 
-      <div className="grid grid-cols-12 gap-4">
+      <div className="grid grid-cols-12 gap-4 mb-4">
         <div className="col-span-8">
-          <Card className="h-[calc(100vh-280px)]">
+          <Card className="min-h-[500px] max-h-[80vh] h-full">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Latest Updates</CardTitle>
               <div className="flex items-center gap-2">
@@ -117,7 +117,7 @@ export default function NewsDashboard() {
                 </Button>
               </div>
             </CardHeader>
-            <CardContent className="h-[calc(100%-4rem)] overflow-hidden">
+            <CardContent className="h-[calc(100%-4rem)] overflow-y-auto">
               <ScrollableNews 
                 newsItems={newsItems}
                 scrollStyle={scrollStyle}
@@ -131,7 +131,7 @@ export default function NewsDashboard() {
         </div>
 
         <div className="col-span-4">
-          <div className="h-[calc(100vh-280px)] space-y-4 overflow-y-auto">
+          <div className="space-y-4 max-h-[80vh] overflow-y-auto">
             <SportsTicker />
             <WeatherWidget />
             <MarketsWidget />
