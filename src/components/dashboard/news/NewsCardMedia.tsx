@@ -21,7 +21,7 @@ export const NewsCardMedia = ({ media, viewMode }: NewsCardMediaProps) => {
   return (
     <div className="absolute inset-0">
       {media.type === 'chart' ? (
-        <div className="w-full h-full bg-gray-800 p-4">
+        <div className="w-full h-full bg-gray-800 p-4" role="img" aria-label={media.data?.title || 'Chart visualization'}>
           <h4 className="text-sm font-semibold mb-2 text-center text-white">
             {media.data?.title}
           </h4>
@@ -31,6 +31,7 @@ export const NewsCardMedia = ({ media, viewMode }: NewsCardMediaProps) => {
                 <div 
                   className="w-full bg-[#0EA5E9] rounded-t transition-all duration-500"
                   style={{ height: `${(value/350)*100}%` }}
+                  role="presentation"
                 />
                 <span className="text-xs mt-2 text-white">{media.data.labels[i]}</span>
               </div>
@@ -40,7 +41,7 @@ export const NewsCardMedia = ({ media, viewMode }: NewsCardMediaProps) => {
       ) : (
         <img 
           src={media.src || '/placeholder.svg'} 
-          alt={media.alt || 'News media'}
+          alt={media.alt || 'News article illustration'}
           className="object-cover w-full h-full"
         />
       )}
