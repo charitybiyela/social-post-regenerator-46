@@ -97,7 +97,7 @@ export default function NewsDashboard() {
               </div>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="h-[calc(100vh-16rem)] overflow-y-auto pt-6"> {/* Added pt-6 for top spacing */}
+              <div className="h-[calc(100vh-16rem)] overflow-hidden"> {/* Changed to overflow-hidden */}
                 <ScrollableNews 
                   newsItems={processNewsItems(newsItems)}
                   scrollStyle={scrollStyle}
