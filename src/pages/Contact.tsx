@@ -1,7 +1,10 @@
 const Contact = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-8">Contact Us</h1>
+      <header className="border-b border-gray-200 dark:border-gray-800 pb-8 mb-8">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent">Contact Us</h1>
+        <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">Get in touch with our team for support and inquiries</p>
+      </header>
       
       <div className="space-y-8">
         <p className="text-gray-600 dark:text-gray-400">
