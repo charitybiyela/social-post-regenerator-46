@@ -3,8 +3,31 @@ import { AlertCircle, Moon, Sun, Sliders, Activity, Brain } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
+interface Weights {
+  [key: string]: number;
+}
+
+interface MoodState {
+  primary: string;
+  intensity: number;
+  triggers: string[];
+  lastUpdated?: Date;
+}
+
+interface Impact {
+  category: string;
+  impact: string;
+  severity: 'high' | 'medium' | 'low';
+}
+
+interface MoodOption {
+  label: string;
+  icon: React.ComponentType;
+  color: string;
+}
+
 const ProfileDashboard = () => {
-  const [weights, setWeights] = useState({
+  const [weights, setWeights] = useState<Weights>({
     language: 10,
     regional: 8,
     interests: 15,
@@ -23,25 +46,25 @@ const ProfileDashboard = () => {
     personalGoals: 9
   });
 
-  const [moodState, setMoodState] = useState({
+  const [moodState, setMoodState] = useState<MoodState>({
     primary: 'neutral',
     intensity: 5,
     triggers: []
   });
 
-  const [impacts, setImpacts] = useState([]);
+  const [impacts, setImpacts] = useState<Impact[]>([]);
   const [showMoodPrompt, setShowMoodPrompt] = useState(true);
 
-  const moodOptions = [
+  const moodOptions: MoodOption[] = [
     { label: 'Energetic', icon: Sun, color: 'text-yellow-500' },
     { label: 'Calm', icon: Moon, color: 'text-blue-400' },
     { label: 'Focused', icon: Brain, color: 'text-purple-500' },
     { label: 'Stressed', icon: Activity, color: 'text-red-500' },
   ];
 
-  const calculateImpact = (changes) => {
-    const impacts = [];
-    const totalWeight = Object.values(weights).reduce((a, b) => a + b, 0);
+  const calculateImpact = (changes: { [key: string]: number }): Impact[] => {
+    const impacts: Impact[] = [];
+    const totalWeight = Object.values(weights).reduce((a: number, b: number) => a + b, 0);
     
     Object.entries(changes).forEach(([category, change]) => {
       const impact = (change / totalWeight) * 100;
@@ -55,7 +78,7 @@ const ProfileDashboard = () => {
     return impacts;
   };
 
-  const handleWeightChange = (category, value) => {
+  const handleWeightChange = (category: string, value: number) => {
     const newWeights = { ...weights, [category]: value };
     setWeights(newWeights);
     
@@ -66,7 +89,7 @@ const ProfileDashboard = () => {
     setImpacts(impacts);
   };
 
-  const handleMoodUpdate = (mood) => {
+  const handleMoodUpdate = (mood: MoodOption) => {
     setMoodState(prev => ({
       ...prev,
       primary: mood.label,
