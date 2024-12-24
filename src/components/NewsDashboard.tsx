@@ -85,25 +85,39 @@ export default function NewsDashboard() {
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-8">
           <Card className="min-h-[500px] max-h-[80vh] h-full">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Latest Updates</CardTitle>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={goToPreviousArticle}
-                  title="Previous article"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={goToNextArticle}
-                  title="Next article"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-4">
+                  <CardTitle>Latest Updates</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={goToPreviousArticle}
+                      title="Previous article"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={goToNextArticle}
+                      title="Next article"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+                <DashboardControls 
+                  scrollStyle={scrollStyle}
+                  setScrollStyle={setScrollStyle}
+                  viewMode={viewMode}
+                  setViewMode={setViewMode}
+                  scrollActive={scrollActive}
+                  setScrollActive={setScrollActive}
+                  scrollSpeed={scrollSpeed}
+                  setScrollSpeed={setScrollSpeed}
+                />
               </div>
             </CardHeader>
             <CardContent className="h-[calc(100%-4rem)] overflow-y-auto">
