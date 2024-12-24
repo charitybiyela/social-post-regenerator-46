@@ -20,25 +20,9 @@ export const ScrollableNews: React.FC<ScrollableNewsProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
-  const firstArticleRef = useRef<HTMLDivElement>(null);
-
-  const handleScroll = () => {
-    if (containerRef.current && firstArticleRef.current) {
-      const container = containerRef.current;
-      const firstArticle = firstArticleRef.current;
-      const firstArticleRect = firstArticle.getBoundingClientRect();
-      
-      if (firstArticleRect.bottom < 0) {
-        setAutoScrollEnabled(false);
-      }
-      
-      setScrollPosition(container.scrollTop);
-    }
-  };
 
   useEffect(() => {
-    if (scrollStyle === 'continuous' && scrollActive && autoScrollEnabled) {
+    if (scrollStyle === 'continuous' && scrollActive) {
       const scrollInterval = setInterval(() => {
         if (containerRef.current) {
           const container = containerRef.current;
@@ -58,7 +42,7 @@ export const ScrollableNews: React.FC<ScrollableNewsProps> = ({
 
       return () => clearInterval(scrollInterval);
     }
-  }, [scrollActive, scrollSpeed, scrollStyle, scrollPosition, autoScrollEnabled]);
+  }, [scrollActive, scrollSpeed, scrollStyle, scrollPosition]);
 
   const duplicatedItems = scrollStyle === 'continuous' 
     ? [...newsItems, ...newsItems.slice(0, 3)]
@@ -83,20 +67,11 @@ export const ScrollableNews: React.FC<ScrollableNewsProps> = ({
   return (
     <div
       ref={containerRef}
-      onScroll={handleScroll}
-      className="h-full overflow-y-auto scrollbar-hide"
-      style={{ 
-        scrollBehavior: scrollActive && autoScrollEnabled ? 'auto' : 'smooth',
-        msOverflowStyle: 'none',
-        scrollbarWidth: 'none',
-      }}
+      className="h-full overflow-y-auto"
+      style={{ scrollBehavior: scrollActive ? 'auto' : 'smooth' }}
     >
       {duplicatedItems.map((article, index) => (
-        <div 
-          key={`${article.id}-${index}`} 
-          className="mb-6"
-          ref={index === 0 ? firstArticleRef : null}
-        >
+        <div key={`${article.id}-${index}`} className="mb-6">
           <NewsCard article={article} viewMode={viewMode} />
         </div>
       ))}
