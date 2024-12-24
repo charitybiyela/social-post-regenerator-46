@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MoodSelector } from './dashboard/MoodSelector';
 import { WeightAdjuster } from './dashboard/WeightAdjuster';
 import { ImpactDisplay } from './dashboard/ImpactDisplay';
+import { WeightImpactAnalyzer } from '@/utils/WeightImpactAnalyzer';
 
 interface Weights {
   [key: string]: number;
@@ -49,31 +50,31 @@ const ProfileDashboard = () => {
   const [impacts, setImpacts] = useState<Impact[]>([]);
   const [showMoodPrompt, setShowMoodPrompt] = useState(true);
 
-  const calculateImpact = (changes: { [key: string]: number }): Impact[] => {
-    const impacts: Impact[] = [];
-    const totalWeight = Object.values(weights).reduce((a: number, b: number) => a + b, 0);
-    
-    Object.entries(changes).forEach(([category, change]) => {
-      const impact = (change / totalWeight) * 100;
-      impacts.push({
-        category,
-        impact: impact.toFixed(1),
-        severity: impact > 10 ? 'high' : impact > 5 ? 'medium' : 'low'
-      });
-    });
-
-    return impacts;
-  };
+  const weightImpactAnalyzer = new WeightImpactAnalyzer(weights);
 
   const handleWeightChange = (category: string, value: number) => {
     const newWeights = { ...weights, [category]: value };
     setWeights(newWeights);
     
-    const impacts = calculateImpact({
-      [category]: value - weights[category]
-    });
+    const weightChanges = { [category]: value - weights[category] };
+    const cascadeEffects = weightImpactAnalyzer.calculateCascadeEffects(weightChanges);
     
-    setImpacts(impacts);
+    const newImpacts: Impact[] = [
+      {
+        category,
+        impact: ((value - weights[category]) / weights[category] * 100).toFixed(1),
+        severity: Math.abs(value - weights[category]) > 5 ? 'high' : 
+                 Math.abs(value - weights[category]) > 2 ? 'medium' : 'low'
+      },
+      ...Object.entries(cascadeEffects).map(([affectedCategory, effect]) => ({
+        category: affectedCategory,
+        impact: (effect * 100).toFixed(1),
+        severity: Math.abs(effect) > 0.5 ? 'high' : 
+                 Math.abs(effect) > 0.2 ? 'medium' : 'low'
+      }))
+    ];
+    
+    setImpacts(newImpacts);
   };
 
   const handleMoodUpdate = (mood: { label: string }) => {
