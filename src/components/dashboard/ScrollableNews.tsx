@@ -88,10 +88,9 @@ export const ScrollableNews = ({
     <div className="h-full flex items-center justify-center px-6">
       <div 
         key={currentArticleIndex} 
-        className="w-full max-w-2xl transition-opacity duration-300 ease-in-out"
+        className="w-full max-w-2xl animate-fade-in"
         style={{
-          opacity: 1,
-          animation: 'fadeIn 0.3s ease-in-out'
+          animation: 'fade-in 0.3s ease-out'
         }}
       >
         <NewsCard 
