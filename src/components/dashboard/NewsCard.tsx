@@ -61,8 +61,10 @@ export const NewsCard = ({ article, viewMode }: NewsCardProps) => {
           </div>
 
           {article.media && (
-            <div className="relative w-full h-[240px] rounded-lg overflow-hidden">
-              <NewsCardMedia media={article.media} viewMode={viewMode} />
+            <div className="relative w-full pt-[100%]">
+              <div className="absolute inset-0">
+                <NewsCardMedia media={article.media} viewMode={viewMode} />
+              </div>
             </div>
           )}
 
