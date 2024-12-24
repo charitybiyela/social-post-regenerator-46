@@ -135,15 +135,15 @@ export default function NewsDashboard() {
 
       {/* Main Content */}
       <div className="grid grid-cols-12 gap-4">
+        {/* News Feed Column */}
         <div className="col-span-8">
-          {/* News Feed */}
-          <Card>
+          <Card className="h-[calc(100vh-280px)]">
             <CardHeader>
               <CardTitle>Latest Updates</CardTitle>
             </CardHeader>
-            <CardContent className="h-[calc(100vh-280px)] overflow-hidden">
+            <CardContent className="h-[calc(100%-4rem)] overflow-hidden">
               {scrollStyle === 'continuous' ? (
-                <div className="space-y-6">
+                <div className="space-y-6 overflow-y-auto h-full">
                   {newsItems.map((article) => (
                     <div key={article.id} className="max-w-2xl mx-auto">
                       <NewsCard article={article} viewMode={viewMode} />
@@ -161,10 +161,13 @@ export default function NewsDashboard() {
           </Card>
         </div>
 
-        <div className="col-span-4 space-y-4">
-          <SportsTicker />
-          <WeatherWidget />
-          <MarketsWidget />
+        {/* Right Sidebar */}
+        <div className="col-span-4">
+          <div className="h-[calc(100vh-280px)] space-y-4 overflow-y-auto">
+            <SportsTicker />
+            <WeatherWidget />
+            <MarketsWidget />
+          </div>
         </div>
       </div>
 
