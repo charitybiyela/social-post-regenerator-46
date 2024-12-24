@@ -10,6 +10,7 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Contact from "./pages/Contact";
 import Personalize from "./pages/Personalize";
+import NewsEngine from "./pages/NewsEngine";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -32,6 +33,7 @@ const App = () => (
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/personalize" element={<Personalize />} />
+                <Route path="/news-engine" element={<NewsEngine />} />
               </Routes>
             </div>
             <Footer />
