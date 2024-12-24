@@ -1,5 +1,5 @@
 import React from 'react';
-import { Rocket, Brain, BarChart2, Database, SignalHigh } from 'lucide-react';
+import { Rocket, Brain, BarChart2, Database, SignalHigh, Globe, Heart, Users, Calendar } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Navigation from '@/components/Navigation';
 
@@ -28,23 +28,43 @@ const FeatureCard = ({
 const NewsEngine = () => {
   const features = [
     {
-      title: "Advanced AI Personalization",
-      description: "Sophisticated content adaptation using machine learning algorithms to deliver perfectly tailored news experiences.",
+      title: "Variable Configurations",
+      description: "Comprehensive profiling system including demographics, geography, interests, professional context, circumstances, emotional state, and lifestyle factors.",
       icon: Brain
     },
     {
-      title: "Real-time Weight Analysis",
-      description: "Dynamic content weighting system that analyzes and adjusts content relevance based on user preferences and behavior.",
+      title: "Processing Systems",
+      description: "Advanced content, format, timing, and tone adaptation systems that ensure perfectly tailored news delivery.",
       icon: BarChart2
     },
     {
-      title: "Emotional Intelligence",
-      description: "Mood-aware content delivery that adapts to your emotional state and provides contextually appropriate news.",
+      title: "Analysis Components",
+      description: "Sophisticated relevance, impact, and preference analysis for optimal content matching and delivery.",
       icon: Database
     },
     {
-      title: "Cascade Effect Tracking",
-      description: "Sophisticated system that understands how changes in one preference affect others, ensuring balanced content delivery.",
+      title: "Geographic Intelligence",
+      description: "Global and local context awareness for region-specific content adaptation and timing optimization.",
+      icon: Globe
+    },
+    {
+      title: "Emotional Intelligence",
+      description: "Mood-aware content delivery with emotional trigger awareness and sensitivity level adjustment.",
+      icon: Heart
+    },
+    {
+      title: "Demographic Processing",
+      description: "Age, gender, and culturally sensitive content adaptation with education and income considerations.",
+      icon: Users
+    },
+    {
+      title: "Circumstantial Awareness",
+      description: "Life event consideration and challenge-specific support with temporal relevance matching.",
+      icon: Calendar
+    },
+    {
+      title: "Real-time Adaptation",
+      description: "Dynamic content weighting system that evolves with user preferences and behavior patterns.",
       icon: SignalHigh
     }
   ];
@@ -61,11 +81,11 @@ const NewsEngine = () => {
             News Regeneration Engine
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Experience the future of personalized news delivery powered by advanced AI and emotional intelligence.
+            Our advanced AI-driven news personalization system combines multiple variables and processing systems to deliver perfectly tailored content.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {features.map((feature, index) => (
             <FeatureCard key={index} {...feature} />
           ))}
@@ -74,18 +94,19 @@ const NewsEngine = () => {
         <Card className="bg-primary/5 border-primary/10">
           <CardContent className="p-8">
             <h2 className="text-2xl font-semibold mb-4">
-              Behind the Scenes
+              Technical Capabilities
             </h2>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                Our engine processes millions of data points to understand:
+                Our engine processes multiple variables to deliver personalized content:
               </p>
               <ul className="list-disc list-inside space-y-2">
-                <li>Content relevance patterns</li>
-                <li>Emotional response correlations</li>
-                <li>User engagement metrics</li>
-                <li>Temporal reading patterns</li>
-                <li>Cultural context adaptation</li>
+                <li>Comprehensive variable configurations</li>
+                <li>Sophisticated processing systems</li>
+                <li>Advanced analysis components</li>
+                <li>Real-time adaptation mechanisms</li>
+                <li>Multi-factor content scoring</li>
+                <li>Dynamic weight adjustment</li>
               </ul>
             </div>
           </CardContent>
