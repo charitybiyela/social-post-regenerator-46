@@ -27,10 +27,10 @@ export const ScrollableNews: React.FC<ScrollableNewsProps> = ({
     if (containerRef.current && firstArticleRef.current) {
       const container = containerRef.current;
       const firstArticle = firstArticleRef.current;
-      const firstArticleBottom = firstArticle.offsetTop + firstArticle.offsetHeight;
+      const firstArticleRect = firstArticle.getBoundingClientRect();
       
-      // If user has scrolled past the first article, disable auto-scroll
-      if (container.scrollTop > firstArticleBottom) {
+      // Disable auto-scroll when first article is completely out of view
+      if (firstArticleRect.bottom < 0) {
         setAutoScrollEnabled(false);
       }
       

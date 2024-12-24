@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTheme } from 'next-themes';
 import { SportsTicker } from './dashboard/SportsTicker';
@@ -26,6 +26,7 @@ export default function NewsDashboard() {
   const { userInterests } = usePersonalization();
   const [profile, setProfile] = useState<ExtendedProfile | null>(null);
   const [newsItems, setNewsItems] = useState(mockNewsItems);
+  const rightColumnRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const savedProfile = loadProfile();
@@ -34,9 +35,29 @@ export default function NewsDashboard() {
     }
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (rightColumnRef.current) {
+        const rect = rightColumnRef.current.getBoundingClientRect();
+        const personalizationLink = rightColumnRef.current.querySelector('.personalization-link');
+        if (personalizationLink) {
+          const linkRect = personalizationLink.getBoundingClientRect();
+          if (linkRect.bottom <= window.innerHeight) {
+            rightColumnRef.current.style.position = 'fixed';
+            rightColumnRef.current.style.top = `${window.innerHeight - rect.height}px`;
+          } else {
+            rightColumnRef.current.style.position = 'static';
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const processNewsItems = useCallback((items: any[]) => {
     if (!profile) return items;
-
     return items.map(item => 
       newsRegenerationEngine.adaptContent(item, profile)
     ).sort((a, b) => b.relevanceScore - a.relevanceScore);
@@ -97,7 +118,7 @@ export default function NewsDashboard() {
               </div>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="h-[calc(100vh-16rem)] overflow-hidden"> {/* Changed to overflow-hidden */}
+              <div className="h-[calc(100vh-16rem)] overflow-hidden">
                 <ScrollableNews 
                   newsItems={processNewsItems(newsItems)}
                   scrollStyle={scrollStyle}
@@ -111,13 +132,15 @@ export default function NewsDashboard() {
           </Card>
         </div>
 
-        <div className="lg:col-span-4 space-y-6">
-          <div className="sticky top-6 space-y-6">
+        <div ref={rightColumnRef} className="lg:col-span-4 space-y-6">
+          <div className="space-y-6">
             <BreakingNews />
             <SportsTicker />
             <WeatherWidget />
             <MarketsWidget />
-            <PersonalizationLink />
+            <div className="personalization-link">
+              <PersonalizationLink />
+            </div>
           </div>
         </div>
       </div>
