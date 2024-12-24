@@ -1,38 +1,51 @@
-const Contact = () => {
+import { PersonalizationPanel } from "@/components/PersonalizationPanel";
+
+export default function Contact() {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
-      <header className="border-b border-gray-200 dark:border-gray-800 pb-8 mb-8">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent">Contact Us</h1>
-        <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">Get in touch with our team for support and inquiries</p>
-      </header>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-4xl font-bold mb-8">Contact Us</h1>
       
-      <div className="space-y-8">
-        <p className="text-gray-600 dark:text-gray-400">
-          We're here to help and answer any question you might have. We look forward to hearing from you.
-        </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="space-y-4">
-            <h2 className="text-2xl font-semibold">Get in Touch</h2>
-            <div className="space-y-2 text-gray-600 dark:text-gray-400">
-              <p>Email: contact@newsdashboard.com</p>
-              <p>Phone: +1 (555) 123-4567</p>
-              <p>Address: 123 News Street, Media City, ST 12345</p>
-            </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="space-y-6">
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Get in Touch</h2>
+            <p className="text-muted-foreground">
+              We'd love to hear from you. Please fill out this form or shoot us an email.
+            </p>
           </div>
-          
-          <div className="space-y-4">
-            <h2 className="text-2xl font-semibold">Business Hours</h2>
-            <div className="space-y-2 text-gray-600 dark:text-gray-400">
-              <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
-              <p>Saturday: 10:00 AM - 4:00 PM</p>
-              <p>Sunday: Closed</p>
-            </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Email</h3>
+            <p className="text-muted-foreground">contact@example.com</p>
           </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Phone</h3>
+            <p className="text-muted-foreground">+1 (555) 123-4567</p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Address</h3>
+            <p className="text-muted-foreground">
+              123 Business Street<br />
+              Suite 100<br />
+              City, State 12345
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Business Hours</h3>
+            <p className="text-muted-foreground">
+              Monday - Friday: 9:00 AM - 5:00 PM<br />
+              Saturday & Sunday: Closed
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <PersonalizationPanel />
         </div>
       </div>
     </div>
   );
-};
-
-export default Contact;
+}
