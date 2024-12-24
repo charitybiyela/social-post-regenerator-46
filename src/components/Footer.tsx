@@ -4,8 +4,8 @@ import { Brain, Rocket, BarChart2, Database } from 'lucide-react';
 const Footer = () => {
   return (
     <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
-      <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-6 py-12 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
           <div className="space-y-4">
             <h3 className="text-lg font-semibold flex items-center gap-2">
               <Brain className="w-5 h-5 text-primary" />
