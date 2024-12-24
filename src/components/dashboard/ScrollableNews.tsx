@@ -89,12 +89,11 @@ export const ScrollableNews: React.FC<ScrollableNewsProps> = ({
   return (
     <div
       ref={containerRef}
-      className="h-full overflow-y-auto scrollbar-none"
+      className="h-full overflow-y-auto"
       style={{ 
         scrollBehavior: scrollActive && !isFirstScreenPassed ? 'auto' : 'smooth',
-        overflowY: 'visible',
-        height: 'auto',
-        minHeight: '100%'
+        height: '100%',
+        maxHeight: 'calc(100vh - 16rem)',
       }}
     >
       {duplicatedItems.map((article, index) => (
