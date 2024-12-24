@@ -94,7 +94,7 @@ export default function NewsDashboard() {
       />
 
       <div className="grid grid-cols-12 gap-4 mb-4">
-        <div className="col-span-6">
+        <div className="col-span-8">
           <Card className="min-h-[500px] max-h-[80vh] h-full">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Latest Updates</CardTitle>
@@ -130,7 +130,7 @@ export default function NewsDashboard() {
           </Card>
         </div>
 
-        <div className="col-span-6">
+        <div className="col-span-4">
           <div className="space-y-4 max-h-[80vh] overflow-y-auto">
             <SportsTicker />
             <WeatherWidget />
