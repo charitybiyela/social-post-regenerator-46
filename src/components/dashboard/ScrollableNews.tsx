@@ -20,9 +20,31 @@ export const ScrollableNews: React.FC<ScrollableNewsProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [isFirstScreenPassed, setIsFirstScreenPassed] = useState(false);
 
   useEffect(() => {
-    if (scrollStyle === 'continuous' && scrollActive) {
+    const handleScroll = () => {
+      if (containerRef.current) {
+        const firstArticleHeight = containerRef.current.children[0]?.getBoundingClientRect().height || 0;
+        const scrollTop = containerRef.current.scrollTop;
+        setIsFirstScreenPassed(scrollTop > firstArticleHeight);
+      }
+    };
+
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (scrollStyle === 'continuous' && scrollActive && !isFirstScreenPassed) {
       const scrollInterval = setInterval(() => {
         if (containerRef.current) {
           const container = containerRef.current;
@@ -42,7 +64,7 @@ export const ScrollableNews: React.FC<ScrollableNewsProps> = ({
 
       return () => clearInterval(scrollInterval);
     }
-  }, [scrollActive, scrollSpeed, scrollStyle, scrollPosition]);
+  }, [scrollActive, scrollSpeed, scrollStyle, scrollPosition, isFirstScreenPassed]);
 
   const duplicatedItems = scrollStyle === 'continuous' 
     ? [...newsItems, ...newsItems.slice(0, 3)]
@@ -67,8 +89,10 @@ export const ScrollableNews: React.FC<ScrollableNewsProps> = ({
   return (
     <div
       ref={containerRef}
-      className="h-full overflow-y-auto"
-      style={{ scrollBehavior: scrollActive ? 'auto' : 'smooth' }}
+      className="h-full overflow-y-auto scrollbar-none"
+      style={{ 
+        scrollBehavior: scrollActive && !isFirstScreenPassed ? 'auto' : 'smooth',
+      }}
     >
       {duplicatedItems.map((article, index) => (
         <div key={`${article.id}-${index}`} className="mb-6">
