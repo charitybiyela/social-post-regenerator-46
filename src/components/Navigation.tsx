@@ -2,8 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Home, Search, Grid, Video, MessageSquare, Bell, User, Sun, Moon, LogIn } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { DashboardControls } from './dashboard/DashboardControls';
 
-const Navigation = () => {
+const Navigation = ({ 
+  scrollStyle, 
+  setScrollStyle, 
+  viewMode, 
+  setViewMode, 
+  scrollActive, 
+  setScrollActive, 
+  scrollSpeed, 
+  setScrollSpeed 
+}) => {
   const { theme, setTheme } = useTheme();
   const navItems = [
     { icon: <Home className="w-5 h-5" />, label: 'Home', path: '/' },
@@ -19,6 +29,17 @@ const Navigation = () => {
     <>
       {/* Header */}
       <div className="fixed top-0 right-0 h-16 flex items-center gap-4 px-4 z-50">
+        <DashboardControls 
+          scrollStyle={scrollStyle}
+          setScrollStyle={setScrollStyle}
+          viewMode={viewMode}
+          setViewMode={setViewMode}
+          scrollActive={scrollActive}
+          setScrollActive={setScrollActive}
+          scrollSpeed={scrollSpeed}
+          setScrollSpeed={setScrollSpeed}
+        />
+        
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
