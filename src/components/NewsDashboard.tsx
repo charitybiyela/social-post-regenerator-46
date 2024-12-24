@@ -13,6 +13,8 @@ import { PersonalizationLink } from './PersonalizationLink';
 import { usePersonalization } from '@/contexts/PersonalizationContext';
 import { loadProfile } from '@/utils/profileStorage';
 import { newsRegenerationEngine } from '@/utils/newsRegeneration';
+import { mockNewsItems } from '@/data/mockNews';
+import { ExtendedProfile } from '@/types/profile';
 
 export default function NewsDashboard() {
   const [scrollStyle, setScrollStyle] = useState('continuous');
@@ -23,6 +25,7 @@ export default function NewsDashboard() {
   const { theme } = useTheme();
   const { userInterests } = usePersonalization();
   const [profile, setProfile] = useState<ExtendedProfile | null>(null);
+  const [newsItems, setNewsItems] = useState(mockNewsItems);
 
   useEffect(() => {
     const savedProfile = loadProfile();

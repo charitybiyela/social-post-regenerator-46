@@ -1,26 +1,9 @@
-import { ExtendedProfile } from '@/types/profile';
+import { ExtendedProfile, EmotionalState, Circumstances } from '@/types/profile';
+import _ from 'lodash';
 
-class TextContentAdapter {
-  adapt(content: any, profile: ExtendedProfile) {
-    return {
-      ...content,
-      readingLevel: this.calculateReadingLevel(content, profile),
-      culturalContext: this.adaptCulturalContext(content, profile),
-    };
-  }
+// ... keep existing code (GeoMapping and ProfileCategories)
 
-  private calculateReadingLevel(content: any, profile: ExtendedProfile) {
-    // Implementation based on profile.education and content complexity
-    return 'intermediate';
-  }
-
-  private adaptCulturalContext(content: any, profile: ExtendedProfile) {
-    // Adapt based on profile.localContext and cultural preferences
-    return content;
-  }
-}
-
-class NewsRegenerationEngine {
+class AdvancedNewsRegenerationEngine {
   private contentAdapters: Map<string, any>;
   private weightings: Record<string, number>;
 
@@ -138,4 +121,24 @@ class NewsRegenerationEngine {
   }
 }
 
-export const newsRegenerationEngine = new NewsRegenerationEngine();
+class TextContentAdapter {
+  adapt(content: any, profile: ExtendedProfile) {
+    return {
+      ...content,
+      readingLevel: this.calculateReadingLevel(content, profile),
+      culturalContext: this.adaptCulturalContext(content, profile),
+    };
+  }
+
+  private calculateReadingLevel(content: any, profile: ExtendedProfile) {
+    // Implementation based on profile.education and content complexity
+    return 'intermediate';
+  }
+
+  private adaptCulturalContext(content: any, profile: ExtendedProfile) {
+    // Adapt based on profile.localContext and cultural preferences
+    return content;
+  }
+}
+
+export const newsRegenerationEngine = new AdvancedNewsRegenerationEngine();
