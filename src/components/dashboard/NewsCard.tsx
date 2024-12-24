@@ -3,7 +3,6 @@ import { useTheme } from 'next-themes';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { MessageSquare, Share2, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 
 interface NewsCardProps {
   article: {
@@ -35,8 +34,8 @@ export const NewsCard = ({ article, viewMode }: NewsCardProps) => {
     if (!media || viewMode === 'text') return null;
 
     return (
-      <div className="w-full mb-4">
-        <AspectRatio ratio={1 / 1} className="bg-muted rounded-lg overflow-hidden">
+      <div className="w-full max-w-xl mx-auto mb-6">
+        <AspectRatio ratio={1 / 1} className="bg-muted">
           {media.type === 'chart' ? (
             <div className="w-full h-full bg-gray-800 p-4">
               <h4 className="text-sm font-semibold mb-4 text-center text-white">
@@ -58,7 +57,7 @@ export const NewsCard = ({ article, viewMode }: NewsCardProps) => {
             <img 
               src={media.src || '/placeholder.svg'} 
               alt={media.alt || article.title}
-              className="object-cover w-full h-full"
+              className="object-cover w-full h-full rounded-lg"
             />
           )}
         </AspectRatio>
@@ -67,28 +66,25 @@ export const NewsCard = ({ article, viewMode }: NewsCardProps) => {
   };
 
   return (
-    <Card className="w-full bg-background animate-fadeIn">
-      <div className="p-6 space-y-4">
-        <div className="flex justify-between items-start">
-          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+    <div className="rounded-lg overflow-hidden bg-background border animate-fadeIn">
+      <div className="p-6">
+        <div className="flex justify-between items-start mb-4">
+          <span className={`px-2 py-1 rounded-full text-xs ${
             article.importance === 'high' 
-              ? 'bg-red-100 text-red-500 dark:bg-red-500/20' 
-              : 'bg-blue-100 text-blue-500 dark:bg-blue-500/20'
+              ? 'bg-red-500/20 text-red-500' 
+              : 'bg-blue-500/20 text-blue-500'
           }`}>
             {article.importance.toUpperCase()}
           </span>
           <span className="text-sm text-muted-foreground">{article.time}</span>
         </div>
 
-        <h2 className="text-2xl font-bold tracking-tight">{article.title}</h2>
-        
-        <div className="text-base font-medium text-blue-400/90 dark:text-blue-400">
-          {article.category}
-        </div>
+        <h3 className="text-xl font-bold mb-2">{article.title}</h3>
+        <div className="text-sm text-blue-400 mb-3">{article.category}</div>
         
         {renderMedia(article.media)}
         
-        <p className="text-muted-foreground leading-relaxed">
+        <p className="text-muted-foreground mb-6">
           {article.content}
         </p>
         
@@ -120,6 +116,6 @@ export const NewsCard = ({ article, viewMode }: NewsCardProps) => {
           </div>
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
