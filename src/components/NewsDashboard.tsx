@@ -4,6 +4,7 @@ import { useTheme } from 'next-themes';
 import { SportsTicker } from './dashboard/SportsTicker';
 import { WeatherWidget } from './dashboard/WeatherWidget';
 import { MarketsWidget } from './dashboard/MarketsWidget';
+import { BreakingNews } from './dashboard/BreakingNews';
 import { DashboardControls } from './dashboard/DashboardControls';
 import { ScrollableNews } from './dashboard/ScrollableNews';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -135,6 +136,7 @@ export default function NewsDashboard() {
 
         <div className="col-span-4">
           <div className="space-y-4 max-h-[80vh] overflow-y-auto">
+            <BreakingNews />
             <SportsTicker />
             <WeatherWidget />
             <MarketsWidget />
