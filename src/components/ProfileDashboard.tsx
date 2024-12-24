@@ -63,14 +63,16 @@ const ProfileDashboard = () => {
       {
         category,
         impact: ((value - weights[category]) / weights[category] * 100).toFixed(1),
-        severity: Math.abs(value - weights[category]) > 5 ? 'high' : 
-                 Math.abs(value - weights[category]) > 2 ? 'medium' : 'low'
+        severity: Math.abs(value - weights[category]) > 5 ? 'high' as const : 
+                 Math.abs(value - weights[category]) > 2 ? 'medium' as const : 
+                 'low' as const
       },
       ...Object.entries(cascadeEffects).map(([affectedCategory, effect]) => ({
         category: affectedCategory,
         impact: (effect * 100).toFixed(1),
-        severity: Math.abs(effect) > 0.5 ? 'high' : 
-                 Math.abs(effect) > 0.2 ? 'medium' : 'low'
+        severity: Math.abs(effect) > 0.5 ? 'high' as const : 
+                 Math.abs(effect) > 0.2 ? 'medium' as const : 
+                 'low' as const
       }))
     ];
     
