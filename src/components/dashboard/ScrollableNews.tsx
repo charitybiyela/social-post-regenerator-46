@@ -26,8 +26,9 @@ export const ScrollableNews = ({
     const scrollContainer = scrollContainerRef.current;
     let animationFrameId: number;
     let lastTimestamp: number;
-    // Adjust base speed to be slower (5 pixels per second at speed 1)
-    const pixelsPerSecond = scrollSpeed * 5;
+    
+    // Base speed of 30 pixels per second, multiplied by speed setting
+    const pixelsPerSecond = scrollSpeed * 30;
 
     const animate = (timestamp: number) => {
       if (!lastTimestamp) lastTimestamp = timestamp;
@@ -37,13 +38,9 @@ export const ScrollableNews = ({
         const scrollAmount = (pixelsPerSecond * deltaTime) / 1000;
         scrollContainer.scrollTop += scrollAmount;
 
-        // Reset scroll position when reaching bottom with a smooth transition
-        if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 100) {
-          // When near the bottom, smoothly reset to top
-          scrollContainer.scrollTo({
-            top: 0,
-            behavior: 'auto'
-          });
+        // Reset scroll position when reaching bottom
+        if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 10) {
+          scrollContainer.scrollTop = 0;
         }
       }
 
@@ -62,11 +59,13 @@ export const ScrollableNews = ({
     };
   }, [scrollActive, scrollStyle, scrollSpeed]);
 
+  // For continuous scrolling
   if (scrollStyle === 'continuous') {
     return (
       <div 
         ref={scrollContainerRef}
-        className="h-full overflow-y-auto scroll-smooth"
+        className="h-full overflow-y-auto"
+        style={{ scrollBehavior: 'smooth' }}
       >
         <div className="space-y-6 px-6">
           {newsItems.map((article) => (
@@ -74,8 +73,8 @@ export const ScrollableNews = ({
               <NewsCard article={article} viewMode={viewMode} />
             </div>
           ))}
-          {/* Duplicate articles for seamless scrolling */}
-          {newsItems.map((article) => (
+          {/* Duplicate first few articles for seamless loop */}
+          {newsItems.slice(0, 3).map((article) => (
             <div key={`${article.id}-duplicate`} className="max-w-2xl mx-auto">
               <NewsCard article={article} viewMode={viewMode} />
             </div>
@@ -85,10 +84,13 @@ export const ScrollableNews = ({
     );
   }
 
-  // One at a time view
+  // One at a time view with fade animation
   return (
-    <div className="h-full flex items-center justify-center px-6 overflow-hidden">
-      <div className="w-full max-w-2xl animate-fadeIn">
+    <div className="h-full flex items-center justify-center px-6">
+      <div 
+        key={currentArticleIndex} 
+        className="w-full max-w-2xl animate-fadeIn"
+      >
         <NewsCard 
           article={newsItems[currentArticleIndex]} 
           viewMode={viewMode} 
