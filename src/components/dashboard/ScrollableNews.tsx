@@ -92,15 +92,15 @@ export const ScrollableNews: React.FC<ScrollableNewsProps> = ({
       className="h-full overflow-y-auto"
       style={{ 
         scrollBehavior: scrollActive && !isFirstScreenPassed ? 'auto' : 'smooth',
-        height: '100%',
-        maxHeight: 'calc(100vh - 16rem)',
       }}
     >
-      {duplicatedItems.map((article, index) => (
-        <div key={`${article.id}-${index}`} className="mb-6">
-          <NewsCard article={article} viewMode={viewMode} />
-        </div>
-      ))}
+      <div className="space-y-6 pb-6">
+        {duplicatedItems.map((article, index) => (
+          <div key={`${article.id}-${index}`}>
+            <NewsCard article={article} viewMode={viewMode} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
