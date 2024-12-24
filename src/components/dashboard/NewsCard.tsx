@@ -24,6 +24,7 @@ interface NewsCardProps {
       };
       src?: string;
       alt?: string;
+      aspectRatio?: '1:1' | '3:2';
     };
   };
   viewMode: string;
@@ -60,15 +61,19 @@ export const NewsCard = ({ article, viewMode }: NewsCardProps) => {
             </div>
           </div>
 
-          {article.media && (
-            <div className="relative w-full pt-[100%]">
+          {viewMode !== 'text' && article.media && (
+            <div className={`relative w-full ${
+              article.media.aspectRatio === '1:1' ? 'pt-[100%]' : 'pt-[66.67%]'
+            }`}>
               <div className="absolute inset-0">
                 <NewsCardMedia media={article.media} viewMode={viewMode} />
               </div>
             </div>
           )}
 
-          <p className="text-muted-foreground text-sm line-clamp-3 hover:line-clamp-none transition-all duration-200">
+          <p className={`text-muted-foreground text-sm ${
+            viewMode === 'text' ? '' : 'line-clamp-3 hover:line-clamp-none'
+          } transition-all duration-200`}>
             {article.content}
           </p>
         </div>

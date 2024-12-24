@@ -11,6 +11,7 @@ interface NewsCardMediaProps {
     };
     src?: string;
     alt?: string;
+    aspectRatio?: '1:1' | '3:2';
   };
   viewMode: string;
 }
@@ -18,8 +19,10 @@ interface NewsCardMediaProps {
 export const NewsCardMedia = ({ media, viewMode }: NewsCardMediaProps) => {
   if (!media || viewMode === 'text') return null;
 
+  const aspectRatio = media.aspectRatio === '1:1' ? 1 : 1.5;
+
   return (
-    <div className="absolute inset-0">
+    <div className="w-full h-full">
       {media.type === 'chart' ? (
         <div className="w-full h-full bg-gray-800 p-4" role="img" aria-label={media.data?.title || 'Chart visualization'}>
           <h4 className="text-sm font-semibold mb-2 text-center text-white">
@@ -39,11 +42,13 @@ export const NewsCardMedia = ({ media, viewMode }: NewsCardMediaProps) => {
           </div>
         </div>
       ) : (
-        <img 
-          src={media.src || '/placeholder.svg'} 
-          alt={media.alt || 'News article illustration'}
-          className="object-cover w-full h-full"
-        />
+        <AspectRatio ratio={aspectRatio}>
+          <img 
+            src={media.src || '/placeholder.svg'} 
+            alt={media.alt || 'News article illustration'}
+            className="object-cover w-full h-full rounded-md"
+          />
+        </AspectRatio>
       )}
     </div>
   );
