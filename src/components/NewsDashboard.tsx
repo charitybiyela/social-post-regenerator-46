@@ -6,6 +6,8 @@ import { WeatherWidget } from './dashboard/WeatherWidget';
 import { MarketsWidget } from './dashboard/MarketsWidget';
 import { DashboardControls } from './dashboard/DashboardControls';
 import { ScrollableNews } from './dashboard/ScrollableNews';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function NewsDashboard() {
   const [scrollStyle, setScrollStyle] = useState('continuous');
@@ -66,6 +68,18 @@ export default function NewsDashboard() {
     };
   }, [scrollActive, scrollStyle, scrollSpeed, newsItems.length]);
 
+  const goToPreviousArticle = () => {
+    setCurrentArticleIndex(prev => 
+      prev === 0 ? newsItems.length - 1 : prev - 1
+    );
+  };
+
+  const goToNextArticle = () => {
+    setCurrentArticleIndex(prev => 
+      (prev + 1) % newsItems.length
+    );
+  };
+
   return (
     <div className="w-full min-h-screen p-4 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
       <DashboardControls 
@@ -82,8 +96,26 @@ export default function NewsDashboard() {
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-8">
           <Card className="h-[calc(100vh-280px)]">
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Latest Updates</CardTitle>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={goToPreviousArticle}
+                  title="Previous article"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={goToNextArticle}
+                  title="Next article"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
             </CardHeader>
             <CardContent className="h-[calc(100%-4rem)] overflow-hidden">
               <ScrollableNews 
