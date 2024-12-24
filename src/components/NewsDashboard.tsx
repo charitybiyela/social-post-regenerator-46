@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Newspaper, Image, Layout } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTheme } from 'next-themes';
-import { NewsCard } from './dashboard/NewsCard';
 import { SportsTicker } from './dashboard/SportsTicker';
 import { WeatherWidget } from './dashboard/WeatherWidget';
 import { MarketsWidget } from './dashboard/MarketsWidget';
+import { DashboardControls } from './dashboard/DashboardControls';
+import { ScrollableNews } from './dashboard/ScrollableNews';
 
 export default function NewsDashboard() {
   const [scrollStyle, setScrollStyle] = useState('continuous');
@@ -50,146 +50,54 @@ export default function NewsDashboard() {
     }
   ];
 
-  // Continuous scroll effect
+  // Handle one-at-a-time scrolling
   useEffect(() => {
     let interval: NodeJS.Timeout;
     
-    if (scrollActive) {
-      const scrollInterval = 11000 - (scrollSpeed * 1000); // Convert speed 1-10 to milliseconds
-      
-      if (scrollStyle === 'oneAtATime') {
-        interval = setInterval(() => {
-          setCurrentArticleIndex(prev => (prev + 1) % newsItems.length);
-        }, scrollInterval);
-      } else if (scrollStyle === 'continuous') {
-        // For continuous mode, we'll use CSS animation with a dynamic speed
-        const scrollContainer = document.querySelector('.scroll-container');
-        if (scrollContainer) {
-          scrollContainer.classList.add('scrolling');
-          (scrollContainer as HTMLElement).style.animationDuration = `${scrollInterval}ms`;
-        }
-      }
-    } else {
-      // When paused, remove scrolling class in continuous mode
-      if (scrollStyle === 'continuous') {
-        const scrollContainer = document.querySelector('.scroll-container');
-        if (scrollContainer) {
-          scrollContainer.classList.remove('scrolling');
-        }
-      }
+    if (scrollActive && scrollStyle === 'oneAtATime') {
+      const scrollInterval = 11000 - (scrollSpeed * 1000);
+      interval = setInterval(() => {
+        setCurrentArticleIndex(prev => (prev + 1) % newsItems.length);
+      }, scrollInterval);
     }
 
     return () => {
       clearInterval(interval);
-      // Cleanup scrolling class
-      const scrollContainer = document.querySelector('.scroll-container');
-      if (scrollContainer) {
-        scrollContainer.classList.remove('scrolling');
-      }
     };
   }, [scrollActive, scrollStyle, scrollSpeed, newsItems.length]);
 
   return (
     <div className="w-full min-h-screen p-4 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
-      {/* Controls */}
-      <div className="max-w-2xl mx-auto mb-4">
-        <div className="flex items-center gap-4 p-2 rounded-lg bg-popover">
-          <select 
-            value={scrollStyle}
-            onChange={(e) => setScrollStyle(e.target.value)}
-            className="rounded-md px-3 py-1.5 text-sm bg-background border border-input outline-none"
-          >
-            <option value="continuous">Continuous</option>
-            <option value="oneAtATime">One at a Time</option>
-          </select>
+      <DashboardControls 
+        scrollStyle={scrollStyle}
+        setScrollStyle={setScrollStyle}
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+        scrollActive={scrollActive}
+        setScrollActive={setScrollActive}
+        scrollSpeed={scrollSpeed}
+        setScrollSpeed={setScrollSpeed}
+      />
 
-          <div className="flex rounded-md border border-input bg-background">
-            <button
-              onClick={() => setViewMode('text')}
-              className={`p-1.5 rounded-l transition-colors ${
-                viewMode === 'text' 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'text-foreground'
-              }`}
-            >
-              <Newspaper className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setViewMode('media')}
-              className={`p-1.5 transition-colors ${
-                viewMode === 'media' 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'text-foreground'
-              }`}
-            >
-              <Image className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setViewMode('hybrid')}
-              className={`p-1.5 rounded-r transition-colors ${
-                viewMode === 'hybrid' 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'text-foreground'
-              }`}
-            >
-              <Layout className="w-4 h-4" />
-            </button>
-          </div>
-
-          <button
-            onClick={() => setScrollActive(!scrollActive)}
-            className={`px-4 py-1.5 rounded-md text-sm transition-colors ${
-              scrollActive 
-                ? 'bg-primary text-primary-foreground' 
-                : 'bg-background text-foreground border border-input'
-            }`}
-          >
-            {scrollActive ? '⏸️' : '▶️'}
-          </button>
-
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-foreground">Speed:</span>
-            <input
-              type="range"
-              min="1"
-              max="10"
-              value={scrollSpeed}
-              onChange={(e) => setScrollSpeed(Number(e.target.value))}
-              className="w-24"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
       <div className="grid grid-cols-12 gap-4">
-        {/* News Feed Column */}
         <div className="col-span-8">
           <Card className="h-[calc(100vh-280px)]">
             <CardHeader>
               <CardTitle>Latest Updates</CardTitle>
             </CardHeader>
             <CardContent className="h-[calc(100%-4rem)] overflow-hidden">
-              {scrollStyle === 'continuous' ? (
-                <div className={`space-y-6 scroll-container ${scrollActive ? 'scrolling' : ''}`}>
-                  {newsItems.map((article) => (
-                    <div key={article.id} className="max-w-2xl mx-auto">
-                      <NewsCard article={article} viewMode={viewMode} />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="h-full flex items-center justify-center">
-                  <div className="max-w-2xl w-full">
-                    <NewsCard article={newsItems[currentArticleIndex]} viewMode={viewMode} />
-                  </div>
-                </div>
-              )}
+              <ScrollableNews 
+                newsItems={newsItems}
+                scrollStyle={scrollStyle}
+                scrollActive={scrollActive}
+                scrollSpeed={scrollSpeed}
+                viewMode={viewMode}
+                currentArticleIndex={currentArticleIndex}
+              />
             </CardContent>
           </Card>
         </div>
 
-        {/* Right Sidebar */}
         <div className="col-span-4">
           <div className="h-[calc(100vh-280px)] space-y-4 overflow-y-auto">
             <SportsTicker />
@@ -203,6 +111,7 @@ export default function NewsDashboard() {
         {`
           .scroll-container {
             transition: transform 0.5s ease;
+            position: relative;
           }
           
           .scroll-container.scrolling {
