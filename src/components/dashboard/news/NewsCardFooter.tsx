@@ -19,17 +19,17 @@ export const NewsCardFooter = ({ tags }: NewsCardFooterProps) => (
       ))}
     </div>
     
-    <div className="flex justify-between items-center pt-4 border-t gap-2">
-      <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-accent flex-1 h-10">
-        <ThumbsUp className="w-4 h-4 mr-2" />
-        <span>Like</span>
+    <div className="flex justify-between items-center pt-4 border-t">
+      <Button variant="ghost" size="sm" className="flex-1 h-10 gap-2">
+        <ThumbsUp className="h-4 w-4" />
+        <span>24</span>
       </Button>
-      <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-accent flex-1 h-10">
-        <MessageSquare className="w-4 h-4 mr-2" />
-        <span>Comment</span>
+      <Button variant="ghost" size="sm" className="flex-1 h-10 gap-2">
+        <MessageSquare className="h-4 w-4" />
+        <span>12</span>
       </Button>
-      <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-accent flex-1 h-10">
-        <Share2 className="w-4 h-4 mr-2" />
+      <Button variant="ghost" size="sm" className="flex-1 h-10 gap-2">
+        <Share2 className="h-4 w-4" />
         <span>Share</span>
       </Button>
     </div>

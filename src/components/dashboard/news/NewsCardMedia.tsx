@@ -19,33 +19,31 @@ export const NewsCardMedia = ({ media, viewMode }: NewsCardMediaProps) => {
   if (!media || viewMode === 'text') return null;
 
   return (
-    <div className="w-full">
-      <AspectRatio ratio={16/9} className="bg-muted rounded-lg overflow-hidden">
-        {media.type === 'chart' ? (
-          <div className="w-full h-full bg-gray-800 p-4">
-            <h4 className="text-sm font-semibold mb-2 text-center text-white">
-              {media.data?.title}
-            </h4>
-            <div className="h-[calc(100%-2.5rem)] flex items-end justify-between gap-2 px-4">
-              {media.data?.values.map((value, i) => (
-                <div key={i} className="flex flex-col items-center flex-1">
-                  <div 
-                    className="w-full bg-[#0EA5E9] rounded-t transition-all duration-500"
-                    style={{ height: `${(value/350)*100}%` }}
-                  />
-                  <span className="text-xs mt-2 text-white">{media.data.labels[i]}</span>
-                </div>
-              ))}
-            </div>
+    <div className="absolute inset-0">
+      {media.type === 'chart' ? (
+        <div className="w-full h-full bg-gray-800 p-4">
+          <h4 className="text-sm font-semibold mb-2 text-center text-white">
+            {media.data?.title}
+          </h4>
+          <div className="h-[calc(100%-2.5rem)] flex items-end justify-between gap-2 px-4">
+            {media.data?.values.map((value, i) => (
+              <div key={i} className="flex flex-col items-center flex-1">
+                <div 
+                  className="w-full bg-[#0EA5E9] rounded-t transition-all duration-500"
+                  style={{ height: `${(value/350)*100}%` }}
+                />
+                <span className="text-xs mt-2 text-white">{media.data.labels[i]}</span>
+              </div>
+            ))}
           </div>
-        ) : (
-          <img 
-            src={media.src || '/placeholder.svg'} 
-            alt={media.alt || 'News media'}
-            className="object-cover w-full h-full"
-          />
-        )}
-      </AspectRatio>
+        </div>
+      ) : (
+        <img 
+          src={media.src || '/placeholder.svg'} 
+          alt={media.alt || 'News media'}
+          className="object-cover w-full h-full"
+        />
+      )}
     </div>
   );
 };
