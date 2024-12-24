@@ -1,5 +1,3 @@
-import { PersonalizationPanel } from "@/components/PersonalizationPanel";
-
 export default function Contact() {
   return (
     <div className="container mx-auto px-4 py-8">
@@ -40,10 +38,6 @@ export default function Contact() {
               Saturday & Sunday: Closed
             </p>
           </div>
-        </div>
-
-        <div className="space-y-6">
-          <PersonalizationPanel />
         </div>
       </div>
     </div>

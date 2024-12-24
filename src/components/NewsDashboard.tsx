@@ -9,6 +9,7 @@ import { DashboardControls } from './dashboard/DashboardControls';
 import { ScrollableNews } from './dashboard/ScrollableNews';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { PersonalizationPanel } from './PersonalizationPanel';
 
 export default function NewsDashboard() {
   const [scrollStyle, setScrollStyle] = useState('continuous');
@@ -140,6 +141,7 @@ export default function NewsDashboard() {
             <SportsTicker />
             <WeatherWidget />
             <MarketsWidget />
+            <PersonalizationPanel />
           </div>
         </div>
       </div>
