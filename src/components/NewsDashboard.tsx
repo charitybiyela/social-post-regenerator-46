@@ -81,19 +81,8 @@ export default function NewsDashboard() {
   };
 
   return (
-    <div className="w-full min-h-screen p-4 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
-      <DashboardControls 
-        scrollStyle={scrollStyle}
-        setScrollStyle={setScrollStyle}
-        viewMode={viewMode}
-        setViewMode={setViewMode}
-        scrollActive={scrollActive}
-        setScrollActive={setScrollActive}
-        scrollSpeed={scrollSpeed}
-        setScrollSpeed={setScrollSpeed}
-      />
-
-      <div className="grid grid-cols-12 gap-4 mb-4">
+    <div className="w-full min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
+      <div className="grid grid-cols-12 gap-4">
         <div className="col-span-8">
           <Card className="min-h-[500px] max-h-[80vh] h-full">
             <CardHeader className="flex flex-row items-center justify-between">
