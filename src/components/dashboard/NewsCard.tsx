@@ -28,12 +28,12 @@ interface NewsCardProps {
 
 export const NewsCard = ({ article, viewMode }: NewsCardProps) => {
   return (
-    <div className="bg-background border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 animate-fadeIn flex flex-col h-full">
-      <div className="p-6 flex flex-col flex-grow space-y-4">
+    <div className="bg-background border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 animate-fadeIn">
+      <div className="p-4">
         <NewsCardHeader importance={article.importance} time={article.time} />
         
-        <div className="space-y-2">
-          <h3 className="text-xl font-bold hover:text-accent transition-colors duration-200">
+        <div className="mt-3 mb-4">
+          <h3 className="text-2xl font-bold mb-2 hover:text-accent transition-colors duration-200">
             {article.title}
           </h3>
           
@@ -44,13 +44,11 @@ export const NewsCard = ({ article, viewMode }: NewsCardProps) => {
         
         <NewsCardMedia media={article.media} viewMode={viewMode} />
         
-        <p className="text-muted-foreground text-sm line-clamp-3 hover:line-clamp-none transition-all duration-200">
+        <p className="text-muted-foreground text-sm mt-4 mb-4 line-clamp-3 hover:line-clamp-none transition-all duration-200">
           {article.content}
         </p>
         
-        <div className="mt-auto pt-4">
-          <NewsCardFooter tags={article.tags} />
-        </div>
+        <NewsCardFooter tags={article.tags} />
       </div>
     </div>
   );
