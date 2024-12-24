@@ -35,27 +35,6 @@ export default function NewsDashboard() {
     }
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (rightColumnRef.current) {
-        const rect = rightColumnRef.current.getBoundingClientRect();
-        const personalizationLink = rightColumnRef.current.querySelector('.personalization-link');
-        if (personalizationLink) {
-          const linkRect = personalizationLink.getBoundingClientRect();
-          if (linkRect.bottom <= window.innerHeight) {
-            rightColumnRef.current.style.position = 'fixed';
-            rightColumnRef.current.style.top = `${window.innerHeight - rect.height}px`;
-          } else {
-            rightColumnRef.current.style.position = 'static';
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const processNewsItems = useCallback((items: any[]) => {
     if (!profile) return items;
     return items.map(item => 
@@ -132,15 +111,13 @@ export default function NewsDashboard() {
           </Card>
         </div>
 
-        <div ref={rightColumnRef} className="lg:col-span-4 space-y-6">
-          <div className="space-y-6">
+        <div className="lg:col-span-4">
+          <div className="space-y-6" style={{ position: 'sticky', top: '1rem', maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}>
             <BreakingNews />
             <SportsTicker />
             <WeatherWidget />
             <MarketsWidget />
-            <div className="personalization-link">
-              <PersonalizationLink />
-            </div>
+            <PersonalizationLink />
           </div>
         </div>
       </div>
