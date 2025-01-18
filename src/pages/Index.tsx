@@ -1,14 +1,14 @@
-import { useState } from "react";
+import React from "react";
 import NewsDashboard from "@/components/NewsDashboard";
 import Navigation from "@/components/Navigation";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-background">
       <Navigation />
-      <div className="pl-12 md:pl-48 pt-16 pb-12">
+      <main className="pl-12 md:pl-48 pt-16 pb-12">
         <NewsDashboard />
-      </div>
+      </main>
     </div>
   );
 };

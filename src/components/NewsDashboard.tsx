@@ -16,7 +16,7 @@ import { newsRegenerationEngine } from '@/utils/newsRegeneration';
 import { mockNewsItems } from '@/data/mockNews';
 import { ExtendedProfile } from '@/types/profile';
 
-export default function NewsDashboard() {
+const NewsDashboard = () => {
   const [scrollStyle, setScrollStyle] = useState('continuous');
   const [scrollActive, setScrollActive] = useState(false);
   const [scrollSpeed, setScrollSpeed] = useState(5);
@@ -36,7 +36,6 @@ export default function NewsDashboard() {
 
   const processNewsItems = useCallback((items: any[]) => {
     if (!profile) return items;
-
     return items.map(item => 
       newsRegenerationEngine.adaptContent(item, profile)
     ).sort((a, b) => b.relevanceScore - a.relevanceScore);
@@ -97,7 +96,7 @@ export default function NewsDashboard() {
               </div>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="h-[calc(100vh-12rem)] overflow-hidden">
+              <div className="h-[calc(100vh-12rem)] overflow-auto">
                 <ScrollableNews 
                   newsItems={processNewsItems(newsItems)}
                   scrollStyle={scrollStyle}
@@ -123,4 +122,6 @@ export default function NewsDashboard() {
       </div>
     </div>
   );
-}
+};
+
+export default NewsDashboard;
