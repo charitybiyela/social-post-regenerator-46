@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import Draggable from "react-draggable";
@@ -53,7 +54,7 @@ export const AgentOverlay = ({ visible, onClose, onSendToMain }: AgentOverlayPro
   const [emailData, setEmailData] = useState({ to: "", subject: "", body: "" });
   const nodeRef = useRef(null);
   const [messages, setMessages] = useState<AgentMessage[]>([
-    { id: 1, text: "Hello! How can I assist you today?", isUser: false, timestamp: "Just now" },
+    { id: 1, text: "Interact with the world!", isUser: false, timestamp: "Just now" },
   ]);
 
   const handleSend = () => {
@@ -419,3 +420,4 @@ export const AgentOverlay = ({ visible, onClose, onSendToMain }: AgentOverlayPro
     </Draggable>
   );
 };
+
