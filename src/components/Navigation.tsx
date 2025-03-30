@@ -2,9 +2,19 @@
 import React, { useEffect, useState } from 'react';
 import { Sparkles, Moon, Sun, Menu, X, Bell, Search, User, Settings, TrendingUp } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
 
 interface NavigationProps {
   onCreateClick?: () => void;
@@ -14,6 +24,7 @@ const Navigation = ({ onCreateClick }: NavigationProps) => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
   
   useEffect(() => {
     setMounted(true);
@@ -38,6 +49,10 @@ const Navigation = ({ onCreateClick }: NavigationProps) => {
     }
   };
 
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <div className="fixed top-0 left-0 right-0 z-50">
       {/* Glassmorphism navbar */}
@@ -59,13 +74,41 @@ const Navigation = ({ onCreateClick }: NavigationProps) => {
               </span>
             </Link>
             
-            <div className="hidden md:flex items-center ml-6 space-x-6">
-              <Link to="/" className="text-xs font-medium hover:text-primary transition-colors">Home</Link>
-              <Link to="/about" className="text-xs font-medium hover:text-primary transition-colors">Explore</Link>
-              <Link to="/trending" className="text-xs font-medium hover:text-primary transition-colors flex items-center">
-                <TrendingUp className="h-3 w-3 mr-1" />
-                Trending
-              </Link>
+            <div className="hidden md:block ml-6">
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <Link to="/" className={cn(
+                      navigationMenuTriggerStyle(),
+                      "h-8 px-3 py-1.5 text-xs",
+                      location.pathname === "/" ? "bg-accent/30" : ""
+                    )}>
+                      Home
+                    </Link>
+                  </NavigationMenuItem>
+                  
+                  <NavigationMenuItem>
+                    <Link to="/about" className={cn(
+                      navigationMenuTriggerStyle(),
+                      "h-8 px-3 py-1.5 text-xs",
+                      location.pathname === "/about" ? "bg-accent/30" : ""
+                    )}>
+                      Explore
+                    </Link>
+                  </NavigationMenuItem>
+                  
+                  <NavigationMenuItem>
+                    <Link to="/trending" className={cn(
+                      navigationMenuTriggerStyle(),
+                      "h-8 px-3 py-1.5 text-xs flex items-center",
+                      location.pathname === "/trending" ? "bg-accent/30" : ""
+                    )}>
+                      <TrendingUp className="h-3 w-3 mr-1" />
+                      Trending
+                    </Link>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
             </div>
           </div>
           
@@ -138,7 +181,7 @@ const Navigation = ({ onCreateClick }: NavigationProps) => {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="absolute top-12 left-0 right-0 neo-blur border-b border-border/30 py-3 px-4 md:hidden"
+          className="absolute top-12 left-0 right-0 neo-blur border-b border-border/30 py-3 px-4 md:hidden z-50"
         >
           <div className="flex flex-col space-y-3">
             <div className="bg-muted/40 backdrop-blur-sm rounded-lg px-3 py-2 flex items-center">
@@ -150,38 +193,67 @@ const Navigation = ({ onCreateClick }: NavigationProps) => {
               />
             </div>
             
-            <Link to="/" className="flex items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
+            <Link to="/" 
+              onClick={closeMenu}
+              className={`flex items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors ${location.pathname === "/" ? "bg-accent/30" : ""}`}
+            >
               <span className="text-sm font-medium">Home</span>
             </Link>
             
-            <Link to="/about" className="flex items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
+            <Link to="/about" 
+              onClick={closeMenu}
+              className={`flex items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors ${location.pathname === "/about" ? "bg-accent/30" : ""}`}
+            >
               <span className="text-sm font-medium">Explore</span>
             </Link>
             
-            <Link to="/trending" className="flex items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
+            <Link to="/trending" 
+              onClick={closeMenu}
+              className={`flex items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors ${location.pathname.includes("/trending") ? "bg-accent/30" : ""}`}
+            >
               <TrendingUp className="h-4 w-4 mr-2" />
               <span className="text-sm font-medium">Trending</span>
             </Link>
             
-            <Link to="/personalize" className="flex items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
+            <Link to="/personalize" 
+              onClick={closeMenu}
+              className={`flex items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors ${location.pathname === "/personalize" ? "bg-accent/30" : ""}`}
+            >
               <User className="h-4 w-4 mr-2" />
               <span className="text-sm font-medium">Profile</span>
             </Link>
             
-            <div className="flex items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
-              <Bell className="h-4 w-4 mr-2" />
-              <span className="text-sm font-medium">Notifications</span>
-            </div>
-            
-            <div className="flex items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors">
+            <Link to="/privacy" 
+              onClick={closeMenu}
+              className={`flex items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors ${location.pathname === "/privacy" ? "bg-accent/30" : ""}`}
+            >
               <Settings className="h-4 w-4 mr-2" />
-              <span className="text-sm font-medium">Settings</span>
-            </div>
+              <span className="text-sm font-medium">Privacy</span>
+            </Link>
+            
+            <Link to="/terms" 
+              onClick={closeMenu}
+              className={`flex items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors ${location.pathname === "/terms" ? "bg-accent/30" : ""}`}
+            >
+              <Settings className="h-4 w-4 mr-2" />
+              <span className="text-sm font-medium">Terms</span>
+            </Link>
+            
+            <Link to="/contact" 
+              onClick={closeMenu}
+              className={`flex items-center px-3 py-2 hover:bg-muted/40 rounded-lg transition-colors ${location.pathname === "/contact" ? "bg-accent/30" : ""}`}
+            >
+              <Bell className="h-4 w-4 mr-2" />
+              <span className="text-sm font-medium">Contact</span>
+            </Link>
             
             <Button 
               size="sm" 
               className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-sm neo-blur border-none hover-glow"
-              onClick={onCreateClick}
+              onClick={() => {
+                onCreateClick?.();
+                closeMenu();
+              }}
             >
               <Sparkles className="h-4 w-4 mr-2" />
               Create
