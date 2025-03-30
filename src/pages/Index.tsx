@@ -59,8 +59,8 @@ const Index = () => {
     // Create media content based on selected type without scroll effect
     const mediaContent: ContentItem = {
       id: Date.now(),
-      title: "", // Removed the title text
-      content: `This is a ${type} player. In a real application, this would play actual ${type} content.`,
+      title: "", // Removed title text completely
+      content: ``,
       author: "System",
       isAI: false,
       timestamp: new Date().toISOString(),
@@ -69,7 +69,7 @@ const Index = () => {
     };
     
     setActiveContent(mediaContent);
-    toast.success(`Switched to ${type} player`);
+    toast.success(`Switched to ${type}`);
   };
 
   const handleContentCreate = (newContent: ContentItem) => {
@@ -95,7 +95,7 @@ const Index = () => {
         <div className="h-[calc(100vh-3rem)] flex flex-col">
           <div className="relative flex-1 mx-2 mb-2">
             {/* Main content display */}
-            <div className="h-full rounded-xl overflow-hidden relative border border-border/30 shadow-sm">
+            <div className="h-full rounded-xl overflow-hidden relative border border-border/30">
               <ContentViewer 
                 items={contentItems} 
                 activeItem={activeContent}
@@ -107,22 +107,22 @@ const Index = () => {
               />
               
               {/* Media control overlays - moved to top-left */}
-              <div className="absolute top-2 left-3 flex gap-2 z-10">
+              <div className="absolute top-2 left-2 flex gap-2 z-10">
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className="rounded-full h-10 w-10 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
+                  className="rounded-full h-9 w-9 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
                   onClick={() => handleMediaTypeChange('music')}
                 >
-                  <Music className="h-5 w-5 text-primary" />
+                  <Music className="h-4 w-4 text-primary" />
                 </Button>
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className="rounded-full h-10 w-10 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
+                  className="rounded-full h-9 w-9 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
                   onClick={() => handleMediaTypeChange('video')}
                 >
-                  <Video className="h-5 w-5 text-primary" />
+                  <Video className="h-4 w-4 text-primary" />
                 </Button>
               </div>
               
@@ -158,7 +158,7 @@ const Index = () => {
                 }}
               />
               
-              {/* Action Panel - always visible */}
+              {/* Action Panel - centered at bottom and always on top */}
               <ActionPanel
                 onTogglePosts={() => setPostsOverlayVisible(prev => !prev)}
                 postsVisible={postsOverlayVisible}

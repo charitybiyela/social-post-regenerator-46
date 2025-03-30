@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ContentOverlayHeader } from "./overlay/ContentOverlayHeader";
 import { ContentList } from "./overlay/ContentList";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ContentItemType {
   id: string | number;
@@ -65,7 +66,7 @@ export const ContentOverlay: React.FC<ContentOverlayProps> = ({
       transition={{ type: "spring", damping: 25, stiffness: 300 }}
       className={`fixed top-0 right-0 bottom-0 w-92 flex flex-col ${
         isTransparent ? "bg-transparent" : "bg-background/95 backdrop-blur-md border-l border-border/30"
-      } shadow-lg z-20`}
+      } z-20`}
     >
       <ContentOverlayHeader
         isTransparent={isTransparent}
@@ -78,7 +79,7 @@ export const ContentOverlay: React.FC<ContentOverlayProps> = ({
         setViewMode={setViewMode}
       />
       
-      <div className="flex-1 overflow-hidden h-full">
+      <ScrollArea className="flex-1 h-full">
         <ContentList
           items={displayItems}
           activeItem={activeItem}
@@ -87,7 +88,7 @@ export const ContentOverlay: React.FC<ContentOverlayProps> = ({
           autoScroll={autoScroll}
           viewMode={viewMode}
         />
-      </div>
+      </ScrollArea>
     </motion.div>
   );
 };
