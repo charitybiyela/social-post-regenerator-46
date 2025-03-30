@@ -65,7 +65,7 @@ export const CreateContent: React.FC<CreateContentProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create New Content</DialogTitle>
+          <DialogTitle className="text-xl">John, what's vibing today?</DialogTitle>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
@@ -75,17 +75,17 @@ export const CreateContent: React.FC<CreateContentProps> = ({
               id="title" 
               value={title} 
               onChange={(e) => setTitle(e.target.value)} 
-              placeholder="Enter a title"
+              placeholder="What's on your mind?"
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="content">Content</Label>
+            <Label htmlFor="content">Vibe Prompt</Label>
             <Textarea 
               id="content" 
               value={content} 
               onChange={(e) => setContent(e.target.value)} 
-              placeholder="Enter content details"
+              placeholder="Share your thoughts, ideas, or inspiration..."
               className="min-h-[100px]"
             />
           </div>
@@ -119,9 +119,9 @@ export const CreateContent: React.FC<CreateContentProps> = ({
           
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              Nah, not now
             </Button>
-            <Button type="submit">Create</Button>
+            <Button type="submit">Share the Vibe</Button>
           </DialogFooter>
         </form>
       </DialogContent>

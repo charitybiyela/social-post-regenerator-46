@@ -126,7 +126,7 @@ const Index = () => {
             </div>
           </div>
           
-          <div className="relative flex flex-col h-[calc(100vh-8rem)]">
+          <div className="relative flex flex-col h-[calc(100vh-3rem)]">
             {/* Main content display */}
             <div className="flex-grow rounded-xl overflow-hidden bg-muted relative">
               <ContentViewer 

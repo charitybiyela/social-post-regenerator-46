@@ -36,8 +36,8 @@ export const ContentList: React.FC<ContentListProps> = ({
   return (
     <div className="flex flex-col h-full">
       <div ref={scrollRef} className="flex-1 overflow-hidden">
-        <ScrollArea className="h-full p-2">
-          <div className="space-y-2 pr-2">
+        <ScrollArea className="h-full">
+          <div className="space-y-2 p-3">
             {items.map((item) => (
               <ContentItem
                 key={item.id}
@@ -51,7 +51,7 @@ export const ContentList: React.FC<ContentListProps> = ({
       </div>
       
       {autoScroll && (
-        <div className="p-2 flex justify-center border-t">
+        <div className="py-2 flex justify-center border-t">
           <ArrowDown className="h-3 w-3 text-muted-foreground animate-bounce" />
         </div>
       )}

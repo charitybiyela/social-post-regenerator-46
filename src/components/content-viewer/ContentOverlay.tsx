@@ -63,7 +63,7 @@ export const ContentOverlay = ({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.3 }}
-      className={`absolute right-4 bottom-4 max-w-xs z-10 ${isTransparent ? 'bg-background/80' : 'bg-background'} backdrop-blur-md rounded-lg shadow-lg border border-border/50`}
+      className={`absolute right-4 bottom-4 top-4 w-80 max-h-[calc(100%-2rem)] z-10 flex flex-col ${isTransparent ? 'bg-background/80' : 'bg-background'} backdrop-blur-md rounded-lg shadow-lg border border-border/50 overflow-hidden`}
     >
       <ContentOverlayHeader 
         isTransparent={isTransparent}
@@ -73,13 +73,15 @@ export const ContentOverlay = ({
         onClose={onClose}
       />
       
-      <ContentList 
-        items={items}
-        activeItem={activeItem}
-        onItemSelect={onSelect}
-        scrollRef={scrollRef}
-        autoScroll={autoScroll}
-      />
+      <div className="flex-1 overflow-hidden">
+        <ContentList 
+          items={items}
+          activeItem={activeItem}
+          onItemSelect={onSelect}
+          scrollRef={scrollRef}
+          autoScroll={autoScroll}
+        />
+      </div>
     </motion.div>
   );
 };

@@ -34,11 +34,11 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
 
   return (
     <div className="h-full overflow-hidden">
-      <div className="p-6 h-full overflow-auto">
+      <div className="h-full overflow-auto">
         {isMediaContent ? (
-          <div className="relative">
+          <div className="relative h-full flex flex-col">
             {/* Overlay header for media content */}
-            <div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-b from-background/80 to-transparent pt-2 pb-6 px-4">
+            <div className="bg-gradient-to-b from-background/80 to-transparent pt-4 pb-8 px-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
@@ -59,7 +59,7 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
             </div>
             
             {/* Media content */}
-            <div className="mt-6">
+            <div className="flex-1 px-6">
               <MediaContent 
                 item={currentItem} 
                 isPlaying={isPlaying} 
@@ -68,12 +68,25 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
             </div>
             
             {/* Description and tags under the media */}
-            <p className="text-muted-foreground my-6">{currentItem.content}</p>
+            <div className="px-6 py-4">
+              <p className="text-muted-foreground mb-4">{currentItem.content}</p>
+              
+              {/* Tags section for media content */}
+              {currentItem.tags && currentItem.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {currentItem.tags.map((tag, i) => (
+                    <div key={i} className="px-3 py-1 rounded-full text-xs bg-muted">
+                      #{tag}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         ) : isWebsiteContent ? (
           <div className="flex flex-col h-full">
             {/* Header for website content */}
-            <div className="mb-4">
+            <div className="px-6 pt-4 pb-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
@@ -95,7 +108,7 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
             </div>
             
             {/* Website embed */}
-            <div className="flex-grow">
+            <div className="flex-1 px-6 pb-4">
               <MediaContent 
                 item={currentItem} 
                 isPlaying={isPlaying} 
@@ -105,7 +118,7 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
             
             {/* Tags section */}
             {currentItem.tags && currentItem.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-4">
+              <div className="flex flex-wrap gap-2 px-6 pb-6">
                 {currentItem.tags.map((tag, i) => (
                   <div key={i} className="px-3 py-1 rounded-full text-xs bg-muted">
                     #{tag}
@@ -115,7 +128,7 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
             )}
           </div>
         ) : (
-          <>
+          <div className="px-6 py-4">
             {/* Regular content (non-media) */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
@@ -142,18 +155,18 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
               togglePlayPause={togglePlayPause} 
             />
             
-            <p className="text-muted-foreground mb-6">{currentItem.content}</p>
-          </>
-        )}
-
-        {/* Tags section for media content */}
-        {!isWebsiteContent && currentItem.tags && (
-          <div className="flex flex-wrap gap-2">
-            {currentItem.tags.map((tag, i) => (
-              <div key={i} className="px-3 py-1 rounded-full text-xs bg-muted">
-                #{tag}
+            <p className="text-muted-foreground my-6">{currentItem.content}</p>
+            
+            {/* Tags section */}
+            {currentItem.tags && currentItem.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {currentItem.tags.map((tag, i) => (
+                  <div key={i} className="px-3 py-1 rounded-full text-xs bg-muted">
+                    #{tag}
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
           </div>
         )}
       </div>
