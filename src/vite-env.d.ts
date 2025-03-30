@@ -13,8 +13,9 @@ interface Window {
           align?: string;
           width?: number;
           dnt?: boolean;
+          conversation?: string;
         }
-      ) => void;
+      ) => Promise<HTMLElement>;
     };
   };
 }

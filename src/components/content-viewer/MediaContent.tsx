@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect, useRef } from "react";
 import { Music, Video, Play, SkipBack, SkipForward, Pause, Volume2, Link } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface MediaContentProps {
   item: {
@@ -21,29 +23,58 @@ export const MediaContent: React.FC<MediaContentProps> = ({
   togglePlayPause 
 }) => {
   const [tweetLoaded, setTweetLoaded] = useState(false);
+  const tweetContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!item.media || item.media.length === 0) return;
     const media = item.media[0];
     
     if (media.type === 'website' && media.url && (media.url.includes('twitter.com') || media.url.includes('x.com'))) {
+      // First load the Twitter widget script if it doesn't exist
       if (!window.twttr) {
         const script = document.createElement('script');
         script.src = "https://platform.twitter.com/widgets.js";
         script.async = true;
         script.onload = () => {
-          if (window.twttr) {
-            window.twttr.widgets.load();
-            setTweetLoaded(true);
-          }
+          loadTweet(media.url as string);
         };
         document.head.appendChild(script);
       } else {
-        window.twttr.widgets.load();
-        setTweetLoaded(true);
+        loadTweet(media.url as string);
       }
     }
   }, [item.media]);
+
+  const loadTweet = (tweetUrl: string) => {
+    if (!tweetContainerRef.current) return;
+    
+    // Extract the tweet ID from the URL
+    const tweetId = tweetUrl.split('/').pop();
+    if (!tweetId) return;
+    
+    // Clear any existing content
+    tweetContainerRef.current.innerHTML = '';
+    
+    // Create a container for the tweet
+    const tweetElement = document.createElement('div');
+    tweetContainerRef.current.appendChild(tweetElement);
+    
+    // Use Twitter's API to render the tweet
+    window.twttr.widgets.createTweet(
+      tweetId, 
+      tweetElement, 
+      {
+        theme: 'light',
+        align: 'center',
+        dnt: true
+      }
+    ).then(() => {
+      setTweetLoaded(true);
+      toast.success("Tweet loaded successfully");
+    }).catch(() => {
+      toast.error("Failed to load tweet");
+    });
+  };
 
   if (!item.media || item.media.length === 0) {
     return null;
@@ -54,9 +85,9 @@ export const MediaContent: React.FC<MediaContentProps> = ({
   switch (media.type) {
     case 'music':
       return (
-        <div className="rounded-md bg-black aspect-video relative overflow-hidden">
+        <div className="rounded-md bg-black aspect-video relative overflow-hidden glow-effect">
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <Music className="h-16 w-16 text-primary mb-4" />
+            <Music className="h-16 w-16 text-primary mb-4 animate-float" />
             <div className="text-lg font-medium text-white">{item.title}</div>
             <div className="text-sm text-gray-400 mt-2">{item.author}</div>
           </div>
@@ -77,7 +108,7 @@ export const MediaContent: React.FC<MediaContentProps> = ({
               <Button 
                 variant="outline" 
                 size="icon" 
-                className="rounded-full h-12 w-12 text-white border-white"
+                className="rounded-full h-12 w-12 text-white border-white hover-glow"
                 onClick={togglePlayPause}
               >
                 {isPlaying ? (
@@ -99,14 +130,14 @@ export const MediaContent: React.FC<MediaContentProps> = ({
     
     case 'video':
       return (
-        <div className="rounded-md bg-black aspect-video relative overflow-hidden">
+        <div className="rounded-md bg-black aspect-video relative overflow-hidden glow-effect">
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <Video className="h-16 w-16 text-primary mb-4" />
+            <Video className="h-16 w-16 text-primary mb-4 animate-float" />
             <div className="text-lg font-medium text-white">{item.title}</div>
             <Button 
               variant="outline" 
               size="icon" 
-              className="rounded-full h-16 w-16 mt-4 text-white border-white"
+              className="rounded-full h-16 w-16 mt-4 text-white border-white hover-glow"
               onClick={togglePlayPause}
             >
               {isPlaying ? (
@@ -135,26 +166,19 @@ export const MediaContent: React.FC<MediaContentProps> = ({
         media.url.includes('x.com')
       );
       
-      if (isTwitter && media.url) {
-        const tweetId = media.url.split('/').pop();
-        
+      if (isTwitter) {
         return (
-          <div className="rounded-md border overflow-hidden bg-white h-full min-h-[500px]">
-            <div className="flex justify-center items-center h-full">
-              {!tweetLoaded && (
-                <div className="flex flex-col items-center justify-center p-6">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
-                  <p className="text-sm text-muted-foreground">Loading tweet...</p>
-                </div>
-              )}
-              <blockquote 
-                className="twitter-tweet" 
-                data-theme="light"
-                data-conversation="none"
-              >
-                <a href={media.url}>Loading Tweet...</a>
-              </blockquote>
-            </div>
+          <div className="rounded-md overflow-hidden bg-white h-full min-h-[400px] max-h-[600px] flex justify-center items-center">
+            {!tweetLoaded && (
+              <div className="flex flex-col items-center justify-center p-6">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+                <p className="text-sm text-muted-foreground">Loading tweet...</p>
+              </div>
+            )}
+            <div 
+              ref={tweetContainerRef} 
+              className="w-full h-full flex items-center justify-center p-4"
+            ></div>
           </div>
         );
       }

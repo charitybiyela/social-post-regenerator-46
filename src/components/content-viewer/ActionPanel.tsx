@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Toggle } from "@/components/ui/toggle";
 import { 
   MessageSquare, 
   FileText, 
@@ -10,7 +11,12 @@ import {
   ListFilter,
   Bot,
   Moon,
-  Sun
+  Sun,
+  Heart,
+  MessageCircle,
+  Share2,
+  Bookmark,
+  TrendingUp
 } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -42,7 +48,7 @@ export const ActionPanel = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="absolute bottom-4 left-1/2 transform -translate-x-1/2 glass-morphism rounded-full px-3 py-1.5 shadow-lg z-10"
+      className="absolute bottom-4 left-1/2 transform -translate-x-1/2 neo-blur rounded-full px-3 py-1.5 shadow-lg z-10 glow-effect"
     >
       <div className="flex items-center space-x-2">
         <Button 
@@ -75,6 +81,19 @@ export const ActionPanel = ({
         </Button>
         <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" title="Share">
           <ExternalLink className="h-4 w-4" />
+        </Button>
+        <div className="h-4 w-px bg-border/30 mx-1"></div>
+        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" title="Like">
+          <Heart className="h-4 w-4" />
+        </Button>
+        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" title="Comment">
+          <MessageCircle className="h-4 w-4" />
+        </Button>
+        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" title="Share">
+          <Share2 className="h-4 w-4" />
+        </Button>
+        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" title="Save">
+          <Bookmark className="h-4 w-4" />
         </Button>
         <div className="h-4 w-px bg-border/30 mx-1"></div>
         <Button 
