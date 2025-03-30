@@ -75,13 +75,22 @@ export const NewsCard = ({ article, viewMode }: NewsCardProps) => {
             </div>
           )}
 
-          <div className={isFullContent ? '' : 'max-h-[300px] overflow-hidden relative'}>
-            <p className="text-muted-foreground text-sm">
-              {article.content}
-            </p>
-            
-            {!isFullContent && article.content.length > 300 && (
-              <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-background to-transparent"></div>
+          <div className={isFullContent ? 'max-h-[600px] overflow-hidden' : 'max-h-[300px] overflow-hidden relative'}>
+            {isFullContent ? (
+              <ScrollArea className="h-full pr-2">
+                <p className="text-muted-foreground text-sm">
+                  {article.content}
+                </p>
+              </ScrollArea>
+            ) : (
+              <>
+                <p className="text-muted-foreground text-sm">
+                  {article.content}
+                </p>
+                {article.content.length > 300 && (
+                  <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-background to-transparent"></div>
+                )}
+              </>
             )}
           </div>
           

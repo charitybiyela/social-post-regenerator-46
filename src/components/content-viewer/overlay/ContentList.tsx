@@ -41,7 +41,7 @@ export const ContentList: React.FC<ContentListProps> = ({
   return (
     <div className="flex flex-col h-full">
       <div ref={scrollRef} className="flex-1 overflow-hidden">
-        <ScrollArea className="h-full custom-scrollbar">
+        <ScrollArea className="h-full">
           {displayItems.length > 0 ? (
             <div className="space-y-1.5 p-2">
               {displayItems.map((item) => (

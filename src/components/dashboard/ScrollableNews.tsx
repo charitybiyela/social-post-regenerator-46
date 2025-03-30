@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { NewsCard } from './NewsCard';
 
 interface ScrollableNewsProps {
@@ -34,16 +35,18 @@ export const ScrollableNews: React.FC<ScrollableNewsProps> = ({
     );
   }
 
-  // Display all articles without scrolling effects
+  // Display all articles with proper scrolling
   return (
-    <div className="h-full px-6 py-6 overflow-hidden">
-      <div className="space-y-6">
-        {newsItems.map((article, index) => (
-          <div key={`${article.id}-${index}`}>
-            <NewsCard article={article} viewMode={viewMode} />
-          </div>
-        ))}
-      </div>
+    <div className="h-full px-6 overflow-hidden">
+      <ScrollArea className="h-full pr-2">
+        <div className="space-y-6 pb-6">
+          {newsItems.map((article, index) => (
+            <div key={`${article.id}-${index}`}>
+              <NewsCard article={article} viewMode={viewMode} />
+            </div>
+          ))}
+        </div>
+      </ScrollArea>
     </div>
   );
 };

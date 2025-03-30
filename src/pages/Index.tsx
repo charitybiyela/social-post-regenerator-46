@@ -106,27 +106,27 @@ const Index = () => {
                 mediaType={mediaType}
               />
               
-              {/* Media control overlays - moved closer to the top */}
-              <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-8 z-10">
+              {/* Media control overlays - moved to top-left corner */}
+              <div className="absolute top-4 left-4 flex gap-4 z-10">
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className="rounded-full h-20 w-20 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
+                  className="rounded-full h-10 w-10 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
                   onClick={() => handleMediaTypeChange('music')}
                 >
-                  <Music className="h-9 w-9 text-primary" />
+                  <Music className="h-5 w-5 text-primary" />
                 </Button>
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className="rounded-full h-20 w-20 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
+                  className="rounded-full h-10 w-10 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
                   onClick={() => handleMediaTypeChange('video')}
                 >
-                  <Video className="h-9 w-9 text-primary" />
+                  <Video className="h-5 w-5 text-primary" />
                 </Button>
               </div>
               
-              {/* Live Posts overlay (right side) - wider and adjusted position */}
+              {/* Live Posts overlay (right side) */}
               <ContentOverlay 
                 items={contentItems} 
                 onSelect={handleContentSelect}
@@ -158,7 +158,7 @@ const Index = () => {
                 }}
               />
               
-              {/* Action panel now on the left side */}
+              {/* Action panel now centered at the bottom */}
               <ActionPanel 
                 onTogglePosts={() => setPostsOverlayVisible(prev => !prev)}
                 postsVisible={postsOverlayVisible}
