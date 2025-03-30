@@ -20,17 +20,19 @@ interface ScrollViewProps {
   currentItem: ContentItem;
   isPlaying: boolean;
   togglePlayPause: () => void;
+  mediaType?: 'music' | 'video';
 }
 
 export const ScrollView: React.FC<ScrollViewProps> = ({
   currentItem,
   isPlaying,
-  togglePlayPause
+  togglePlayPause,
+  mediaType = 'video'
 }) => {
   const hasMedia = currentItem.media && currentItem.media.length > 0;
-  const mediaType = hasMedia ? currentItem.media[0].type : null;
-  const isMediaContent = mediaType === 'music' || mediaType === 'video';
-  const isWebsiteContent = mediaType === 'website';
+  const contentMediaType = hasMedia ? currentItem.media[0].type : null;
+  const isMediaContent = contentMediaType === 'music' || contentMediaType === 'video';
+  const isWebsiteContent = contentMediaType === 'website';
 
   return (
     <div className="h-full overflow-hidden">
@@ -64,6 +66,7 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
                 item={currentItem} 
                 isPlaying={isPlaying} 
                 togglePlayPause={togglePlayPause} 
+                currentMediaType={mediaType}
               />
             </div>
             
@@ -113,6 +116,7 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
                 item={currentItem} 
                 isPlaying={isPlaying} 
                 togglePlayPause={togglePlayPause} 
+                currentMediaType={mediaType}
               />
             </div>
             
@@ -153,6 +157,7 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
               item={currentItem} 
               isPlaying={isPlaying} 
               togglePlayPause={togglePlayPause} 
+              currentMediaType={mediaType}
             />
             
             <p className="text-muted-foreground my-6">{currentItem.content}</p>

@@ -67,11 +67,11 @@ export const ContentItem: React.FC<ContentItemProps> = ({ item, isActive, onClic
           <AvatarFallback className="text-xs">{getInitial(item.author)}</AvatarFallback>
         </Avatar>
         
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1 mb-0.5">
-            <span className="font-medium text-sm truncate">{item.author}</span>
+        <div className="flex-1 min-w-0 max-w-full overflow-hidden">
+          <div className="flex items-center gap-1 mb-0.5 w-full">
+            <span className="font-medium text-sm truncate max-w-[60%]">{item.author}</span>
             {item.isAI && (
-              <Sparkles className="h-3 w-3 text-primary" />
+              <Sparkles className="h-3 w-3 text-primary flex-shrink-0" />
             )}
             <span className="text-xs text-muted-foreground ml-auto flex-shrink-0">{timeAgo}</span>
           </div>
@@ -81,20 +81,20 @@ export const ContentItem: React.FC<ContentItemProps> = ({ item, isActive, onClic
           <div className="flex items-center gap-2 mb-1">
             {MediaIcon && (
               <div className="flex items-center text-xs text-muted-foreground gap-1">
-                <MediaIcon className="h-3 w-3" />
-                <span className="capitalize">{item.media?.[0].type}</span>
+                <MediaIcon className="h-3 w-3 flex-shrink-0" />
+                <span className="capitalize truncate">{item.media?.[0].type}</span>
               </div>
             )}
           </div>
           
-          <p className="text-xs text-muted-foreground line-clamp-2">{item.content}</p>
+          <p className="text-xs text-muted-foreground line-clamp-2 break-words">{item.content}</p>
           
           {item.tags && item.tags.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-2">
               {item.tags.slice(0, 3).map((tag, index) => (
                 <span 
                   key={index}
-                  className="px-1.5 py-0.5 bg-muted/60 text-[10px] rounded-full text-muted-foreground"
+                  className="px-1.5 py-0.5 bg-muted/60 text-[10px] rounded-full text-muted-foreground truncate max-w-[80px]"
                 >
                   #{tag}
                 </span>

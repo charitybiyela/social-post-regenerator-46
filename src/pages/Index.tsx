@@ -89,41 +89,28 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-hidden">
-      <Navigation />
+      <Navigation onCreateClick={() => setCreateDialogOpen(true)} />
       
       {/* Main content area - maximizing height */}
       <main className="pt-12">
         <div className="h-[calc(100vh-3rem)] flex flex-col">
-          <div className="flex items-center justify-between px-4 py-2">
-            <div>
-              <h1 className="text-xl font-bold tracking-tight text-gradient">Discover</h1>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center bg-muted/40 backdrop-blur-sm rounded-lg p-1">
-                <Button 
-                  variant={mediaType === 'music' ? 'default' : 'ghost'} 
-                  size="sm" 
-                  onClick={() => handleMediaTypeChange('music')}
-                  className="h-8"
-                >
-                  <Music className="h-4 w-4" />
-                </Button>
-                <Button 
-                  variant={mediaType === 'video' ? 'default' : 'ghost'} 
-                  size="sm" 
-                  onClick={() => handleMediaTypeChange('video')}
-                  className="h-8"
-                >
-                  <Video className="h-4 w-4" />
-                </Button>
-              </div>
+          <div className="flex items-center justify-end px-4 py-2">
+            <div className="flex items-center bg-muted/40 backdrop-blur-sm rounded-lg p-1">
               <Button 
+                variant={mediaType === 'music' ? 'default' : 'ghost'} 
                 size="sm" 
-                className="gap-1 h-8 bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity text-white" 
-                onClick={() => setCreateDialogOpen(true)}
+                onClick={() => handleMediaTypeChange('music')}
+                className="h-8"
               >
-                <Sparkles className="h-3.5 w-3.5" />
-                Create
+                <Music className="h-4 w-4" />
+              </Button>
+              <Button 
+                variant={mediaType === 'video' ? 'default' : 'ghost'} 
+                size="sm" 
+                onClick={() => handleMediaTypeChange('video')}
+                className="h-8"
+              >
+                <Video className="h-4 w-4" />
               </Button>
             </div>
           </div>
@@ -138,7 +125,28 @@ const Index = () => {
                 isDimmed={isDimmed && (postsOverlayVisible || agentOverlayVisible)}
                 isPlaying={isPlaying}
                 togglePlayPause={togglePlayPause}
+                mediaType={mediaType}
               />
+              
+              {/* Media control overlays */}
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-6 z-10">
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="rounded-full h-14 w-14 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
+                  onClick={() => handleMediaTypeChange('music')}
+                >
+                  <Music className="h-6 w-6 text-primary" />
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="rounded-full h-14 w-14 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
+                  onClick={() => handleMediaTypeChange('video')}
+                >
+                  <Video className="h-6 w-6 text-primary" />
+                </Button>
+              </div>
               
               {/* Live Posts overlay (right side) */}
               <ContentOverlay 

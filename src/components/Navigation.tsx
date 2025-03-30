@@ -6,7 +6,11 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 
-const Navigation = () => {
+interface NavigationProps {
+  onCreateClick?: () => void;
+}
+
+const Navigation = ({ onCreateClick }: NavigationProps) => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -103,6 +107,7 @@ const Navigation = () => {
               <Button 
                 size="sm" 
                 className="h-8 bg-gradient-to-r from-primary to-accent hover:opacity-90 text-xs neo-blur border-none hover-glow"
+                onClick={onCreateClick}
               >
                 <Sparkles className="h-3 w-3 mr-1" />
                 Create
@@ -161,6 +166,7 @@ const Navigation = () => {
             <Button 
               size="sm" 
               className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-sm neo-blur border-none hover-glow"
+              onClick={onCreateClick}
             >
               <Sparkles className="h-4 w-4 mr-2" />
               Create

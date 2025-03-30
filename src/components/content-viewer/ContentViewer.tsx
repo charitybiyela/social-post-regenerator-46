@@ -25,6 +25,7 @@ interface ContentViewerProps {
   isDimmed?: boolean;
   isPlaying?: boolean;
   togglePlayPause?: () => void;
+  mediaType?: 'music' | 'video';
 }
 
 export const ContentViewer = ({ 
@@ -33,7 +34,8 @@ export const ContentViewer = ({
   onSelectItem, 
   isDimmed = false,
   isPlaying = false,
-  togglePlayPause = () => {}
+  togglePlayPause = () => {},
+  mediaType = 'video'
 }: ContentViewerProps) => {
   const [viewMode, setViewMode] = React.useState<"scroll" | "panels">("scroll");
   
@@ -60,6 +62,7 @@ export const ContentViewer = ({
           currentItem={currentItem} 
           isPlaying={isPlaying} 
           togglePlayPause={togglePlayPause} 
+          mediaType={mediaType}
         />
       )}
 

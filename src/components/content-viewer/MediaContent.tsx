@@ -15,12 +15,14 @@ interface MediaContentProps {
   };
   isPlaying: boolean;
   togglePlayPause: () => void;
+  currentMediaType?: 'music' | 'video';
 }
 
 export const MediaContent: React.FC<MediaContentProps> = ({ 
   item, 
   isPlaying, 
-  togglePlayPause 
+  togglePlayPause,
+  currentMediaType = 'video'
 }) => {
   const [tweetLoaded, setTweetLoaded] = useState(false);
   const tweetContainerRef = useRef<HTMLDivElement>(null);
@@ -92,6 +94,15 @@ export const MediaContent: React.FC<MediaContentProps> = ({
             <div className="text-sm text-gray-400 mt-2">{item.author}</div>
           </div>
           
+          {/* Metadata Overlay */}
+          <div className="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/70 to-transparent">
+            <div className="text-xs text-white/70">Now Playing</div>
+            <div className="flex justify-between items-center mt-1">
+              <div className="text-white text-sm truncate">{item.title}</div>
+              <div className="text-white/70 text-xs">4:56</div>
+            </div>
+          </div>
+          
           <div className="absolute bottom-0 left-0 right-0 p-4">
             <div className="h-1 bg-gray-700 rounded-full w-full">
               <div className="h-1 bg-primary rounded-full" style={{ width: '30%' }}></div>
@@ -134,21 +145,33 @@ export const MediaContent: React.FC<MediaContentProps> = ({
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <Video className="h-16 w-16 text-primary mb-4 animate-float" />
             <div className="text-lg font-medium text-white">{item.title}</div>
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="rounded-full h-16 w-16 mt-4 text-white border-white hover-glow"
-              onClick={togglePlayPause}
-            >
-              {isPlaying ? (
-                <Pause className="h-8 w-8" />
-              ) : (
-                <Play className="h-8 w-8" />
-              )}
-            </Button>
           </div>
           
-          <div className="absolute bottom-0 left-0 right-0 p-4">
+          {/* Metadata Overlay */}
+          <div className="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/70 to-transparent">
+            <div className="flex justify-between items-center">
+              <div>
+                <div className="text-white text-sm truncate">{item.title}</div>
+                <div className="text-white/70 text-xs">{item.author}</div>
+              </div>
+              <div className="bg-red-600 text-white text-xs px-2 py-0.5 rounded">LIVE</div>
+            </div>
+          </div>
+          
+          <Button 
+            variant="outline" 
+            size="icon" 
+            className="rounded-full h-16 w-16 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white border-white hover-glow"
+            onClick={togglePlayPause}
+          >
+            {isPlaying ? (
+              <Pause className="h-8 w-8" />
+            ) : (
+              <Play className="h-8 w-8" />
+            )}
+          </Button>
+          
+          <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
             <div className="h-1 bg-gray-700 rounded-full w-full">
               <div className="h-1 bg-primary rounded-full" style={{ width: '15%' }}></div>
             </div>
@@ -212,10 +235,103 @@ export const MediaContent: React.FC<MediaContentProps> = ({
       );
       
     default:
-      return (
-        <div className="rounded-md bg-muted aspect-video flex items-center justify-center overflow-hidden">
-          <span className="text-muted-foreground">[{media.type}]</span>
-        </div>
-      );
+      // Show a fallback based on the selected media type (music or video)
+      if (currentMediaType === 'music') {
+        return (
+          <div className="rounded-md bg-black aspect-video relative overflow-hidden glow-effect">
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <Music className="h-16 w-16 text-primary mb-4 animate-float" />
+              <div className="text-lg font-medium text-white">{item.title}</div>
+              <div className="text-sm text-gray-400 mt-2">{item.author}</div>
+            </div>
+            
+            {/* Metadata Overlay */}
+            <div className="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/70 to-transparent">
+              <div className="text-xs text-white/70">Now Playing</div>
+              <div className="flex justify-between items-center mt-1">
+                <div className="text-white text-sm truncate">{item.title}</div>
+                <div className="text-white/70 text-xs">4:56</div>
+              </div>
+            </div>
+            
+            <div className="absolute bottom-0 left-0 right-0 p-4">
+              <div className="h-1 bg-gray-700 rounded-full w-full">
+                <div className="h-1 bg-primary rounded-full" style={{ width: '30%' }}></div>
+              </div>
+              <div className="flex justify-between text-xs text-gray-400 mt-1">
+                <span>1:23</span>
+                <span>4:56</span>
+              </div>
+              
+              <div className="flex items-center justify-center gap-4 mt-4">
+                <Button variant="ghost" size="icon" className="rounded-full text-white">
+                  <SkipBack className="h-6 w-6" />
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="rounded-full h-12 w-12 text-white border-white hover-glow"
+                  onClick={togglePlayPause}
+                >
+                  {isPlaying ? (
+                    <Pause className="h-6 w-6" />
+                  ) : (
+                    <Play className="h-6 w-6" />
+                  )}
+                </Button>
+                <Button variant="ghost" size="icon" className="rounded-full text-white">
+                  <SkipForward className="h-6 w-6" />
+                </Button>
+                <Button variant="ghost" size="icon" className="rounded-full text-white">
+                  <Volume2 className="h-6 w-6" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        );
+      } else {
+        return (
+          <div className="rounded-md bg-black aspect-video relative overflow-hidden glow-effect">
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <Video className="h-16 w-16 text-primary mb-4 animate-float" />
+              <div className="text-lg font-medium text-white">{item.title}</div>
+            </div>
+            
+            {/* Metadata Overlay */}
+            <div className="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/70 to-transparent">
+              <div className="flex justify-between items-center">
+                <div>
+                  <div className="text-white text-sm truncate">{item.title}</div>
+                  <div className="text-white/70 text-xs">{item.author}</div>
+                </div>
+                <div className="bg-red-600 text-white text-xs px-2 py-0.5 rounded">LIVE</div>
+              </div>
+            </div>
+            
+            <Button 
+              variant="outline" 
+              size="icon" 
+              className="rounded-full h-16 w-16 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white border-white hover-glow"
+              onClick={togglePlayPause}
+            >
+              {isPlaying ? (
+                <Pause className="h-8 w-8" />
+              ) : (
+                <Play className="h-8 w-8" />
+              )}
+            </Button>
+            
+            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
+              <div className="h-1 bg-gray-700 rounded-full w-full">
+                <div className="h-1 bg-primary rounded-full" style={{ width: '15%' }}></div>
+              </div>
+              <div className="flex justify-between text-xs text-gray-400 mt-1">
+                <span>2:45</span>
+                <span>18:30</span>
+              </div>
+            </div>
+          </div>
+        );
+      }
   }
 };
