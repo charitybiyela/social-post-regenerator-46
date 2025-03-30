@@ -2,7 +2,7 @@
 import React from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Music, Video, LayoutGrid, Sparkles } from "lucide-react";
+import { Music, Video, LayoutGrid, Sparkles, FileText } from "lucide-react";
 
 interface ContentItemData {
   id: string | number;
@@ -42,6 +42,7 @@ export const ContentItem: React.FC<ContentItemProps> = ({ item, isActive, onClic
     
     if (mediaType === "music") return Music;
     if (mediaType === "video") return Video;
+    if (mediaType === "text") return FileText;
     if (mediaType === "website" || mediaType === "twitter") return LayoutGrid;
     
     return null;

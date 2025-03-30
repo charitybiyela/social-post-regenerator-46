@@ -1,3 +1,4 @@
+
 export const mockContent = [
   {
     id: 1,
@@ -71,7 +72,7 @@ export const mockContent = [
     timestamp: "4 days ago",
     media: [
       {
-        type: "audio",
+        type: "music",
         url: "audio-sample"
       }
     ],

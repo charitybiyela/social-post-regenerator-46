@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
-import { Music, Video, Play, SkipBack, SkipForward, Pause, Volume2, Link } from "lucide-react";
+import { Music, Video, Play, SkipBack, SkipForward, Pause, Volume2, Link, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -182,7 +182,20 @@ export const MediaContent: React.FC<MediaContentProps> = ({
           </div>
         </div>
       );
-      
+    
+    case 'text':
+      return (
+        <div className="rounded-md bg-muted/30 p-6 border border-border/40 my-4">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <FileText className="h-10 w-10 text-primary/70" />
+            <div className="text-lg font-medium">{item.title}</div>
+          </div>
+          <div className="text-muted-foreground text-center mt-2">
+            <p>Text content available for reading</p>
+          </div>
+        </div>
+      );
+    
     case 'website':
       const isTwitter = media.url && (
         media.url.includes('twitter.com') || 
@@ -191,7 +204,7 @@ export const MediaContent: React.FC<MediaContentProps> = ({
       
       if (isTwitter) {
         return (
-          <div className="rounded-md overflow-hidden bg-white h-full min-h-[400px] max-h-[600px] flex justify-center items-center">
+          <div className="rounded-md overflow-hidden bg-white dark:bg-black h-full min-h-[400px] max-h-[600px] flex justify-center items-center">
             {!tweetLoaded && (
               <div className="flex flex-col items-center justify-center p-6">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
@@ -235,103 +248,13 @@ export const MediaContent: React.FC<MediaContentProps> = ({
       );
       
     default:
-      // Show a fallback based on the selected media type (music or video)
-      if (currentMediaType === 'music') {
-        return (
-          <div className="rounded-md bg-black aspect-video relative overflow-hidden glow-effect">
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <Music className="h-16 w-16 text-primary mb-4 animate-float" />
-              <div className="text-lg font-medium text-white">{item.title}</div>
-              <div className="text-sm text-gray-400 mt-2">{item.author}</div>
-            </div>
-            
-            {/* Metadata Overlay */}
-            <div className="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/70 to-transparent">
-              <div className="text-xs text-white/70">Now Playing</div>
-              <div className="flex justify-between items-center mt-1">
-                <div className="text-white text-sm truncate">{item.title}</div>
-                <div className="text-white/70 text-xs">4:56</div>
-              </div>
-            </div>
-            
-            <div className="absolute bottom-0 left-0 right-0 p-4">
-              <div className="h-1 bg-gray-700 rounded-full w-full">
-                <div className="h-1 bg-primary rounded-full" style={{ width: '30%' }}></div>
-              </div>
-              <div className="flex justify-between text-xs text-gray-400 mt-1">
-                <span>1:23</span>
-                <span>4:56</span>
-              </div>
-              
-              <div className="flex items-center justify-center gap-4 mt-4">
-                <Button variant="ghost" size="icon" className="rounded-full text-white">
-                  <SkipBack className="h-6 w-6" />
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="icon" 
-                  className="rounded-full h-12 w-12 text-white border-white hover-glow"
-                  onClick={togglePlayPause}
-                >
-                  {isPlaying ? (
-                    <Pause className="h-6 w-6" />
-                  ) : (
-                    <Play className="h-6 w-6" />
-                  )}
-                </Button>
-                <Button variant="ghost" size="icon" className="rounded-full text-white">
-                  <SkipForward className="h-6 w-6" />
-                </Button>
-                <Button variant="ghost" size="icon" className="rounded-full text-white">
-                  <Volume2 className="h-6 w-6" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        );
-      } else {
-        return (
-          <div className="rounded-md bg-black aspect-video relative overflow-hidden glow-effect">
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <Video className="h-16 w-16 text-primary mb-4 animate-float" />
-              <div className="text-lg font-medium text-white">{item.title}</div>
-            </div>
-            
-            {/* Metadata Overlay */}
-            <div className="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/70 to-transparent">
-              <div className="flex justify-between items-center">
-                <div>
-                  <div className="text-white text-sm truncate">{item.title}</div>
-                  <div className="text-white/70 text-xs">{item.author}</div>
-                </div>
-                <div className="bg-red-600 text-white text-xs px-2 py-0.5 rounded">LIVE</div>
-              </div>
-            </div>
-            
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="rounded-full h-16 w-16 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white border-white hover-glow"
-              onClick={togglePlayPause}
-            >
-              {isPlaying ? (
-                <Pause className="h-8 w-8" />
-              ) : (
-                <Play className="h-8 w-8" />
-              )}
-            </Button>
-            
-            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
-              <div className="h-1 bg-gray-700 rounded-full w-full">
-                <div className="h-1 bg-primary rounded-full" style={{ width: '15%' }}></div>
-              </div>
-              <div className="flex justify-between text-xs text-gray-400 mt-1">
-                <span>2:45</span>
-                <span>18:30</span>
-              </div>
-            </div>
-          </div>
-        );
-      }
+      // Show a simple text explanation instead of a fallback to music/video
+      return (
+        <div className="rounded-md bg-muted/30 p-6 border border-border/40 text-center">
+          <p className="text-muted-foreground">
+            Content type "{media.type}" is not supported for preview
+          </p>
+        </div>
+      );
   }
 };
