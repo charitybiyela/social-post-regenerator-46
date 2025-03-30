@@ -4,11 +4,13 @@ import { motion, HTMLMotionProps } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-interface ContentCardProps extends Omit<HTMLMotionProps<"div">, "children"> {
+// Create a type that correctly handles both Framer Motion and React props
+type ContentCardProps = {
   depth?: number; // 0-3, controls the z-depth appearance
   active?: boolean;
   children: React.ReactNode;
-}
+  className?: string;
+} & Omit<HTMLMotionProps<"div">, "children">;
 
 export const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
   ({ depth = 1, active = false, className, children, ...props }, ref) => {
