@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Switch } from "@/components/ui/switch";
-import { X, UserCircle2, Globe } from "lucide-react";
+import { X, UserCircle2, Globe, GripHorizontal } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 interface ContentOverlayHeaderProps {
@@ -13,6 +13,7 @@ interface ContentOverlayHeaderProps {
   title: string;
   viewMode?: string;
   setViewMode?: (value: string) => void;
+  isDraggable?: boolean;
 }
 
 export const ContentOverlayHeader: React.FC<ContentOverlayHeaderProps> = ({ 
@@ -23,12 +24,20 @@ export const ContentOverlayHeader: React.FC<ContentOverlayHeaderProps> = ({
   onClose,
   title,
   viewMode = 'live',
-  setViewMode = () => {}
+  setViewMode = () => {},
+  isDraggable = false
 }) => {
   return (
     <div className="py-1.5 px-3 flex flex-col gap-1.5 border-b border-border/30 bg-background/95 backdrop-blur-sm sticky top-0 z-10">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-medium text-gradient truncate max-w-[240px]">{title}</h3>
+        <div className="flex items-center gap-2">
+          {isDraggable && (
+            <div className="overlay-drag-handle cursor-move p-1 hover:bg-muted/40 rounded-full transition-colors">
+              <GripHorizontal className="h-3.5 w-3.5 text-muted-foreground" />
+            </div>
+          )}
+          <h3 className="text-sm font-medium text-gradient truncate max-w-[240px]">{title}</h3>
+        </div>
         <button onClick={onClose} className="p-1 hover:bg-muted/40 rounded-full transition-colors">
           <X className="h-3.5 w-3.5" />
         </button>

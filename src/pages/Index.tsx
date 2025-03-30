@@ -126,7 +126,7 @@ const Index = () => {
                 </Button>
               </div>
               
-              {/* Live Posts overlay (right side) */}
+              {/* Live Posts overlay - now draggable */}
               <ContentOverlay 
                 items={contentItems} 
                 onSelect={handleContentSelect}
@@ -135,7 +135,7 @@ const Index = () => {
                 onClose={() => setPostsOverlayVisible(false)}
               />
 
-              {/* Agent overlay (left side) */}
+              {/* Agent overlay - now draggable */}
               <AgentOverlay 
                 visible={agentOverlayVisible}
                 onClose={() => setAgentOverlayVisible(false)}
@@ -169,7 +169,7 @@ const Index = () => {
         onContentCreate={handleContentCreate}
       />
       
-      {/* Action panel now positioned fixed via its own styling */}
+      {/* Action panel - now draggable */}
       <ActionPanel 
         onTogglePosts={() => setPostsOverlayVisible(prev => !prev)}
         postsVisible={postsOverlayVisible}

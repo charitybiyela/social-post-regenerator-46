@@ -1,6 +1,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
+import Draggable from "react-draggable";
 import { ContentOverlayHeader } from "./overlay/ContentOverlayHeader";
 import { ContentList } from "./overlay/ContentList";
 
@@ -37,6 +38,7 @@ export const ContentOverlay: React.FC<ContentOverlayProps> = ({
   const [autoScroll, setAutoScroll] = useState(false);
   const [viewMode, setViewMode] = useState<string>('live');
   const scrollRef = useRef<HTMLDivElement>(null);
+  const nodeRef = useRef(null); // Reference for Draggable
   
   // Filter user's own posts when in "mine" mode
   const userPosts = items.filter(item => item.author === "You" || item.author === "Current User");
@@ -58,36 +60,45 @@ export const ContentOverlay: React.FC<ContentOverlayProps> = ({
   if (!visible) return null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 300 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 300 }}
-      transition={{ type: "spring", damping: 25, stiffness: 300 }}
-      className={`absolute top-0 right-0 bottom-0 w-96 flex flex-col ${
-        isTransparent ? "bg-transparent" : "bg-background/95 backdrop-blur-md border-l border-border/30"
-      } shadow-lg z-20`}
+    <Draggable 
+      nodeRef={nodeRef}
+      handle=".overlay-drag-handle"
+      bounds="parent"
+      defaultPosition={{x: 0, y: 0}}
     >
-      <ContentOverlayHeader
-        isTransparent={isTransparent}
-        setIsTransparent={setIsTransparent}
-        autoScroll={autoScroll}
-        setAutoScroll={setAutoScroll}
-        onClose={onClose}
-        title={viewMode === 'mine' ? "My Posts" : "Live Posts"}
-        viewMode={viewMode}
-        setViewMode={setViewMode}
-      />
-      
-      <div className="flex-1 overflow-hidden">
-        <ContentList
-          items={displayItems}
-          activeItem={activeItem}
-          onItemSelect={onSelect}
-          scrollRef={scrollRef}
+      <motion.div
+        ref={nodeRef}
+        initial={{ opacity: 0, x: 300 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: 300 }}
+        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        className={`absolute top-0 right-0 bottom-0 w-96 flex flex-col ${
+          isTransparent ? "bg-transparent" : "bg-background/95 backdrop-blur-md border-l border-border/30"
+        } shadow-lg z-20`}
+      >
+        <ContentOverlayHeader
+          isTransparent={isTransparent}
+          setIsTransparent={setIsTransparent}
           autoScroll={autoScroll}
+          setAutoScroll={setAutoScroll}
+          onClose={onClose}
+          title={viewMode === 'mine' ? "My Posts" : "Live Posts"}
           viewMode={viewMode}
+          setViewMode={setViewMode}
+          isDraggable={true}
         />
-      </div>
-    </motion.div>
+        
+        <div className="flex-1 overflow-hidden">
+          <ContentList
+            items={displayItems}
+            activeItem={activeItem}
+            onItemSelect={onSelect}
+            scrollRef={scrollRef}
+            autoScroll={autoScroll}
+            viewMode={viewMode}
+          />
+        </div>
+      </motion.div>
+    </Draggable>
   );
 };
