@@ -28,6 +28,11 @@
       }
       html, body {
         min-height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-color: hsl(240 10% 3.9%);
       }
     </style>
     
@@ -35,14 +40,19 @@
     <script>
       // Immediately set dark mode if user preference is dark or has previous dark setting
       (function() {
-        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const storedTheme = localStorage.getItem('theme');
-        if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
-          document.documentElement.classList.add('dark');
-          document.body.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-          document.body.classList.remove('dark');
+        try {
+          const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const storedTheme = localStorage.getItem('theme');
+          if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+            document.documentElement.classList.add('dark');
+            document.body.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.body.classList.remove('dark');
+          }
+        } catch (e) {
+          // Fallback if there's any error
+          console.warn('Error setting initial theme:', e);
         }
       })();
     </script>
@@ -51,7 +61,7 @@
     <script src="https://unpkg.com/core-js-bundle@3.36.1/minified.min.js"></script>
   </head>
 
-  <body class="bg-background">
+  <body class="bg-background dark">
     <div id="root"></div>
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>

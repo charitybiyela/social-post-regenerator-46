@@ -29,27 +29,34 @@ const App = () => {
   // Ensure the html and body elements have dark mode class when theme changes
   useEffect(() => {
     // This ensures the background color transitions are applied
-    document.documentElement.classList.add('transition-colors');
-    document.body.classList.add('transition-colors');
-    
-    // Make sure theme provider and manually set dark mode are in sync
-    const darkModeAlreadySet = document.documentElement.classList.contains('dark');
+    if (document.documentElement) {
+      document.documentElement.classList.add('transition-colors');
+    }
+    if (document.body) {
+      document.body.classList.add('transition-colors');
+    }
     
     // Set up a mutation observer to check when theme-provider changes the class
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'class') {
-          const isDark = document.documentElement.classList.contains('dark');
-          document.body.classList.toggle('dark', isDark);
-        }
+    try {
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.attributeName === 'class' && document.documentElement && document.body) {
+            const isDark = document.documentElement.classList.contains('dark');
+            document.body.classList.toggle('dark', isDark);
+          }
+        });
       });
-    });
-    
-    observer.observe(document.documentElement, { attributes: true });
-    
-    return () => {
-      observer.disconnect();
-    };
+      
+      if (document.documentElement) {
+        observer.observe(document.documentElement, { attributes: true });
+      }
+      
+      return () => {
+        observer.disconnect();
+      };
+    } catch (error) {
+      console.error("Error setting up theme observer:", error);
+    }
   }, []);
 
   return (
