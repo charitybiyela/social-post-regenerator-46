@@ -106,8 +106,8 @@ const Index = () => {
                 mediaType={mediaType}
               />
               
-              {/* Media control overlays - moved to top-left corner */}
-              <div className="absolute top-4 left-4 flex gap-4 z-10">
+              {/* Media control overlays - moved to top-left corner + 2 inches to the right */}
+              <div className="absolute top-4 left-24 flex gap-4 z-10">
                 <Button 
                   variant="outline" 
                   size="icon" 
@@ -157,8 +157,6 @@ const Index = () => {
                   toast.success("Content loaded from AI assistant");
                 }}
               />
-              
-              {/* Action panel now handled as a fixed component in ActionPanel.tsx */}
             </div>
           </div>
         </div>
