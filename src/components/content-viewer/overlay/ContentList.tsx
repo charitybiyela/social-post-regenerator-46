@@ -43,7 +43,7 @@ export const ContentList: React.FC<ContentListProps> = ({
       <div ref={scrollRef} className="flex-1 overflow-hidden">
         <ScrollArea className="h-full custom-scrollbar">
           {displayItems.length > 0 ? (
-            <div className="space-y-2 p-3">
+            <div className="space-y-1.5 p-2">
               {displayItems.map((item) => (
                 <ContentItem
                   key={item.id}
@@ -54,12 +54,12 @@ export const ContentList: React.FC<ContentListProps> = ({
               ))}
             </div>
           ) : (
-            <div className="h-full flex flex-col items-center justify-center p-6 text-center text-muted-foreground">
+            <div className="h-full flex flex-col items-center justify-center p-4 text-center text-muted-foreground">
               <div className="mb-2 opacity-70">
                 {viewMode === 'mine' ? (
-                  <UserCircle2 className="w-12 h-12 mx-auto" />
+                  <UserCircle2 className="w-10 h-10 mx-auto" />
                 ) : (
-                  <Globe className="w-12 h-12 mx-auto" />
+                  <Globe className="w-10 h-10 mx-auto" />
                 )}
               </div>
               <p className="text-sm mb-1">
@@ -76,7 +76,7 @@ export const ContentList: React.FC<ContentListProps> = ({
       </div>
       
       {autoScroll && displayItems.length > 0 && (
-        <div className="py-2 flex justify-center border-t border-border/30">
+        <div className="py-1 flex justify-center border-t border-border/30">
           <ArrowDown className="h-3 w-3 text-muted-foreground animate-bounce" />
         </div>
       )}

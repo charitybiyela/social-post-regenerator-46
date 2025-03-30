@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { 
   Music,
   Video,
-  Sparkles,
 } from "lucide-react";
 import { ContentOverlay } from "@/components/content-viewer/ContentOverlay";
 import { AgentOverlay } from "@/components/content-viewer/AgentOverlay";
@@ -92,9 +91,9 @@ const Index = () => {
       <Navigation onCreateClick={() => setCreateDialogOpen(true)} />
       
       {/* Main content area - pushing closer to top */}
-      <main className="pt-10">
-        <div className="h-[calc(100vh-2.5rem)] flex flex-col">
-          <div className="relative flex-1 mx-4 mb-4">
+      <main className="pt-[3rem]">
+        <div className="h-[calc(100vh-3rem)] flex flex-col">
+          <div className="relative flex-1 mx-2 mb-2">
             {/* Main content display */}
             <div className="h-full rounded-xl overflow-hidden bg-muted/40 backdrop-blur-sm relative border border-border/30 shadow-sm">
               <ContentViewer 
@@ -108,22 +107,22 @@ const Index = () => {
               />
               
               {/* Media control overlays - centered in the screen */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-6 z-10">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-8 z-10">
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className="rounded-full h-16 w-16 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
+                  className="rounded-full h-20 w-20 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
                   onClick={() => handleMediaTypeChange('music')}
                 >
-                  <Music className="h-7 w-7 text-primary" />
+                  <Music className="h-9 w-9 text-primary" />
                 </Button>
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className="rounded-full h-16 w-16 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
+                  className="rounded-full h-20 w-20 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
                   onClick={() => handleMediaTypeChange('video')}
                 >
-                  <Video className="h-7 w-7 text-primary" />
+                  <Video className="h-9 w-9 text-primary" />
                 </Button>
               </div>
               
