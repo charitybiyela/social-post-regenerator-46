@@ -23,26 +23,25 @@ interface ContentViewerProps {
   activeItem?: ContentItem;
   onSelectItem?: (item: ContentItem) => void;
   isDimmed?: boolean;
+  isPlaying?: boolean;
+  togglePlayPause?: () => void;
 }
 
 export const ContentViewer = ({ 
   items, 
   activeItem, 
   onSelectItem, 
-  isDimmed = false 
+  isDimmed = false,
+  isPlaying = false,
+  togglePlayPause = () => {}
 }: ContentViewerProps) => {
   const [viewMode, setViewMode] = React.useState<"scroll" | "panels">("scroll");
-  const [isPlaying, setIsPlaying] = React.useState(false);
   
   // If no active item is provided, use the first item
   const currentItem = activeItem || items[0];
   
   const handleItemClick = (item: ContentItem) => {
     if (onSelectItem) onSelectItem(item);
-  };
-
-  const togglePlayPause = () => {
-    setIsPlaying(!isPlaying);
   };
 
   const handleViewModeChange = (value: string) => {
