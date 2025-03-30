@@ -55,7 +55,7 @@ export const ActionPanel = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`absolute left-1/2 transform -translate-x-1/2 bottom-4 neo-blur rounded-full px-2 py-1.5 shadow-lg z-50 glow-effect flex items-center`}
+      className="fixed left-1/2 bottom-4 transform -translate-x-1/2 neo-blur rounded-full px-2 py-1.5 shadow-lg z-50 glow-effect flex items-center"
     >
       <Button 
         variant="ghost" 

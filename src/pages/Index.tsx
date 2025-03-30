@@ -158,15 +158,7 @@ const Index = () => {
                 }}
               />
               
-              {/* Action panel now centered at the bottom */}
-              <ActionPanel 
-                onTogglePosts={() => setPostsOverlayVisible(prev => !prev)}
-                postsVisible={postsOverlayVisible}
-                onToggleAgent={() => setAgentOverlayVisible(prev => !prev)}
-                agentVisible={agentOverlayVisible}
-                onDimBackground={toggleDimBackground}
-                isDimmed={isDimmed}
-              />
+              {/* Action panel now handled as a fixed component in ActionPanel.tsx */}
             </div>
           </div>
         </div>
@@ -177,6 +169,16 @@ const Index = () => {
         open={createDialogOpen}
         onOpenChange={setCreateDialogOpen}
         onContentCreate={handleContentCreate}
+      />
+      
+      {/* Action panel now positioned fixed via its own styling */}
+      <ActionPanel 
+        onTogglePosts={() => setPostsOverlayVisible(prev => !prev)}
+        postsVisible={postsOverlayVisible}
+        onToggleAgent={() => setAgentOverlayVisible(prev => !prev)}
+        agentVisible={agentOverlayVisible}
+        onDimBackground={toggleDimBackground}
+        isDimmed={isDimmed}
       />
     </div>
   );

@@ -38,10 +38,10 @@ export const ScrollableNews: React.FC<ScrollableNewsProps> = ({
   // Display all articles with proper scrolling
   return (
     <div className="h-full px-6 overflow-hidden">
-      <ScrollArea className="h-full pr-2">
-        <div className="space-y-6 pb-6">
+      <ScrollArea className="h-full pr-2 custom-scrollbar">
+        <div className="space-y-6 pb-20">
           {newsItems.map((article, index) => (
-            <div key={`${article.id}-${index}`}>
+            <div key={`${article.id}-${index}`} className="pb-2">
               <NewsCard article={article} viewMode={viewMode} />
             </div>
           ))}
