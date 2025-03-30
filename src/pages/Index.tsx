@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Navigation from "@/components/Navigation";
 import { ContentViewer } from "@/components/content-viewer/ContentViewer";
 import { mockContent } from "@/data/mockContent";
@@ -44,23 +44,24 @@ const Index = () => {
     setIsDimmed(prev => !prev);
   };
 
-  // Switch to media content when mediaType changes
-  useEffect(() => {
-    // Create media content based on selected type
+  const handleMediaTypeChange = (type: 'music' | 'video') => {
+    setMediaType(type);
+    
+    // Create media content based on selected type without scroll effect
     const mediaContent: ContentItem = {
       id: Date.now(),
-      title: mediaType === 'music' ? "Music Player" : "Video Player",
-      content: `This is a ${mediaType} player. In a real application, this would play actual ${mediaType} content.`,
+      title: type === 'music' ? "Music Player" : "Video Player",
+      content: `This is a ${type} player. In a real application, this would play actual ${type} content.`,
       author: "Media System",
       isAI: false,
       timestamp: new Date().toLocaleString(),
-      media: [{ type: mediaType }],
-      tags: [mediaType, "media", "player"]
+      media: [{ type }],
+      tags: [type, "media", "player"]
     };
     
     setActiveContent(mediaContent);
-    toast.success(`Switched to ${mediaType} player`);
-  }, [mediaType]);
+    toast.success(`Switched to ${type} player`);
+  };
 
   const handleCreateContent = () => {
     // Display a toast notification
@@ -81,7 +82,7 @@ const Index = () => {
                 <Button 
                   variant={mediaType === 'music' ? 'default' : 'ghost'} 
                   size="sm" 
-                  onClick={() => setMediaType('music')}
+                  onClick={() => handleMediaTypeChange('music')}
                   className="h-8"
                 >
                   <Music className="h-4 w-4" />
@@ -89,7 +90,7 @@ const Index = () => {
                 <Button 
                   variant={mediaType === 'video' ? 'default' : 'ghost'} 
                   size="sm" 
-                  onClick={() => setMediaType('video')}
+                  onClick={() => handleMediaTypeChange('video')}
                   className="h-8"
                 >
                   <Video className="h-4 w-4" />
