@@ -13,9 +13,6 @@ import {
   Sun,
   Heart,
   MessageCircle,
-  Share2,
-  Bookmark,
-  TrendingUp,
   ChevronLeft,
   ChevronRight
 } from "lucide-react";
@@ -50,7 +47,7 @@ export const ActionPanel = ({
     setIsMinimized(!isMinimized);
   };
 
-  // Calculate total buttons to ensure proper distribution
+  // Buttons configuration
   const leftButtons = [
     { icon: <Bot className="h-4 w-4" />, variant: agentVisible ? "default" : "ghost", onClick: onToggleAgent, title: "AI Assistant" },
     { icon: <ListFilter className="h-4 w-4" />, variant: postsVisible ? "default" : "ghost", onClick: onTogglePosts, title: "Posts" },
@@ -72,57 +69,59 @@ export const ActionPanel = ({
     }
   ];
 
-  // Ensure we show exactly 4 buttons on each side when minimized to balance the panel
-  const displayLeftButtons = isMinimized ? [] : leftButtons;
-  const displayRightButtons = isMinimized ? [] : rightButtons;
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="fixed bottom-4 left-1/2 transform -translate-x-1/2 neo-blur rounded-full px-2 py-1.5 shadow-lg z-50 glow-effect flex items-center justify-center space-x-2"
+      className="fixed bottom-4 left-1/2 transform -translate-x-1/2 neo-blur rounded-full px-3 py-1.5 shadow-lg z-50 glow-effect"
     >
-      {/* Left side buttons */}
-      <div className="flex items-center space-x-2">
-        {displayLeftButtons.map((btn, index) => (
-          <Button 
-            key={`left-${index}`}
-            variant={btn.variant as any} 
-            size="icon"
-            className="h-8 w-8 rounded-full"
-            onClick={btn.onClick}
-            title={btn.title}
-          >
-            {btn.icon}
-          </Button>
-        ))}
-      </div>
-      
-      {/* Center minimize/expand button */}
-      <Button 
-        variant="ghost" 
-        size="icon"
-        className="h-8 w-8 rounded-full"
-        onClick={toggleMinimized}
-        title={isMinimized ? "Expand" : "Minimize"}
-      >
-        {isMinimized ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-      </Button>
-      
-      {/* Right side buttons */}
-      <div className="flex items-center space-x-2">
-        {displayRightButtons.map((btn, index) => (
-          <Button 
-            key={`right-${index}`}
-            variant={btn.variant as any} 
-            size="icon"
-            className="h-8 w-8 rounded-full"
-            onClick={btn.onClick}
-            title={btn.title}
-          >
-            {btn.icon}
-          </Button>
-        ))}
+      <div className="flex items-center justify-between gap-2">
+        {/* Left side buttons */}
+        {!isMinimized && (
+          <div className="flex items-center space-x-1.5">
+            {leftButtons.map((btn, index) => (
+              <Button 
+                key={`left-${index}`}
+                variant={btn.variant as any} 
+                size="icon"
+                className="h-8 w-8 rounded-full"
+                onClick={btn.onClick}
+                title={btn.title}
+              >
+                {btn.icon}
+              </Button>
+            ))}
+          </div>
+        )}
+        
+        {/* Center minimize/expand button */}
+        <Button 
+          variant="ghost" 
+          size="icon"
+          className="h-8 w-8 rounded-full"
+          onClick={toggleMinimized}
+          title={isMinimized ? "Expand" : "Minimize"}
+        >
+          {isMinimized ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+        </Button>
+        
+        {/* Right side buttons */}
+        {!isMinimized && (
+          <div className="flex items-center space-x-1.5">
+            {rightButtons.map((btn, index) => (
+              <Button 
+                key={`right-${index}`}
+                variant={btn.variant as any} 
+                size="icon"
+                className="h-8 w-8 rounded-full"
+                onClick={btn.onClick}
+                title={btn.title}
+              >
+                {btn.icon}
+              </Button>
+            ))}
+          </div>
+        )}
       </div>
     </motion.div>
   );

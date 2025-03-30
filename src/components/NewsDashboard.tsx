@@ -35,6 +35,17 @@ const NewsDashboard = () => {
     }
   }, []);
 
+  useEffect(() => {
+    // Force dark mode class on the body for proper background
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
+    }
+  }, [theme]);
+
   const processNewsItems = useCallback((items: any[]) => {
     if (!profile) return items;
     return items.map(item => 

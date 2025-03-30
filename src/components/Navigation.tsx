@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Sparkles, Moon, Sun, Menu, X, Bell, Search, PanelLeft, User, Settings, TrendingUp } from 'lucide-react';
+import { Sparkles, Moon, Sun, Menu, X, Bell, Search, User, Settings, TrendingUp } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -17,10 +17,25 @@ const Navigation = ({ onCreateClick }: NavigationProps) => {
   
   useEffect(() => {
     setMounted(true);
-  }, []);
+    
+    // Force dark mode class on the body for proper background
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
+    }
+  }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
+    }
   };
 
   return (

@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -26,6 +26,13 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
+  // Ensure the html and body elements have dark mode class when theme changes
+  useEffect(() => {
+    // This ensures the background color transitions are applied
+    document.documentElement.classList.add('transition-colors');
+    document.body.classList.add('transition-colors');
+  }, []);
+
   return (
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
