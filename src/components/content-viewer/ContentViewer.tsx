@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { 
   ChevronLeft, 
@@ -13,6 +12,7 @@ import { ContentCard } from "@/components/ui/content-card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useKeenSlider } from "@/hooks/use-keen-slider";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ContentItem {
   id: string | number;
@@ -40,7 +40,6 @@ export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
   );
   const [searchQuery, setSearchQuery] = useState("");
   
-  // Filter items based on search query
   const filteredItems = items.filter(item => 
     searchQuery === "" || 
     item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -48,7 +47,6 @@ export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
     item.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
   );
   
-  // Set up slider for slides mode
   const [sliderRef, instanceRef] = useKeenSlider({
     loop: true,
     slides: {
@@ -66,7 +64,6 @@ export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
     if (onSelectItem) onSelectItem(item);
   };
 
-  // Navigate in slides mode
   const navigateSlider = (direction: "prev" | "next") => {
     if (instanceRef.current) {
       direction === "prev" 
@@ -108,7 +105,6 @@ export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
         </div>
       </div>
 
-      {/* Scroll Mode */}
       {viewMode === "scroll" && (
         <div className="space-y-8 px-2">
           {filteredItems.map((item, index) => (
@@ -162,7 +158,6 @@ export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
         </div>
       )}
 
-      {/* Slides Mode */}
       {viewMode === "slides" && (
         <div className="relative">
           <Button
@@ -237,7 +232,6 @@ export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
         </div>
       )}
 
-      {/* Panels Mode */}
       {viewMode === "panels" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-2">
           {filteredItems.map((item, idx) => (

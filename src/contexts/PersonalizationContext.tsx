@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState } from 'react';
 import { UserInterests } from '@/types/personalization';
 
@@ -16,7 +17,7 @@ export const usePersonalization = () => {
   return context;
 };
 
-export const PersonalizationProvider = ({ children }: { children: React.ReactNode }) => {
+export const PersonalizationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [userInterests, setUserInterests] = useState<UserInterests>({
     sports: {
       football: true,
