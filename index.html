@@ -12,9 +12,9 @@
     
     <!-- Browser compatibility -->
     <meta name="format-detection" content="telephone=no" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#1f1f1f" media="(prefers-color-scheme: dark)">
-    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <meta name="color-scheme" content="dark" />
     
     <!-- Critical CSS for dark mode to prevent flash -->
     <style>
@@ -22,36 +22,35 @@
         --background: 240 10% 3.9%;
         --foreground: 210 40% 98%;
       }
-      html.dark, body.dark {
-        background-color: hsl(240 10% 3.9%);
-        color: hsl(210 40% 98%);
-      }
       html, body {
+        background-color: hsl(240 10% 3.9%); /* Very dark background */
+        color: hsl(210 40% 98%);
         min-height: 100%;
         margin: 0;
         padding: 0;
+        transition: none; /* Remove transition to prevent flashes */
       }
-      body {
+      html.dark, body.dark {
         background-color: hsl(240 10% 3.9%);
+        color: hsl(210 40% 98%);
       }
     </style>
     
     <!-- Inline script to prevent flash of unstyled content -->
     <script>
-      // Immediately set dark mode if user preference is dark or has previous dark setting
+      // Force dark mode regardless of user preference
       (function() {
         try {
-          const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-          const storedTheme = localStorage.getItem('theme');
-          if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
-            document.documentElement.classList.add('dark');
-            document.body.classList.add('dark');
-          } else {
-            document.documentElement.classList.remove('dark');
-            document.body.classList.remove('dark');
-          }
+          document.documentElement.classList.add('dark');
+          document.body.classList.add('dark');
+          
+          // Force dark theme in localStorage
+          localStorage.setItem('theme', 'dark');
+          
+          // Ensure background color is set immediately
+          document.documentElement.style.backgroundColor = "hsl(240 10% 3.9%)";
+          document.body.style.backgroundColor = "hsl(240 10% 3.9%)";
         } catch (e) {
-          // Fallback if there's any error
           console.warn('Error setting initial theme:', e);
         }
       })();

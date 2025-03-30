@@ -73,7 +73,7 @@ export const ActionPanel = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="fixed bottom-4 left-[30%] transform -translate-x-1/2 neo-blur rounded-full px-3 py-1.5 shadow-lg z-50 glow-effect"
+      className="fixed bottom-4 left-[35%] transform -translate-x-1/2 neo-blur rounded-full px-3 py-1.5 shadow-lg z-50 glow-effect"
     >
       <div className="flex items-center justify-between gap-2">
         {/* Left side buttons */}

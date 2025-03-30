@@ -6,10 +6,18 @@ import './index.css'
 import "keen-slider/keen-slider.min.css"
 import "./styles/keen-slider.css"
 
-// Safely apply dark mode to both document elements
+// Force dark mode on the entire document
 document.addEventListener('DOMContentLoaded', () => {
+  // Force dark mode classes on both html and body elements
   document.documentElement.classList.add('dark');
   document.body.classList.add('dark');
+  
+  // Set dark background colors explicitly
+  document.documentElement.style.backgroundColor = "hsl(240 10% 3.9%)";
+  document.body.style.backgroundColor = "hsl(240 10% 3.9%)";
+  
+  // Force the theme in localStorage
+  localStorage.setItem('theme', 'dark');
 });
 
 // Ensure we're using the correct DOM root element and it exists
