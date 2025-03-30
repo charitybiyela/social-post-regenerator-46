@@ -64,7 +64,7 @@ export const ContentItem: React.FC<ContentItemProps> = ({ item, isActive, onClic
       <div className="flex items-start gap-2">
         <Avatar className="h-7 w-7 flex-shrink-0">
           <AvatarImage src={`https://avatar.vercel.sh/${item.author}.png`} alt={item.author} />
-          <AvatarFallback className="text-xs">{getInitial(item.author)}</AvatarFallback>
+          <AvatarFallback className="text-xs bg-muted">{getInitial(item.author)}</AvatarFallback>
         </Avatar>
         
         <div className="flex-1 min-w-0 max-w-full overflow-hidden">

@@ -40,6 +40,7 @@ export const ActionPanel = ({
   const { theme, setTheme } = useTheme();
   const isDark = theme === 'dark';
   const [isMinimized, setIsMinimized] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const nodeRef = useRef(null); // Reference for Draggable
 
   const toggleTheme = () => {
@@ -48,6 +49,10 @@ export const ActionPanel = ({
 
   const toggleMinimized = () => {
     setIsMinimized(!isMinimized);
+  };
+
+  const handleDrag = (e: any, data: { x: number, y: number }) => {
+    setPosition({ x: data.x, y: data.y });
   };
 
   // Buttons configuration
@@ -77,6 +82,9 @@ export const ActionPanel = ({
       nodeRef={nodeRef}
       handle=".panel-drag-handle"
       bounds="parent"
+      position={position}
+      onDrag={handleDrag}
+      defaultPosition={{ x: 0, y: 0 }}
     >
       <motion.div
         ref={nodeRef}
