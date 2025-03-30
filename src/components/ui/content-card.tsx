@@ -4,9 +4,10 @@ import { motion, HTMLMotionProps } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-interface ContentCardProps extends HTMLMotionProps<"div"> {
+interface ContentCardProps extends Omit<HTMLMotionProps<"div">, "children"> {
   depth?: number; // 0-3, controls the z-depth appearance
   active?: boolean;
+  children: React.ReactNode;
 }
 
 export const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
