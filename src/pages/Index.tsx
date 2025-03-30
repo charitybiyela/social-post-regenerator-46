@@ -13,14 +13,29 @@ import { ContentOverlay } from "@/components/content-viewer/ContentOverlay";
 import { AgentOverlay } from "@/components/content-viewer/AgentOverlay";
 import { ActionPanel } from "@/components/content-viewer/ActionPanel";
 
+// Define the content item type to ensure consistency
+interface ContentItem {
+  id: number;
+  title: string;
+  content: string;
+  author: string;
+  isAI: boolean;
+  timestamp: string;
+  media?: {
+    type: string;
+    url?: string;
+  }[];
+  tags: string[];
+}
+
 const Index = () => {
-  const [activeContent, setActiveContent] = useState(mockContent[0]);
+  const [activeContent, setActiveContent] = useState<ContentItem>(mockContent[0]);
   const [mediaType, setMediaType] = useState<'music' | 'video'>('video');
   const [postsOverlayVisible, setPostsOverlayVisible] = useState(true);
   const [agentOverlayVisible, setAgentOverlayVisible] = useState(false);
   const [isDimmed, setIsDimmed] = useState(false);
 
-  const handleContentSelect = (item: any) => {
+  const handleContentSelect = (item: ContentItem) => {
     setActiveContent(item);
   };
 
@@ -87,13 +102,14 @@ const Index = () => {
                 visible={agentOverlayVisible}
                 onClose={() => setAgentOverlayVisible(false)}
                 onSendToMain={(item) => {
-                  // Add the generated item to the mock content temporarily (in a real app, this would be persisted)
-                  const newItem = { 
+                  // Add the generated item to the mock content temporarily
+                  // Create a properly typed item that matches our ContentItem interface
+                  const newItem: ContentItem = { 
                     ...item, 
                     id: Date.now(),
-                    isAI: true, // Ensure isAI is set to true
-                    media: item.media || [], // Ensure media is an array
-                    tags: item.tags || [] // Ensure tags is an array
+                    isAI: true,
+                    media: item.media || [],
+                    tags: item.tags || []
                   };
                   // For demo purposes, we're just setting it as active
                   setActiveContent(newItem);
