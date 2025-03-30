@@ -13,7 +13,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { ContentCard } from "@/components/ui/content-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ContentItem {
   id: string | number;
@@ -175,7 +174,7 @@ export const ContentViewer = ({ items, activeItem, onSelectItem, isDimmed = fals
       </div>
 
       {viewMode === "scroll" && (
-        <ScrollArea className="h-full scrollbar-hide">
+        <div className="h-full overflow-hidden">
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
@@ -211,7 +210,7 @@ export const ContentViewer = ({ items, activeItem, onSelectItem, isDimmed = fals
               </div>
             )}
           </div>
-        </ScrollArea>
+        </div>
       )}
 
       {viewMode === "panels" && (
@@ -257,7 +256,6 @@ export const ContentViewer = ({ items, activeItem, onSelectItem, isDimmed = fals
                   <p className="text-xs text-muted-foreground line-clamp-3">
                     {item.content}
                   </p>
-                  <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-background to-transparent"></div>
                 </div>
               </div>
             </ContentCard>

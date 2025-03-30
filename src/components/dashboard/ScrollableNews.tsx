@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { NewsCard } from './NewsCard';
 
@@ -16,14 +17,13 @@ export const ScrollableNews: React.FC<ScrollableNewsProps> = ({
   viewMode,
   currentArticleIndex,
 }) => {
-  // Simplified function that doesn't use any auto-scrolling
-  
+  // Display only one article at a time without scrolling
   if (scrollStyle === 'oneAtATime') {
     return (
       <div className="h-full flex items-center justify-center px-6">
         <div 
           key={currentArticleIndex} 
-          className="w-full max-w-2xl animate-in fade-in duration-300"
+          className="w-full max-w-2xl"
         >
           <NewsCard
             article={newsItems[currentArticleIndex]}
@@ -34,9 +34,10 @@ export const ScrollableNews: React.FC<ScrollableNewsProps> = ({
     );
   }
 
+  // Display all articles without scrolling effects
   return (
-    <div className="h-full overflow-y-auto">
-      <div className="space-y-6 pb-6">
+    <div className="h-full px-6 py-6">
+      <div className="space-y-6">
         {newsItems.map((article, index) => (
           <div key={`${article.id}-${index}`}>
             <NewsCard article={article} viewMode={viewMode} />
