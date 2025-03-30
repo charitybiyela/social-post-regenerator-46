@@ -19,7 +19,7 @@ export const ContentOverlayHeader: React.FC<ContentOverlayHeaderProps> = ({
   onClose 
 }) => {
   return (
-    <div className="p-3 flex items-center justify-between border-b">
+    <div className="py-2 px-3 flex items-center justify-between border-b bg-background/95 backdrop-blur-sm sticky top-0 z-10">
       <div className="flex items-center gap-2">
         <h3 className="text-sm font-medium">Live Posts</h3>
         <div className="flex items-center gap-1 text-xs">
@@ -33,6 +33,7 @@ export const ContentOverlayHeader: React.FC<ContentOverlayHeaderProps> = ({
         </div>
       </div>
       <div className="flex items-center gap-2">
+        <span className="text-xs text-muted-foreground">Background</span>
         <Switch
           size="sm"
           checked={!isTransparent}

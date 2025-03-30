@@ -29,7 +29,7 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
 }) => {
   return (
     <div className="h-full overflow-hidden">
-      <div className="p-6">
+      <div className="p-6 h-full overflow-auto">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-3">
             <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
