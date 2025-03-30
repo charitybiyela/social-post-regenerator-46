@@ -1,0 +1,47 @@
+
+@layer base {
+  .glass-morphism {
+    @apply backdrop-blur-xl bg-transparent border border-border/30 shadow-sm dark:bg-background/30;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+  
+  /* Add futuristic elements */
+  .glow-effect {
+    @apply shadow-[0_0_15px_rgba(124,58,237,0.5)] dark:shadow-[0_0_15px_rgba(124,58,237,0.7)];
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .hover-glow:hover {
+    @apply shadow-[0_0_20px_rgba(124,58,237,0.7)] dark:shadow-[0_0_20px_rgba(124,58,237,0.9)];
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .neo-blur {
+    @apply backdrop-blur-2xl bg-white/10 dark:bg-black/40 border border-white/20 dark:border-white/10;
+  }
+  
+  .futuristic-border {
+    @apply border border-transparent bg-gradient-to-r from-primary/30 to-accent/30 p-[1px] rounded-xl;
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+  }
+  
+  .pulse-border {
+    animation: pulse-border 2s infinite;
+  }
+  
+  @keyframes pulse-border {
+    0% {
+      border-color: rgba(var(--primary), 0.3);
+    }
+    50% {
+      border-color: rgba(var(--primary), 0.7);
+    }
+    100% {
+      border-color: rgba(var(--primary), 0.3);
+    }
+  }
+}
