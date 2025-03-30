@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect, useRef } from "react";
-import { Music, Video, Play, SkipBack, SkipForward, Pause, Volume2, Link, FileText } from "lucide-react";
+import { Music, Video, Play, SkipBack, SkipForward, Pause, Volume2, Link, FileText, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -26,11 +25,13 @@ export const MediaContent: React.FC<MediaContentProps> = ({
 }) => {
   const [tweetLoaded, setTweetLoaded] = useState(false);
   const tweetContainerRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     if (!item.media || item.media.length === 0) return;
     const media = item.media[0];
     
+    // Handle Twitter content
     if (media.type === 'website' && media.url && (media.url.includes('twitter.com') || media.url.includes('x.com'))) {
       // First load the Twitter widget script if it doesn't exist
       if (!window.twttr) {
@@ -45,7 +46,19 @@ export const MediaContent: React.FC<MediaContentProps> = ({
         loadTweet(media.url as string);
       }
     }
-  }, [item.media]);
+    
+    // Handle audio playback state
+    if (media.type === 'music' && audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.play().catch(err => {
+          console.error("Error playing audio:", err);
+          toast.error("Couldn't play audio. Try clicking play again.");
+        });
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [item.media, isPlaying]);
 
   const loadTweet = (tweetUrl: string) => {
     if (!tweetContainerRef.current) return;
@@ -88,6 +101,14 @@ export const MediaContent: React.FC<MediaContentProps> = ({
     case 'music':
       return (
         <div className="rounded-md bg-black aspect-video relative overflow-hidden glow-effect">
+          {/* Hidden audio element for actual playback */}
+          <audio 
+            ref={audioRef}
+            src={media.url || "/assets/sample-audio.mp3"} 
+            preload="metadata"
+            onError={() => toast.error("Audio file could not be loaded")}
+          />
+          
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <Music className="h-16 w-16 text-primary mb-4 animate-float" />
             <div className="text-lg font-medium text-white">{item.title}</div>
@@ -243,6 +264,11 @@ export const MediaContent: React.FC<MediaContentProps> = ({
             src={media.url || "/placeholder.svg"} 
             alt={item.title}
             className="w-full h-auto object-cover rounded-md"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = "/placeholder.svg";
+              toast.error("Image could not be loaded");
+            }}
           />
         </div>
       );

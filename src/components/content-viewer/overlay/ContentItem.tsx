@@ -2,7 +2,7 @@
 import React from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Music, Video, LayoutGrid, Sparkles, FileText } from "lucide-react";
+import { Music, Video, LayoutGrid, Sparkles, FileText, Image } from "lucide-react";
 
 interface ContentItemData {
   id: string | number;
@@ -43,6 +43,7 @@ export const ContentItem: React.FC<ContentItemProps> = ({ item, isActive, onClic
     if (mediaType === "music") return Music;
     if (mediaType === "video") return Video;
     if (mediaType === "text") return FileText;
+    if (mediaType === "image") return Image;
     if (mediaType === "website" || mediaType === "twitter") return LayoutGrid;
     
     return null;
@@ -78,6 +79,16 @@ export const ContentItem: React.FC<ContentItemProps> = ({ item, isActive, onClic
           </div>
           
           <h4 className="text-xs font-medium leading-tight mb-1 truncate">{item.title}</h4>
+          
+          {item.media && item.media.length > 0 && item.media[0].type === "image" && (
+            <div className="mb-1.5 rounded-sm overflow-hidden h-16 bg-muted/20">
+              <img 
+                src={item.media[0].url || "/placeholder.svg"} 
+                alt={item.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
           
           <div className="flex items-center gap-2 mb-0.5">
             {MediaIcon && (
