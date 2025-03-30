@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Music, Video, Play, SkipBack, SkipForward, Pause, Volume2, Link } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -21,6 +20,31 @@ export const MediaContent: React.FC<MediaContentProps> = ({
   isPlaying, 
   togglePlayPause 
 }) => {
+  const [tweetLoaded, setTweetLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!item.media || item.media.length === 0) return;
+    const media = item.media[0];
+    
+    if (media.type === 'website' && media.url && (media.url.includes('twitter.com') || media.url.includes('x.com'))) {
+      if (!window.twttr) {
+        const script = document.createElement('script');
+        script.src = "https://platform.twitter.com/widgets.js";
+        script.async = true;
+        script.onload = () => {
+          if (window.twttr) {
+            window.twttr.widgets.load();
+            setTweetLoaded(true);
+          }
+        };
+        document.head.appendChild(script);
+      } else {
+        window.twttr.widgets.load();
+        setTweetLoaded(true);
+      }
+    }
+  }, [item.media]);
+
   if (!item.media || item.media.length === 0) {
     return null;
   }
@@ -106,27 +130,31 @@ export const MediaContent: React.FC<MediaContentProps> = ({
       );
       
     case 'website':
-      // Check if it's a Twitter/X URL
       const isTwitter = media.url && (
         media.url.includes('twitter.com') || 
         media.url.includes('x.com')
       );
       
       if (isTwitter && media.url) {
-        // Convert the Twitter URL to an embedded tweet URL
         const tweetId = media.url.split('/').pop();
-        const embedUrl = `https://platform.twitter.com/embed/index.html?id=${tweetId}`;
         
         return (
-          <div className="rounded-md border overflow-hidden bg-white">
-            <iframe 
-              src={embedUrl}
-              className="w-full min-h-[500px] md:min-h-[600px]" 
-              title={item.title}
-              allow="autoplay; encrypted-media"
-              frameBorder="0"
-              loading="lazy"
-            />
+          <div className="rounded-md border overflow-hidden bg-white h-full min-h-[500px]">
+            <div className="flex justify-center items-center h-full">
+              {!tweetLoaded && (
+                <div className="flex flex-col items-center justify-center p-6">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+                  <p className="text-sm text-muted-foreground">Loading tweet...</p>
+                </div>
+              )}
+              <blockquote 
+                className="twitter-tweet" 
+                data-theme="light"
+                data-conversation="none"
+              >
+                <a href={media.url}>Loading Tweet...</a>
+              </blockquote>
+            </div>
           </div>
         );
       }
@@ -145,6 +173,17 @@ export const MediaContent: React.FC<MediaContentProps> = ({
               <span className="text-muted-foreground">Website URL not provided</span>
             </div>
           )}
+        </div>
+      );
+      
+    case 'image':
+      return (
+        <div className="rounded-md overflow-hidden">
+          <img 
+            src={media.url || "/placeholder.svg"} 
+            alt={item.title}
+            className="w-full h-auto object-cover rounded-md"
+          />
         </div>
       );
       

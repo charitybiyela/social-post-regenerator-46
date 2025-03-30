@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Music, Video, Link } from "lucide-react";
+import { Music, Video, Link, Image } from "lucide-react";
 
 interface ContentItemData {
   id: string | number;
@@ -40,10 +40,19 @@ export const ContentItem: React.FC<ContentItemProps> = ({
         return <Video className="h-5 w-5 text-muted-foreground" />;
       case 'website':
         return <Link className="h-5 w-5 text-muted-foreground" />;
+      case 'image':
+        return <Image className="h-5 w-5 text-muted-foreground" />;
       default:
         return null;
     }
   };
+
+  // Check if item is a Twitter post
+  const isTwitterPost = item.media && 
+    item.media.length > 0 && 
+    item.media[0].type === 'website' && 
+    item.media[0].url && 
+    (item.media[0].url.includes('twitter.com') || item.media[0].url.includes('x.com'));
 
   return (
     <div
@@ -55,8 +64,16 @@ export const ContentItem: React.FC<ContentItemProps> = ({
       <div className="flex items-start gap-2">
         {item.media && item.media.length > 0 && (
           <div className="w-12 h-12 rounded bg-muted flex-shrink-0 flex items-center justify-center">
-            {getMediaIcon() || (
-              <span className="text-[10px] text-muted-foreground">{item.media[0].type}</span>
+            {isTwitterPost ? (
+              <div className="flex items-center justify-center w-full h-full bg-sky-500">
+                <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </div>
+            ) : (
+              getMediaIcon() || (
+                <span className="text-[10px] text-muted-foreground">{item.media[0].type}</span>
+              )
             )}
           </div>
         )}

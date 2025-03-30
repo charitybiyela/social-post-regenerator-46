@@ -12,11 +12,12 @@ import {
 import { ContentOverlay } from "@/components/content-viewer/ContentOverlay";
 import { AgentOverlay } from "@/components/content-viewer/AgentOverlay";
 import { ActionPanel } from "@/components/content-viewer/ActionPanel";
+import { CreateContent } from "@/components/content-viewer/CreateContent";
 import { toast } from "sonner";
 
 // Define the content item type to ensure consistency
 interface ContentItem {
-  id: number;
+  id: number | string;
   title: string;
   content: string;
   author: string;
@@ -30,18 +31,27 @@ interface ContentItem {
 }
 
 const Index = () => {
+  const [contentItems, setContentItems] = useState<ContentItem[]>(mockContent);
   const [activeContent, setActiveContent] = useState<ContentItem>(mockContent[0]);
   const [mediaType, setMediaType] = useState<'music' | 'video'>('video');
   const [postsOverlayVisible, setPostsOverlayVisible] = useState(true);
   const [agentOverlayVisible, setAgentOverlayVisible] = useState(false);
   const [isDimmed, setIsDimmed] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
 
   const handleContentSelect = (item: ContentItem) => {
     setActiveContent(item);
+    // Reset play state when selecting new content
+    setIsPlaying(false);
   };
 
   const toggleDimBackground = () => {
     setIsDimmed(prev => !prev);
+  };
+
+  const togglePlayPause = () => {
+    setIsPlaying(prev => !prev);
   };
 
   const handleMediaTypeChange = (type: 'music' | 'video') => {
@@ -63,9 +73,18 @@ const Index = () => {
     toast.success(`Switched to ${type} player`);
   };
 
-  const handleCreateContent = () => {
-    // Display a toast notification
-    toast.success("Create functionality would open here");
+  const handleContentCreate = (newContent: ContentItem) => {
+    // Add the new content to the state
+    setContentItems(prev => [newContent, ...prev]);
+    
+    // Set it as the active content
+    setActiveContent(newContent);
+    
+    // If it's a Twitter embed, it might need a moment to load
+    if (newContent.media && newContent.media[0].type === "website" && 
+        (newContent.media[0].url?.includes("twitter.com") || newContent.media[0].url?.includes("x.com"))) {
+      toast.info("Twitter content is loading...");
+    }
   };
 
   return (
@@ -96,7 +115,11 @@ const Index = () => {
                   <Video className="h-4 w-4" />
                 </Button>
               </div>
-              <Button size="sm" className="gap-1 h-8" onClick={handleCreateContent}>
+              <Button 
+                size="sm" 
+                className="gap-1 h-8" 
+                onClick={() => setCreateDialogOpen(true)}
+              >
                 <Sparkles className="h-3 w-3" />
                 Create
               </Button>
@@ -107,15 +130,17 @@ const Index = () => {
             {/* Main content display */}
             <div className="flex-grow rounded-xl overflow-hidden bg-muted relative">
               <ContentViewer 
-                items={mockContent} 
+                items={contentItems} 
                 activeItem={activeContent}
                 onSelectItem={handleContentSelect}
                 isDimmed={isDimmed && (postsOverlayVisible || agentOverlayVisible)}
+                isPlaying={isPlaying}
+                togglePlayPause={togglePlayPause}
               />
               
               {/* Live Posts overlay (right side) */}
               <ContentOverlay 
-                items={mockContent} 
+                items={contentItems} 
                 onSelect={handleContentSelect}
                 activeItem={activeContent}
                 visible={postsOverlayVisible}
@@ -127,8 +152,7 @@ const Index = () => {
                 visible={agentOverlayVisible}
                 onClose={() => setAgentOverlayVisible(false)}
                 onSendToMain={(item) => {
-                  // Add the generated item to the mock content temporarily
-                  // Create a properly typed item that matches our ContentItem interface
+                  // Add the generated item to the content items
                   const newItem: ContentItem = { 
                     ...item, 
                     id: Date.now(),
@@ -136,7 +160,9 @@ const Index = () => {
                     media: item.media || [],
                     tags: item.tags || []
                   };
-                  // For demo purposes, we're just setting it as active
+                  
+                  // Add to content list and set as active
+                  setContentItems(prev => [newItem, ...prev]);
                   setActiveContent(newItem);
                   
                   // Show success toast
@@ -157,6 +183,13 @@ const Index = () => {
           </div>
         </div>
       </main>
+      
+      {/* Create content dialog */}
+      <CreateContent 
+        open={createDialogOpen}
+        onOpenChange={setCreateDialogOpen}
+        onContentCreate={handleContentCreate}
+      />
     </div>
   );
 };
