@@ -40,10 +40,10 @@ export const ContentList: React.FC<ContentListProps> = ({
 
   return (
     <div className="flex flex-col h-full">
-      <div ref={scrollRef} className="flex-1 overflow-hidden">
-        <ScrollArea className="h-full custom-scrollbar">
+      <div ref={scrollRef} className="flex-1 h-full overflow-hidden">
+        <ScrollArea className="h-full pr-2 custom-scrollbar">
           {displayItems.length > 0 ? (
-            <div className="space-y-1.5 p-2">
+            <div className="space-y-1.5 p-2 pl-3">
               {displayItems.map((item) => (
                 <ContentItem
                   key={item.id}
@@ -52,6 +52,8 @@ export const ContentList: React.FC<ContentListProps> = ({
                   onClick={() => onItemSelect(item)}
                 />
               ))}
+              {/* Add padding at bottom to ensure last item is fully visible */}
+              <div className="h-4"></div>
             </div>
           ) : (
             <div className="h-full flex flex-col items-center justify-center p-4 text-center text-muted-foreground">

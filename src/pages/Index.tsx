@@ -59,7 +59,7 @@ const Index = () => {
     // Create media content based on selected type without scroll effect
     const mediaContent: ContentItem = {
       id: Date.now(),
-      title: type === 'music' ? "Music Player" : "Video Player",
+      title: "", // Removed the title text
       content: `This is a ${type} player. In a real application, this would play actual ${type} content.`,
       author: "System",
       isAI: false,
@@ -107,22 +107,22 @@ const Index = () => {
               />
               
               {/* Media control overlays - moved to top-left */}
-              <div className="absolute top-6 left-6 flex gap-4 z-10">
+              <div className="absolute top-2 left-3 flex gap-2 z-10">
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className="rounded-full h-14 w-14 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
+                  className="rounded-full h-10 w-10 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
                   onClick={() => handleMediaTypeChange('music')}
                 >
-                  <Music className="h-7 w-7 text-primary" />
+                  <Music className="h-5 w-5 text-primary" />
                 </Button>
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className="rounded-full h-14 w-14 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
+                  className="rounded-full h-10 w-10 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
                   onClick={() => handleMediaTypeChange('video')}
                 >
-                  <Video className="h-7 w-7 text-primary" />
+                  <Video className="h-5 w-5 text-primary" />
                 </Button>
               </div>
               
@@ -156,6 +156,16 @@ const Index = () => {
                   // Show success toast
                   toast.success("Content loaded from AI assistant");
                 }}
+              />
+              
+              {/* Action Panel - always visible */}
+              <ActionPanel
+                onTogglePosts={() => setPostsOverlayVisible(prev => !prev)}
+                postsVisible={postsOverlayVisible}
+                onToggleAgent={() => setAgentOverlayVisible(prev => !prev)}
+                agentVisible={agentOverlayVisible}
+                onDimBackground={toggleDimBackground}
+                isDimmed={isDimmed}
               />
             </div>
           </div>

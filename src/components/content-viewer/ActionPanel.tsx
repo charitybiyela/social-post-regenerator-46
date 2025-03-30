@@ -56,6 +56,7 @@ export const ActionPanel = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className={`fixed left-4 bottom-4 neo-blur rounded-full px-2 py-1.5 shadow-lg z-50 glow-effect flex items-center`}
+      style={{ zIndex: 1000 }} // Ensure it's above everything
     >
       <Button 
         variant="ghost" 

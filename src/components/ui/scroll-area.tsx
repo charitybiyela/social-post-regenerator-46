@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
 
@@ -31,9 +32,9 @@ const ScrollBar = React.forwardRef<
     className={cn(
       "flex touch-none select-none transition-colors",
       orientation === "vertical" &&
-        "h-full w-1.5 border-l border-l-transparent p-[1px]",
+        "h-full w-1 border-l border-l-transparent p-[1px]",
       orientation === "horizontal" &&
-        "h-1.5 flex-col border-t border-t-transparent p-[1px]",
+        "h-1 flex-col border-t border-t-transparent p-[1px]",
       className
     )}
     {...props}
@@ -41,7 +42,7 @@ const ScrollBar = React.forwardRef<
     <ScrollAreaPrimitive.ScrollAreaThumb 
       className={cn(
         "relative flex-1 rounded-full",
-        "bg-muted/50 hover:bg-muted/80 transition-colors duration-200"
+        "bg-primary/30 hover:bg-primary/40 dark:bg-primary/30 dark:hover:bg-primary/40 transition-colors duration-200"
       )} 
     />
   </ScrollAreaPrimitive.ScrollAreaScrollbar>
