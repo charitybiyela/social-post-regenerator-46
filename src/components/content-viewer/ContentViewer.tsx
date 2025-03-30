@@ -4,7 +4,11 @@ import {
   ScrollText, 
   Grid3X3,
   Music,
-  Video
+  Video,
+  Play,
+  SkipBack,
+  SkipForward,
+  Pause
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContentCard } from "@/components/ui/content-card";
@@ -34,12 +38,17 @@ interface ContentViewerProps {
 
 export const ContentViewer = ({ items, activeItem, onSelectItem, isDimmed = false }: ContentViewerProps) => {
   const [viewMode, setViewMode] = React.useState<"scroll" | "panels">("scroll");
+  const [isPlaying, setIsPlaying] = React.useState(false);
   
   // If no active item is provided, use the first item
   const currentItem = activeItem || items[0];
   
   const handleItemClick = (item: ContentItem) => {
     if (onSelectItem) onSelectItem(item);
+  };
+
+  const togglePlayPause = () => {
+    setIsPlaying(!isPlaying);
   };
 
   // Function to render content based on media type
@@ -70,19 +79,22 @@ export const ContentViewer = ({ items, activeItem, onSelectItem, isDimmed = fals
             
             <div className="flex items-center gap-4 mt-4">
               <Button variant="ghost" size="icon" className="rounded-full text-white">
-                <svg className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-                </svg>
+                <SkipBack className="h-6 w-6" />
               </Button>
-              <Button variant="outline" size="icon" className="rounded-full h-12 w-12 text-white border-white">
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="rounded-full h-12 w-12 text-white border-white"
+                onClick={togglePlayPause}
+              >
+                {isPlaying ? (
+                  <Pause className="h-6 w-6" />
+                ) : (
+                  <Play className="h-6 w-6" />
+                )}
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full text-white">
-                <svg className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" />
-                </svg>
+                <SkipForward className="h-6 w-6" />
               </Button>
             </div>
           </div>
@@ -94,10 +106,17 @@ export const ContentViewer = ({ items, activeItem, onSelectItem, isDimmed = fals
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <Video className="h-16 w-16 text-primary mb-4" />
               <div className="text-lg font-medium text-white">{currentItem.title}</div>
-              <Button variant="outline" size="icon" className="rounded-full h-16 w-16 mt-4 text-white border-white">
-                <svg className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="rounded-full h-16 w-16 mt-4 text-white border-white"
+                onClick={togglePlayPause}
+              >
+                {isPlaying ? (
+                  <Pause className="h-8 w-8" />
+                ) : (
+                  <Play className="h-8 w-8" />
+                )}
               </Button>
             </div>
             
@@ -156,7 +175,7 @@ export const ContentViewer = ({ items, activeItem, onSelectItem, isDimmed = fals
       </div>
 
       {viewMode === "scroll" && (
-        <ScrollArea className="h-full">
+        <ScrollArea className="h-full scrollbar-hide">
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
@@ -196,7 +215,7 @@ export const ContentViewer = ({ items, activeItem, onSelectItem, isDimmed = fals
       )}
 
       {viewMode === "panels" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 h-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 h-full overflow-hidden">
           {items.map((item, idx) => (
             <ContentCard 
               key={item.id}
