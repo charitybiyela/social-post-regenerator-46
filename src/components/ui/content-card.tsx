@@ -1,13 +1,14 @@
 
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, HTMLMotionProps } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-interface ContentCardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface ContentCardProps extends Omit<HTMLMotionProps<"div">, "className" | "children"> {
   depth?: number; // 0-3, controls the z-depth appearance
   active?: boolean;
   children: React.ReactNode;
+  className?: string;
 }
 
 export const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
