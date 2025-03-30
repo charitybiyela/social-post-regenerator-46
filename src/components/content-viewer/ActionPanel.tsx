@@ -8,8 +8,11 @@ import {
   Bell, 
   ExternalLink,
   ListFilter,
-  Bot
+  Bot,
+  Moon,
+  Sun
 } from "lucide-react";
+import { useTheme } from "next-themes";
 
 interface ActionPanelProps {
   onTogglePosts: () => void;
@@ -28,51 +31,70 @@ export const ActionPanel = ({
   onDimBackground,
   isDimmed
 }: ActionPanelProps) => {
+  const { theme, setTheme } = useTheme();
+  const isDark = theme === 'dark';
+
+  const toggleTheme = () => {
+    setTheme(isDark ? 'light' : 'dark');
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-background/90 backdrop-blur-md rounded-full px-3 py-1.5 shadow-lg border border-border/50 z-10"
+      className="absolute bottom-4 left-1/2 transform -translate-x-1/2 glass-morphism rounded-full px-3 py-1.5 shadow-lg z-10"
     >
       <div className="flex items-center space-x-2">
         <Button 
           variant={agentVisible ? "default" : "ghost"} 
           size="icon"
-          className="h-8 w-8"
+          className="h-8 w-8 rounded-full"
           onClick={onToggleAgent}
+          title="AI Assistant"
         >
           <Bot className="h-4 w-4" />
         </Button>
         <Button 
           variant={postsVisible ? "default" : "ghost"}
           size="icon"
-          className="h-8 w-8"
+          className="h-8 w-8 rounded-full"
           onClick={onTogglePosts}
+          title="Posts"
         >
           <ListFilter className="h-4 w-4" />
         </Button>
-        <div className="h-4 w-px bg-border mx-1"></div>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
+        <div className="h-4 w-px bg-border/30 mx-1"></div>
+        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" title="Chat">
           <MessageSquare className="h-4 w-4" />
         </Button>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
+        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" title="Articles">
           <FileText className="h-4 w-4" />
         </Button>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
+        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" title="Notifications">
           <Bell className="h-4 w-4" />
         </Button>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
+        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" title="Share">
           <ExternalLink className="h-4 w-4" />
         </Button>
-        <div className="h-4 w-px bg-border mx-1"></div>
+        <div className="h-4 w-px bg-border/30 mx-1"></div>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="h-8 w-8 rounded-full"
+          onClick={toggleTheme}
+          title={isDark ? "Light mode" : "Dark mode"}
+        >
+          {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+        </Button>
         <Button 
           variant={isDimmed ? "default" : "ghost"} 
           size="icon" 
-          className="h-8 w-8"
+          className="h-8 w-8 rounded-full"
           onClick={onDimBackground}
+          title={isDimmed ? "Bright mode" : "Dim mode"}
         >
           <div className="h-4 w-4 flex items-center justify-center font-bold text-xs">
-            {isDimmed ? "B" : "W"}
+            {isDimmed ? "B" : "D"}
           </div>
         </Button>
       </div>

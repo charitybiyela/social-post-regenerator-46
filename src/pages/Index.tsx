@@ -62,9 +62,9 @@ const Index = () => {
       id: Date.now(),
       title: type === 'music' ? "Music Player" : "Video Player",
       content: `This is a ${type} player. In a real application, this would play actual ${type} content.`,
-      author: "Media System",
+      author: "System",
       isAI: false,
-      timestamp: new Date().toLocaleString(),
+      timestamp: new Date().toISOString(),
       media: [{ type }],
       tags: [type, "media", "player"]
     };
@@ -90,14 +90,16 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background overflow-hidden">
       <Navigation />
-      <main className="pt-10 pb-4 px-2">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-2">
+      
+      {/* Main content area - maximizing height */}
+      <main className="pt-12">
+        <div className="h-[calc(100vh-3rem)] flex flex-col">
+          <div className="flex items-center justify-between px-4 py-2">
             <div>
-              <h1 className="text-xl font-bold tracking-tight">Discover</h1>
+              <h1 className="text-xl font-bold tracking-tight text-gradient">Discover</h1>
             </div>
             <div className="flex items-center gap-2">
-              <div className="flex items-center bg-muted rounded-lg p-1">
+              <div className="flex items-center bg-muted/40 backdrop-blur-sm rounded-lg p-1">
                 <Button 
                   variant={mediaType === 'music' ? 'default' : 'ghost'} 
                   size="sm" 
@@ -117,18 +119,18 @@ const Index = () => {
               </div>
               <Button 
                 size="sm" 
-                className="gap-1 h-8" 
+                className="gap-1 h-8 bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity text-white" 
                 onClick={() => setCreateDialogOpen(true)}
               >
-                <Sparkles className="h-3 w-3" />
+                <Sparkles className="h-3.5 w-3.5" />
                 Create
               </Button>
             </div>
           </div>
           
-          <div className="relative flex flex-col h-[calc(100vh-3rem)]">
+          <div className="relative flex-1 mx-4 mb-4">
             {/* Main content display */}
-            <div className="flex-grow rounded-xl overflow-hidden bg-muted relative">
+            <div className="h-full rounded-xl overflow-hidden bg-muted/40 backdrop-blur-sm relative border border-border/30 shadow-sm">
               <ContentViewer 
                 items={contentItems} 
                 activeItem={activeContent}
@@ -166,7 +168,7 @@ const Index = () => {
                   setActiveContent(newItem);
                   
                   // Show success toast
-                  toast.success("Content loaded from agent");
+                  toast.success("Content loaded from AI assistant");
                 }}
               />
               

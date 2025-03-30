@@ -4,7 +4,17 @@
 interface Window {
   twttr: {
     widgets: {
-      load: () => void;
+      load: (element?: HTMLElement) => void;
+      createTweet: (
+        tweetId: string, 
+        element: HTMLElement, 
+        options?: {
+          theme?: string;
+          align?: string;
+          width?: number;
+          dnt?: boolean;
+        }
+      ) => void;
     };
   };
 }

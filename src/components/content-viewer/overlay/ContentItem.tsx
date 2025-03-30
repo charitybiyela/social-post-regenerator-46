@@ -1,6 +1,8 @@
 
 import React from "react";
-import { Music, Video, Link, Image } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Music, Video, LayoutGrid, Sparkles } from "lucide-react";
 
 interface ContentItemData {
   id: string | number;
@@ -22,74 +24,86 @@ interface ContentItemProps {
   onClick: () => void;
 }
 
-export const ContentItem: React.FC<ContentItemProps> = ({ 
-  item, 
-  isActive, 
-  onClick 
-}) => {
-  // Get media icon based on type
-  const getMediaIcon = () => {
+export const ContentItem: React.FC<ContentItemProps> = ({ item, isActive, onClick }) => {
+  // Calculate time ago from timestamp
+  const timeAgo = (() => {
+    try {
+      return formatDistanceToNow(new Date(item.timestamp), { addSuffix: true });
+    } catch (error) {
+      return item.timestamp;
+    }
+  })();
+
+  // Determine the media icon
+  const MediaIcon = (() => {
     if (!item.media || item.media.length === 0) return null;
     
     const mediaType = item.media[0].type;
     
-    switch (mediaType) {
-      case 'music':
-        return <Music className="h-5 w-5 text-muted-foreground" />;
-      case 'video':
-        return <Video className="h-5 w-5 text-muted-foreground" />;
-      case 'website':
-        return <Link className="h-5 w-5 text-muted-foreground" />;
-      case 'image':
-        return <Image className="h-5 w-5 text-muted-foreground" />;
-      default:
-        return null;
-    }
+    if (mediaType === "music") return Music;
+    if (mediaType === "video") return Video;
+    if (mediaType === "website" || mediaType === "twitter") return LayoutGrid;
+    
+    return null;
+  })();
+
+  // Get initial for avatar fallback
+  const getInitial = (name: string) => {
+    return name.charAt(0).toUpperCase();
   };
 
-  // Check if item is a Twitter post
-  const isTwitterPost = item.media && 
-    item.media.length > 0 && 
-    item.media[0].type === 'website' && 
-    item.media[0].url && 
-    (item.media[0].url.includes('twitter.com') || item.media[0].url.includes('x.com'));
-
   return (
-    <div
-      className={`p-2 rounded-md cursor-pointer transition-colors ${
-        isActive ? "bg-primary/10" : "hover:bg-muted"
+    <div 
+      className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+        isActive 
+          ? 'bg-primary/10 border border-primary/30 shadow-sm' 
+          : 'hover:bg-background/60 border border-transparent'
       }`}
       onClick={onClick}
     >
-      <div className="flex items-start gap-2">
-        {item.media && item.media.length > 0 && (
-          <div className="w-12 h-12 rounded bg-muted flex-shrink-0 flex items-center justify-center">
-            {isTwitterPost ? (
-              <div className="flex items-center justify-center w-full h-full bg-sky-500">
-                <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-              </div>
-            ) : (
-              getMediaIcon() || (
-                <span className="text-[10px] text-muted-foreground">{item.media[0].type}</span>
-              )
-            )}
-          </div>
-        )}
+      <div className="flex items-start gap-3">
+        <Avatar className="h-8 w-8 flex-shrink-0">
+          <AvatarImage src={`https://avatar.vercel.sh/${item.author}.png`} alt={item.author} />
+          <AvatarFallback className="text-xs">{getInitial(item.author)}</AvatarFallback>
+        </Avatar>
+        
         <div className="flex-1 min-w-0">
-          <h4 className="text-xs font-medium truncate">{item.title}</h4>
-          <p className="text-[10px] text-muted-foreground line-clamp-1">
-            {item.content}
-          </p>
-          <div className="flex items-center mt-1">
-            <div className="text-[8px] text-muted-foreground">{item.author}</div>
+          <div className="flex items-center gap-1 mb-0.5">
+            <span className="font-medium text-sm truncate">{item.author}</span>
             {item.isAI && (
-              <div className="ml-1 text-[8px] bg-primary/10 text-primary px-1 rounded-full">
-                AI
+              <Sparkles className="h-3 w-3 text-primary" />
+            )}
+            <span className="text-xs text-muted-foreground ml-auto flex-shrink-0">{timeAgo}</span>
+          </div>
+          
+          <h4 className="text-sm font-medium leading-tight mb-1 truncate">{item.title}</h4>
+          
+          <div className="flex items-center gap-2 mb-1">
+            {MediaIcon && (
+              <div className="flex items-center text-xs text-muted-foreground gap-1">
+                <MediaIcon className="h-3 w-3" />
+                <span className="capitalize">{item.media?.[0].type}</span>
               </div>
             )}
           </div>
+          
+          <p className="text-xs text-muted-foreground line-clamp-2">{item.content}</p>
+          
+          {item.tags && item.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-2">
+              {item.tags.slice(0, 3).map((tag, index) => (
+                <span 
+                  key={index}
+                  className="px-1.5 py-0.5 bg-muted/60 text-[10px] rounded-full text-muted-foreground"
+                >
+                  #{tag}
+                </span>
+              ))}
+              {item.tags.length > 3 && (
+                <span className="text-[10px] text-muted-foreground">+{item.tags.length - 3}</span>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
