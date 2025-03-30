@@ -169,7 +169,7 @@ export const AgentOverlay = ({ visible, onClose, onSendToMain }: AgentOverlayPro
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
       transition={{ duration: 0.3 }}
-      className={`absolute left-4 top-20 max-w-xs z-10 ${isTransparent ? 'bg-background/80' : 'bg-background'} backdrop-blur-md rounded-lg shadow-lg border border-border/50`}
+      className={`absolute left-4 top-20 max-w-xs z-10 ${isTransparent ? 'bg-background/80' : 'bg-background'} backdrop-blur-md rounded-lg shadow-lg border border-border/50 mt-5 ml-1.5`}
       style={{ width: "300px" }}
     >
       <div className="p-3 flex items-center justify-between border-b">
