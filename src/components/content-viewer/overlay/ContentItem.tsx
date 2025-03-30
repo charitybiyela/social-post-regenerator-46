@@ -1,5 +1,6 @@
 
 import React from "react";
+import { Music, Video, Link } from "lucide-react";
 
 interface ContentItemData {
   id: string | number;
@@ -26,6 +27,24 @@ export const ContentItem: React.FC<ContentItemProps> = ({
   isActive, 
   onClick 
 }) => {
+  // Get media icon based on type
+  const getMediaIcon = () => {
+    if (!item.media || item.media.length === 0) return null;
+    
+    const mediaType = item.media[0].type;
+    
+    switch (mediaType) {
+      case 'music':
+        return <Music className="h-5 w-5 text-muted-foreground" />;
+      case 'video':
+        return <Video className="h-5 w-5 text-muted-foreground" />;
+      case 'website':
+        return <Link className="h-5 w-5 text-muted-foreground" />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div
       className={`p-2 rounded-md cursor-pointer transition-colors ${
@@ -36,7 +55,9 @@ export const ContentItem: React.FC<ContentItemProps> = ({
       <div className="flex items-start gap-2">
         {item.media && item.media.length > 0 && (
           <div className="w-12 h-12 rounded bg-muted flex-shrink-0 flex items-center justify-center">
-            <span className="text-[10px] text-muted-foreground">{item.media[0].type}</span>
+            {getMediaIcon() || (
+              <span className="text-[10px] text-muted-foreground">{item.media[0].type}</span>
+            )}
           </div>
         )}
         <div className="flex-1 min-w-0">

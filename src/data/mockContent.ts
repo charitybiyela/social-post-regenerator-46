@@ -1,4 +1,3 @@
-
 export const mockContent = [
   {
     id: 1,
@@ -77,5 +76,50 @@ export const mockContent = [
       }
     ],
     tags: ["music", "generative-art", "audio", "creative-tech"]
+  },
+  {
+    id: 11,
+    title: "How ChatGPT is Made",
+    content: "An inside look at how a single ChatGPT response is made, showing the complexity of what's happening behind the simple interface. From assembly of the conversation to token sampling and presentation.",
+    author: "W3WHQ",
+    isAI: false,
+    timestamp: "Oct 12, 2023",
+    media: [
+      {
+        type: "website",
+        url: "https://x.com/w3whq/status/1905867107629224099"
+      }
+    ],
+    tags: ["AI", "ChatGPT", "technology", "explainer"]
+  },
+  {
+    id: 12,
+    title: "Infinite Horizons: The Art of Procedural Worlds",
+    content: "Exploring the beauty of procedural generation in digital environments. This showcase demonstrates how algorithms can create vast, unique landscapes that feel handcrafted yet are generated on-the-fly.",
+    author: "Min Choi",
+    isAI: false,
+    timestamp: "Oct 12, 2023",
+    media: [
+      {
+        type: "website",
+        url: "https://x.com/minchoi/status/1905981529269879218"
+      }
+    ],
+    tags: ["procedural", "generative", "design", "art", "tech"]
+  },
+  {
+    id: 13,
+    title: "Gradient Mapping: Creating Depth with Color",
+    content: "A fascinating demonstration of how gradient mapping can transform flat graphics into images with depth and dimension. This technique is widely used in digital art and game development to add richness to textures.",
+    author: "Dan Dawson",
+    isAI: false,
+    timestamp: "Oct 13, 2023",
+    media: [
+      {
+        type: "website",
+        url: "https://x.com/Dan_Dawson__/status/1906126422378491907"
+      }
+    ],
+    tags: ["design", "graphics", "tutorial", "color"]
   }
 ];

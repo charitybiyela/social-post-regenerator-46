@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Music, Video, Play, SkipBack, SkipForward, Pause, Volume2 } from "lucide-react";
+import { Music, Video, Play, SkipBack, SkipForward, Pause, Volume2, Link } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface MediaContentProps {
@@ -106,6 +106,31 @@ export const MediaContent: React.FC<MediaContentProps> = ({
       );
       
     case 'website':
+      // Check if it's a Twitter/X URL
+      const isTwitter = media.url && (
+        media.url.includes('twitter.com') || 
+        media.url.includes('x.com')
+      );
+      
+      if (isTwitter && media.url) {
+        // Convert the Twitter URL to an embedded tweet URL
+        const tweetId = media.url.split('/').pop();
+        const embedUrl = `https://platform.twitter.com/embed/index.html?id=${tweetId}`;
+        
+        return (
+          <div className="rounded-md border overflow-hidden bg-white">
+            <iframe 
+              src={embedUrl}
+              className="w-full min-h-[500px] md:min-h-[600px]" 
+              title={item.title}
+              allow="autoplay; encrypted-media"
+              frameBorder="0"
+              loading="lazy"
+            />
+          </div>
+        );
+      }
+      
       return (
         <div className="rounded-md border h-96 relative overflow-hidden">
           {media.url ? (
@@ -113,7 +138,7 @@ export const MediaContent: React.FC<MediaContentProps> = ({
               src={media.url} 
               className="w-full h-full rounded-md" 
               title={item.title}
-              sandbox="allow-same-origin allow-scripts"
+              sandbox="allow-same-origin allow-scripts allow-popups"
             />
           ) : (
             <div className="flex items-center justify-center h-full bg-muted">
