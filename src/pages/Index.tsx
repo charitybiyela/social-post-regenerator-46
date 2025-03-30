@@ -95,7 +95,7 @@ const Index = () => {
         <div className="h-[calc(100vh-3rem)] flex flex-col">
           <div className="relative flex-1 mx-2 mb-2">
             {/* Main content display */}
-            <div className="h-full rounded-xl overflow-hidden backdrop-blur-sm relative border border-border/30 shadow-sm">
+            <div className="h-full rounded-xl overflow-hidden relative border border-border/30 shadow-sm">
               <ContentViewer 
                 items={contentItems} 
                 activeItem={activeContent}
@@ -106,23 +106,23 @@ const Index = () => {
                 mediaType={mediaType}
               />
               
-              {/* Media control overlays - moved closer to the top */}
-              <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-8 z-10">
+              {/* Media control overlays - moved to top-left */}
+              <div className="absolute top-6 left-6 flex gap-4 z-10">
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className="rounded-full h-20 w-20 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
+                  className="rounded-full h-14 w-14 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
                   onClick={() => handleMediaTypeChange('music')}
                 >
-                  <Music className="h-9 w-9 text-primary" />
+                  <Music className="h-7 w-7 text-primary" />
                 </Button>
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className="rounded-full h-20 w-20 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
+                  className="rounded-full h-14 w-14 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
                   onClick={() => handleMediaTypeChange('video')}
                 >
-                  <Video className="h-9 w-9 text-primary" />
+                  <Video className="h-7 w-7 text-primary" />
                 </Button>
               </div>
               
@@ -156,16 +156,6 @@ const Index = () => {
                   // Show success toast
                   toast.success("Content loaded from AI assistant");
                 }}
-              />
-              
-              {/* Action panel now on the left side */}
-              <ActionPanel 
-                onTogglePosts={() => setPostsOverlayVisible(prev => !prev)}
-                postsVisible={postsOverlayVisible}
-                onToggleAgent={() => setAgentOverlayVisible(prev => !prev)}
-                agentVisible={agentOverlayVisible}
-                onDimBackground={toggleDimBackground}
-                isDimmed={isDimmed}
               />
             </div>
           </div>

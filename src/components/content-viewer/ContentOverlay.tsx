@@ -63,7 +63,7 @@ export const ContentOverlay: React.FC<ContentOverlayProps> = ({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 300 }}
       transition={{ type: "spring", damping: 25, stiffness: 300 }}
-      className={`absolute top-0 right-0 bottom-0 w-96 flex flex-col ${
+      className={`absolute top-0 right-0 bottom-0 w-96 pr-4 flex flex-col ${
         isTransparent ? "bg-transparent" : "bg-background/95 backdrop-blur-md border-l border-border/30"
       } shadow-lg z-20`}
     >
