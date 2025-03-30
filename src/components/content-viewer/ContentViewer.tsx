@@ -2,12 +2,10 @@
 import React, { useState } from "react";
 import { 
   ScrollText, 
-  Grid3X3, 
-  Command 
+  Grid3X3
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContentCard } from "@/components/ui/content-card";
-import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -35,15 +33,7 @@ export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
   const [activeItemId, setActiveItemId] = useState<string | number | null>(
     items.length > 0 ? items[0].id : null
   );
-  const [searchQuery, setSearchQuery] = useState("");
   
-  const filteredItems = items.filter(item => 
-    searchQuery === "" || 
-    item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
-
   const handleItemClick = (item: ContentItem) => {
     setActiveItemId(item.id);
     if (onSelectItem) onSelectItem(item);
@@ -52,35 +42,23 @@ export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
   return (
     <div className="w-full space-y-6">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <Tabs defaultValue={viewMode} onValueChange={(v) => setViewMode(v as any)}>
-            <TabsList>
-              <TabsTrigger value="scroll" className="flex items-center gap-1">
-                <ScrollText className="h-4 w-4" />
-                <span className="hidden sm:inline">Scroll</span>
-              </TabsTrigger>
-              <TabsTrigger value="panels" className="flex items-center gap-1">
-                <Grid3X3 className="h-4 w-4" />
-                <span className="hidden sm:inline">Panels</span>
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
-        
-        <div className="relative flex items-center max-w-sm">
-          <Command className="absolute left-2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search content..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-8 max-w-[200px]"
-          />
-        </div>
+        <Tabs defaultValue={viewMode} onValueChange={(v) => setViewMode(v as any)}>
+          <TabsList>
+            <TabsTrigger value="scroll" className="flex items-center gap-1">
+              <ScrollText className="h-4 w-4" />
+              <span className="hidden sm:inline">Scroll</span>
+            </TabsTrigger>
+            <TabsTrigger value="panels" className="flex items-center gap-1">
+              <Grid3X3 className="h-4 w-4" />
+              <span className="hidden sm:inline">Panels</span>
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
       </div>
 
       {viewMode === "scroll" && (
         <div className="space-y-8 px-2">
-          {filteredItems.map((item, index) => (
+          {items.map((item) => (
             <ContentCard 
               key={item.id}
               className="w-full cursor-pointer"
@@ -133,7 +111,7 @@ export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
 
       {viewMode === "panels" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-2">
-          {filteredItems.map((item, idx) => (
+          {items.map((item, idx) => (
             <ContentCard 
               key={item.id}
               depth={Math.min(idx % 3, 2)}
