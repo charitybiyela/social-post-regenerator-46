@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Toggle } from "@/components/ui/toggle";
 import { 
   MessageSquare, 
   FileText, 
@@ -51,21 +50,19 @@ export const ActionPanel = ({
     setIsMinimized(!isMinimized);
   };
 
-  // Calculate buttons to show on each side
-  const leftButtons = isMinimized ? [] : [
+  // Calculate total buttons to ensure proper distribution
+  const leftButtons = [
     { icon: <Bot className="h-4 w-4" />, variant: agentVisible ? "default" : "ghost", onClick: onToggleAgent, title: "AI Assistant" },
     { icon: <ListFilter className="h-4 w-4" />, variant: postsVisible ? "default" : "ghost", onClick: onTogglePosts, title: "Posts" },
     { icon: <MessageSquare className="h-4 w-4" />, variant: "ghost", onClick: () => {}, title: "Chat" },
     { icon: <FileText className="h-4 w-4" />, variant: "ghost", onClick: () => {}, title: "Articles" },
   ];
-
-  const rightButtons = isMinimized ? [] : [
+  
+  const rightButtons = [
     { icon: <Bell className="h-4 w-4" />, variant: "ghost", onClick: () => {}, title: "Notifications" },
     { icon: <ExternalLink className="h-4 w-4" />, variant: "ghost", onClick: () => {}, title: "Share" },
     { icon: <Heart className="h-4 w-4" />, variant: "ghost", onClick: () => {}, title: "Like" },
     { icon: <MessageCircle className="h-4 w-4" />, variant: "ghost", onClick: () => {}, title: "Comment" },
-    { icon: <Share2 className="h-4 w-4" />, variant: "ghost", onClick: () => {}, title: "Share" },
-    { icon: <Bookmark className="h-4 w-4" />, variant: "ghost", onClick: () => {}, title: "Save" },
     { icon: isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />, variant: "ghost", onClick: toggleTheme, title: isDark ? "Light mode" : "Dark mode" },
     { 
       icon: <div className="h-4 w-4 flex items-center justify-center font-bold text-xs">{isDimmed ? "B" : "D"}</div>, 
@@ -75,15 +72,19 @@ export const ActionPanel = ({
     }
   ];
 
+  // Ensure we show exactly 4 buttons on each side when minimized to balance the panel
+  const displayLeftButtons = isMinimized ? [] : leftButtons;
+  const displayRightButtons = isMinimized ? [] : rightButtons;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="fixed bottom-4 left-1/2 transform -translate-x-1/2 neo-blur rounded-full px-2 py-1.5 shadow-lg z-50 glow-effect flex items-center justify-center"
+      className="fixed bottom-4 left-1/2 transform -translate-x-1/2 neo-blur rounded-full px-2 py-1.5 shadow-lg z-50 glow-effect flex items-center justify-center space-x-2"
     >
       {/* Left side buttons */}
       <div className="flex items-center space-x-2">
-        {leftButtons.map((btn, index) => (
+        {displayLeftButtons.map((btn, index) => (
           <Button 
             key={`left-${index}`}
             variant={btn.variant as any} 
@@ -95,14 +96,13 @@ export const ActionPanel = ({
             {btn.icon}
           </Button>
         ))}
-        {!isMinimized && <div className="h-4 w-px bg-border/30 mx-1"></div>}
       </div>
       
       {/* Center minimize/expand button */}
       <Button 
         variant="ghost" 
         size="icon"
-        className="h-8 w-8 rounded-full mx-1"
+        className="h-8 w-8 rounded-full"
         onClick={toggleMinimized}
         title={isMinimized ? "Expand" : "Minimize"}
       >
@@ -111,8 +111,7 @@ export const ActionPanel = ({
       
       {/* Right side buttons */}
       <div className="flex items-center space-x-2">
-        {!isMinimized && <div className="h-4 w-px bg-border/30 mx-1"></div>}
-        {rightButtons.map((btn, index) => (
+        {displayRightButtons.map((btn, index) => (
           <Button 
             key={`right-${index}`}
             variant={btn.variant as any} 
