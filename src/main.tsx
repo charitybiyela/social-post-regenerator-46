@@ -6,8 +6,9 @@ import './index.css'
 import "keen-slider/keen-slider.min.css"
 import "./styles/keen-slider.css"
 
-// This is now handled by the inline script in index.html
-// to prevent flash of white background
+// Make sure dark mode is applied to the document before any rendering
+document.documentElement.classList.add('dark');
+document.body.classList.add('dark');
 
 // Ensure we're using the correct DOM root element
 const rootElement = document.getElementById('root');

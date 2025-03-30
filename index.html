@@ -16,6 +16,21 @@
     <meta name="theme-color" content="#1f1f1f" media="(prefers-color-scheme: dark)">
     <meta name="color-scheme" content="light dark" />
     
+    <!-- Critical CSS for dark mode to prevent flash -->
+    <style>
+      :root {
+        --background: 240 10% 3.9%;
+        --foreground: 210 40% 98%;
+      }
+      html.dark, body.dark {
+        background-color: hsl(240 10% 3.9%);
+        color: hsl(210 40% 98%);
+      }
+      html, body {
+        min-height: 100%;
+      }
+    </style>
+    
     <!-- Inline script to prevent flash of unstyled content -->
     <script>
       // Immediately set dark mode if user preference is dark or has previous dark setting

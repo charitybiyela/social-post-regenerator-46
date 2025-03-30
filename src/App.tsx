@@ -32,19 +32,30 @@ const App = () => {
     document.documentElement.classList.add('transition-colors');
     document.body.classList.add('transition-colors');
     
-    // Force dark mode class for immediate styling
-    const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const storedTheme = localStorage.getItem('theme');
-    if (storedTheme === 'dark' || (!storedTheme && prefersDarkMode)) {
-      document.documentElement.classList.add('dark');
-      document.body.classList.add('dark');
-    }
+    // Make sure theme provider and manually set dark mode are in sync
+    const darkModeAlreadySet = document.documentElement.classList.contains('dark');
+    
+    // Set up a mutation observer to check when theme-provider changes the class
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          const isDark = document.documentElement.classList.contains('dark');
+          document.body.classList.toggle('dark', isDark);
+        }
+      });
+    });
+    
+    observer.observe(document.documentElement, { attributes: true });
+    
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
   return (
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <TooltipProvider>
             <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors">
               <Toaster />
