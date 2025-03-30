@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { Music, Video, Play, SkipBack, SkipForward, Pause, Volume2, Link } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -89,6 +90,7 @@ export const MediaContent: React.FC<MediaContentProps> = ({
         <div className="rounded-md bg-black aspect-video relative overflow-hidden glow-effect">
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <Music className="h-16 w-16 text-primary mb-4 animate-float" />
+            <div className="text-lg font-medium text-white">{item.title}</div>
             <div className="text-sm text-gray-400 mt-2">{item.author}</div>
           </div>
           
@@ -142,6 +144,7 @@ export const MediaContent: React.FC<MediaContentProps> = ({
         <div className="rounded-md bg-black aspect-video relative overflow-hidden glow-effect">
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <Video className="h-16 w-16 text-primary mb-4 animate-float" />
+            <div className="text-lg font-medium text-white">{item.title}</div>
           </div>
           
           {/* Metadata Overlay */}
