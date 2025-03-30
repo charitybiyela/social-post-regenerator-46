@@ -1,4 +1,5 @@
 
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,12 +20,12 @@ const queryClient = new QueryClient();
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <PersonalizationProvider>
-        <TooltipProvider>
-          <div className="min-h-screen flex flex-col bg-background">
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
+      <TooltipProvider>
+        <div className="min-h-screen flex flex-col bg-background">
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <PersonalizationProvider>
               <ScrollToTop />
               <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <Routes>
@@ -37,10 +38,10 @@ const App = () => {
                 </Routes>
               </main>
               <Footer />
-            </BrowserRouter>
-          </div>
-        </TooltipProvider>
-      </PersonalizationProvider>
+            </PersonalizationProvider>
+          </BrowserRouter>
+        </div>
+      </TooltipProvider>
     </QueryClientProvider>
   );
 };
