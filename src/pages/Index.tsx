@@ -106,8 +106,8 @@ const Index = () => {
                 mediaType={mediaType}
               />
               
-              {/* Media control overlays - moved to top-left corner + 2 inches to the right */}
-              <div className="absolute top-4 left-24 flex gap-4 z-10">
+              {/* Media control overlays - positioned clearly with proper CSS units */}
+              <div className="absolute top-4 left-16 flex gap-4 z-10">
                 <Button 
                   variant="outline" 
                   size="icon" 
