@@ -1,0 +1,17 @@
+
+.keen-slider {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+}
+
+.keen-slider__slide {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
