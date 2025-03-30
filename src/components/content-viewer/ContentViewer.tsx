@@ -1,8 +1,6 @@
+
 import React, { useState } from "react";
 import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Layers, 
   ScrollText, 
   Grid3X3, 
   Command 
@@ -11,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { ContentCard } from "@/components/ui/content-card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useKeenSlider } from "@/hooks/use-keen-slider";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ContentItem {
@@ -34,7 +31,7 @@ interface ContentViewerProps {
 }
 
 export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
-  const [viewMode, setViewMode] = useState<"scroll" | "slides" | "panels">("slides");
+  const [viewMode, setViewMode] = useState<"scroll" | "panels">("scroll");
   const [activeItemId, setActiveItemId] = useState<string | number | null>(
     items.length > 0 ? items[0].id : null
   );
@@ -46,30 +43,10 @@ export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
     item.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
   );
-  
-  const [sliderRef, instanceRef] = useKeenSlider({
-    loop: true,
-    slides: {
-      perView: 1,
-      spacing: 20,
-    },
-    slideChanged(s) {
-      const currentSlide = s.track.details.abs;
-      setActiveItemId(filteredItems[currentSlide]?.id);
-    },
-  });
 
   const handleItemClick = (item: ContentItem) => {
     setActiveItemId(item.id);
     if (onSelectItem) onSelectItem(item);
-  };
-
-  const navigateSlider = (direction: "prev" | "next") => {
-    if (instanceRef.current) {
-      direction === "prev" 
-        ? instanceRef.current.prev() 
-        : instanceRef.current.next();
-    }
   };
 
   return (
@@ -81,10 +58,6 @@ export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
               <TabsTrigger value="scroll" className="flex items-center gap-1">
                 <ScrollText className="h-4 w-4" />
                 <span className="hidden sm:inline">Scroll</span>
-              </TabsTrigger>
-              <TabsTrigger value="slides" className="flex items-center gap-1">
-                <Layers className="h-4 w-4" />
-                <span className="hidden sm:inline">Slides</span>
               </TabsTrigger>
               <TabsTrigger value="panels" className="flex items-center gap-1">
                 <Grid3X3 className="h-4 w-4" />
@@ -155,80 +128,6 @@ export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
               </div>
             </ContentCard>
           ))}
-        </div>
-      )}
-
-      {viewMode === "slides" && (
-        <div className="relative">
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 rounded-full" 
-            onClick={() => navigateSlider("prev")}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 rounded-full"
-            onClick={() => navigateSlider("next")}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-
-          <div className="mx-10">
-            <div ref={sliderRef} className="keen-slider h-[calc(100vh-18rem)]">
-              {filteredItems.map((item) => (
-                <div key={item.id} className="keen-slider__slide">
-                  <ContentCard active className="h-full">
-                    <div className="p-8 h-full flex flex-col">
-                      <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center space-x-3">
-                          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                            {item.author[0]}
-                          </div>
-                          <div>
-                            <div className="font-medium">{item.author}</div>
-                            <div className="text-xs text-muted-foreground">{item.timestamp}</div>
-                          </div>
-                        </div>
-                        {item.isAI && (
-                          <div className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-                            AI Generated
-                          </div>
-                        )}
-                      </div>
-
-                      <h2 className="text-2xl font-bold mb-4">{item.title}</h2>
-                      
-                      {item.media && item.media.length > 0 && (
-                        <div className="rounded-md bg-muted aspect-video mb-6 flex items-center justify-center">
-                          <span className="text-muted-foreground">[{item.media[0].type}]</span>
-                        </div>
-                      )}
-                      
-                      <ScrollArea className="flex-grow">
-                        <p className="text-muted-foreground pr-4">
-                          {item.content}
-                        </p>
-                      </ScrollArea>
-                      
-                      {item.tags && (
-                        <div className="flex flex-wrap gap-2 mt-6">
-                          {item.tags.map((tag, i) => (
-                            <div key={i} className="px-3 py-1 rounded-full text-xs bg-muted">
-                              #{tag}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </ContentCard>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       )}
 
