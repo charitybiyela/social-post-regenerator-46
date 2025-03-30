@@ -5,23 +5,27 @@ import { ContentViewer } from "@/components/content-viewer/ContentViewer";
 import { mockContent } from "@/data/mockContent";
 import { Button } from "@/components/ui/button";
 import { 
-  Sparkles,
   Music,
   Video,
-  MessageSquare,
-  Bell,
-  ExternalLink,
-  FileText
+  Sparkles,
 } from "lucide-react";
 import { ContentOverlay } from "@/components/content-viewer/ContentOverlay";
+import { AgentOverlay } from "@/components/content-viewer/AgentOverlay";
 import { ActionPanel } from "@/components/content-viewer/ActionPanel";
 
 const Index = () => {
   const [activeContent, setActiveContent] = useState(mockContent[0]);
   const [mediaType, setMediaType] = useState<'music' | 'video'>('video');
+  const [postsOverlayVisible, setPostsOverlayVisible] = useState(true);
+  const [agentOverlayVisible, setAgentOverlayVisible] = useState(false);
+  const [isDimmed, setIsDimmed] = useState(false);
 
   const handleContentSelect = (item: any) => {
     setActiveContent(item);
+  };
+
+  const toggleDimBackground = () => {
+    setIsDimmed(prev => !prev);
   };
 
   return (
@@ -66,18 +70,40 @@ const Index = () => {
                 items={mockContent} 
                 activeItem={activeContent}
                 onSelectItem={handleContentSelect}
+                isDimmed={isDimmed && (postsOverlayVisible || agentOverlayVisible)}
               />
               
-              {/* Content overlay */}
+              {/* Live Posts overlay (right side) */}
               <ContentOverlay 
                 items={mockContent} 
                 onSelect={handleContentSelect}
                 activeItem={activeContent}
+                visible={postsOverlayVisible}
+                onClose={() => setPostsOverlayVisible(false)}
+              />
+
+              {/* Agent overlay (left side) */}
+              <AgentOverlay 
+                visible={agentOverlayVisible}
+                onClose={() => setAgentOverlayVisible(false)}
+                onSendToMain={(item) => {
+                  // Add the generated item to the mock content temporarily (in a real app, this would be persisted)
+                  const newItem = { ...item, id: Date.now() };
+                  // For demo purposes, we're just setting it as active
+                  setActiveContent(newItem);
+                }}
+              />
+              
+              {/* Action panel at the bottom */}
+              <ActionPanel 
+                onTogglePosts={() => setPostsOverlayVisible(prev => !prev)}
+                postsVisible={postsOverlayVisible}
+                onToggleAgent={() => setAgentOverlayVisible(prev => !prev)}
+                agentVisible={agentOverlayVisible}
+                onDimBackground={toggleDimBackground}
+                isDimmed={isDimmed}
               />
             </div>
-            
-            {/* Action panel */}
-            <ActionPanel />
           </div>
         </div>
       </main>

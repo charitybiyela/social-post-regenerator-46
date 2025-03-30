@@ -1,7 +1,8 @@
-
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Switch } from "@/components/ui/switch";
+import { X, ArrowDown } from "lucide-react";
 
 interface ContentItem {
   id: string | number;
@@ -21,19 +22,77 @@ interface ContentOverlayProps {
   items: ContentItem[];
   activeItem?: ContentItem;
   onSelect: (item: ContentItem) => void;
+  visible: boolean;
+  onClose: () => void;
 }
 
-export const ContentOverlay = ({ items, activeItem, onSelect }: ContentOverlayProps) => {
+export const ContentOverlay = ({ 
+  items, 
+  activeItem, 
+  onSelect, 
+  visible, 
+  onClose 
+}: ContentOverlayProps) => {
+  const [autoScroll, setAutoScroll] = useState(false);
+  const [isTransparent, setIsTransparent] = useState(true);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    if (autoScroll && scrollRef.current && visible) {
+      const interval = setInterval(() => {
+        if (scrollRef.current) {
+          const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+          
+          if (scrollTop + clientHeight >= scrollHeight - 10) {
+            scrollRef.current.scrollTop = 0;
+          } else {
+            scrollRef.current.scrollTop += 1;
+          }
+        }
+      }, 50);
+      
+      return () => clearInterval(interval);
+    }
+  }, [autoScroll, visible]);
+
+  if (!visible) return null;
+
   return (
-    <div className="absolute left-4 bottom-4 max-w-xs">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="bg-background/80 backdrop-blur-md rounded-lg p-2 shadow-lg"
-      >
-        <h3 className="text-sm font-medium mb-2 px-2">Recent Posts</h3>
-        <ScrollArea className="h-48">
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 20 }}
+      transition={{ duration: 0.3 }}
+      className={`absolute right-4 bottom-4 max-w-xs z-10 ${isTransparent ? 'bg-background/80' : 'bg-background'} backdrop-blur-md rounded-lg shadow-lg border border-border/50`}
+    >
+      <div className="p-3 flex items-center justify-between border-b">
+        <div className="flex items-center gap-2">
+          <h3 className="text-sm font-medium">Live Posts</h3>
+          <div className="flex items-center gap-1 text-xs">
+            <Switch
+              size="sm"
+              checked={autoScroll}
+              onCheckedChange={setAutoScroll}
+              className="scale-75"
+            />
+            <span className="text-muted-foreground">Auto</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Switch
+            size="sm"
+            checked={!isTransparent}
+            onCheckedChange={(checked) => setIsTransparent(!checked)}
+            className="scale-75"
+          />
+          <button onClick={onClose} className="p-1 hover:bg-muted rounded-full">
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+      
+      <div ref={scrollRef} className="h-48 overflow-auto">
+        <ScrollArea className="h-full p-2">
           <div className="space-y-2 pr-2">
             {items.map((item) => (
               <div
@@ -68,7 +127,13 @@ export const ContentOverlay = ({ items, activeItem, onSelect }: ContentOverlayPr
             ))}
           </div>
         </ScrollArea>
-      </motion.div>
-    </div>
+      </div>
+      
+      {autoScroll && (
+        <div className="p-2 flex justify-center border-t">
+          <ArrowDown className="h-3 w-3 text-muted-foreground animate-bounce" />
+        </div>
+      )}
+    </motion.div>
   );
 };

@@ -27,9 +27,10 @@ interface ContentViewerProps {
   items: ContentItem[];
   activeItem?: ContentItem;
   onSelectItem?: (item: ContentItem) => void;
+  isDimmed?: boolean;
 }
 
-export const ContentViewer = ({ items, activeItem, onSelectItem }: ContentViewerProps) => {
+export const ContentViewer = ({ items, activeItem, onSelectItem, isDimmed = false }: ContentViewerProps) => {
   const [viewMode, setViewMode] = React.useState<"scroll" | "panels">("scroll");
   
   // If no active item is provided, use the first item
@@ -40,7 +41,7 @@ export const ContentViewer = ({ items, activeItem, onSelectItem }: ContentViewer
   };
 
   return (
-    <div className="w-full h-full">
+    <div className={`w-full h-full relative transition-all duration-300 ${isDimmed ? 'brightness-75' : ''}`}>
       <div className="absolute top-2 right-2 z-10">
         <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as any)}>
           <TabsList className="bg-background/50 backdrop-blur-sm">
