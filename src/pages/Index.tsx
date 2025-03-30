@@ -91,30 +91,9 @@ const Index = () => {
     <div className="min-h-screen bg-background overflow-hidden">
       <Navigation onCreateClick={() => setCreateDialogOpen(true)} />
       
-      {/* Main content area - maximizing height */}
-      <main className="pt-12">
-        <div className="h-[calc(100vh-3rem)] flex flex-col">
-          <div className="flex items-center justify-end px-4 py-2">
-            <div className="flex items-center bg-muted/40 backdrop-blur-sm rounded-lg p-1">
-              <Button 
-                variant={mediaType === 'music' ? 'default' : 'ghost'} 
-                size="sm" 
-                onClick={() => handleMediaTypeChange('music')}
-                className="h-8"
-              >
-                <Music className="h-4 w-4" />
-              </Button>
-              <Button 
-                variant={mediaType === 'video' ? 'default' : 'ghost'} 
-                size="sm" 
-                onClick={() => handleMediaTypeChange('video')}
-                className="h-8"
-              >
-                <Video className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-          
+      {/* Main content area - pushing closer to top */}
+      <main className="pt-10">
+        <div className="h-[calc(100vh-2.5rem)] flex flex-col">
           <div className="relative flex-1 mx-4 mb-4">
             {/* Main content display */}
             <div className="h-full rounded-xl overflow-hidden bg-muted/40 backdrop-blur-sm relative border border-border/30 shadow-sm">
@@ -128,27 +107,27 @@ const Index = () => {
                 mediaType={mediaType}
               />
               
-              {/* Media control overlays */}
+              {/* Media control overlays - centered in the screen */}
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-6 z-10">
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className="rounded-full h-14 w-14 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
+                  className="rounded-full h-16 w-16 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
                   onClick={() => handleMediaTypeChange('music')}
                 >
-                  <Music className="h-6 w-6 text-primary" />
+                  <Music className="h-7 w-7 text-primary" />
                 </Button>
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className="rounded-full h-14 w-14 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
+                  className="rounded-full h-16 w-16 bg-background/20 backdrop-blur-md border-primary/30 hover:bg-background/30 transition-all shadow-lg"
                   onClick={() => handleMediaTypeChange('video')}
                 >
-                  <Video className="h-6 w-6 text-primary" />
+                  <Video className="h-7 w-7 text-primary" />
                 </Button>
               </div>
               
-              {/* Live Posts overlay (right side) */}
+              {/* Live Posts overlay (right side) - wider and adjusted position */}
               <ContentOverlay 
                 items={contentItems} 
                 onSelect={handleContentSelect}

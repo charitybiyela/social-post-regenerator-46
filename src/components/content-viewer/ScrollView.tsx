@@ -40,7 +40,7 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
         {isMediaContent ? (
           <div className="relative h-full flex flex-col">
             {/* Overlay header for media content */}
-            <div className="bg-gradient-to-b from-background/80 to-transparent pt-4 pb-8 px-6">
+            <div className="bg-gradient-to-b from-background/80 to-transparent pt-2 pb-8 px-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
@@ -71,7 +71,7 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
             </div>
             
             {/* Description and tags under the media */}
-            <div className="px-6 py-4">
+            <div className="px-6 py-4 max-w-3xl">
               <p className="text-muted-foreground mb-4">{currentItem.content}</p>
               
               {/* Tags section for media content */}
@@ -89,7 +89,7 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
         ) : isWebsiteContent ? (
           <div className="flex flex-col h-full">
             {/* Header for website content */}
-            <div className="px-6 pt-4 pb-4">
+            <div className="px-6 pt-2 pb-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
@@ -107,7 +107,7 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
                 )}
               </div>
               <h2 className="text-2xl font-semibold mt-4 mb-4">{currentItem.title}</h2>
-              <p className="text-muted-foreground mb-4">{currentItem.content}</p>
+              <p className="text-muted-foreground mb-4 max-w-3xl">{currentItem.content}</p>
             </div>
             
             {/* Website embed */}
@@ -132,7 +132,7 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
             )}
           </div>
         ) : (
-          <div className="px-6 py-4">
+          <div className="px-6 py-2">
             {/* Regular content (non-media) */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
@@ -160,7 +160,7 @@ export const ScrollView: React.FC<ScrollViewProps> = ({
               currentMediaType={mediaType}
             />
             
-            <p className="text-muted-foreground my-6">{currentItem.content}</p>
+            <p className="text-muted-foreground my-6 max-w-3xl">{currentItem.content}</p>
             
             {/* Tags section */}
             {currentItem.tags && currentItem.tags.length > 0 && (

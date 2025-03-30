@@ -2,7 +2,6 @@
 import React from "react";
 import { Switch } from "@/components/ui/switch";
 import { X, UserCircle2, Globe } from "lucide-react";
-import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 interface ContentOverlayHeaderProps {
@@ -29,7 +28,7 @@ export const ContentOverlayHeader: React.FC<ContentOverlayHeaderProps> = ({
   return (
     <div className="py-2 px-3 flex flex-col gap-2 border-b border-border/30 bg-background/95 backdrop-blur-sm sticky top-0 z-10">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-medium text-gradient truncate max-w-[150px]">{title}</h3>
+        <h3 className="text-sm font-medium text-gradient truncate max-w-[200px]">{title}</h3>
         <button onClick={onClose} className="p-1 hover:bg-muted/40 rounded-full transition-colors">
           <X className="h-3.5 w-3.5" />
         </button>
