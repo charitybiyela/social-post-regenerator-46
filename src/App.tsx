@@ -1,10 +1,9 @@
-
 import React, { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { PersonalizationProvider } from "@/contexts/PersonalizationContext";
 import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
@@ -76,13 +75,13 @@ const App = () => {
                       <Route path="/privacy" element={<Privacy />} />
                       <Route path="/contact" element={<Contact />} />
                       <Route path="/personalize" element={<Personalize />} />
+                      <Route path="*" element={<Navigate to="/" replace />} />
                     </Routes>
                   </main>
+                  <Toaster />
+                  <Sonner />
                 </PersonalizationProvider>
               </BrowserRouter>
-              {/* Move Toaster components outside of the Router context but still inside React context */}
-              <Toaster />
-              <Sonner />
             </div>
           </TooltipProvider>
         </ThemeProvider>
