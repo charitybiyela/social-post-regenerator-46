@@ -10,7 +10,7 @@ export const mockContent = [
     media: [
       {
         type: "image",
-        url: "/lovable-uploads/3cc0c1a0-0834-4128-a6b1-b3f9209407a8.png"
+        url: "/placeholder.svg"
       }
     ],
     tags: ["ai", "content", "future", "technology"]
@@ -25,7 +25,7 @@ export const mockContent = [
     media: [
       {
         type: "image",
-        url: "/lovable-uploads/52cd70ba-cb50-49f3-a21d-7dfd9001d2d0.png"
+        url: "/placeholder.svg"
       }
     ],
     tags: ["art", "ai-generation", "creativity"]

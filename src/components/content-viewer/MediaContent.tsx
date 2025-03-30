@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Music, Video, Play, SkipBack, SkipForward, Pause, Volume2, Link, FileText, Image } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+
+import React from "react";
+import { AudioPlayer } from "./media/AudioPlayer";
+import { VideoPlayer } from "./media/VideoPlayer";
+import { TextContent } from "./media/TextContent";
+import { ImageContent } from "./media/ImageContent";
+import { WebsiteContent } from "./media/WebsiteContent";
+import { UnsupportedContent } from "./media/UnsupportedContent";
 
 interface MediaContentProps {
   item: {
@@ -23,74 +27,6 @@ export const MediaContent: React.FC<MediaContentProps> = ({
   togglePlayPause,
   currentMediaType = 'video'
 }) => {
-  const [tweetLoaded, setTweetLoaded] = useState(false);
-  const tweetContainerRef = useRef<HTMLDivElement>(null);
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  useEffect(() => {
-    if (!item.media || item.media.length === 0) return;
-    const media = item.media[0];
-    
-    // Handle Twitter content
-    if (media.type === 'website' && media.url && (media.url.includes('twitter.com') || media.url.includes('x.com'))) {
-      // First load the Twitter widget script if it doesn't exist
-      if (!window.twttr) {
-        const script = document.createElement('script');
-        script.src = "https://platform.twitter.com/widgets.js";
-        script.async = true;
-        script.onload = () => {
-          loadTweet(media.url as string);
-        };
-        document.head.appendChild(script);
-      } else {
-        loadTweet(media.url as string);
-      }
-    }
-    
-    // Handle audio playback state
-    if (media.type === 'music' && audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.play().catch(err => {
-          console.error("Error playing audio:", err);
-          toast.error("Couldn't play audio. Try clicking play again.");
-        });
-      } else {
-        audioRef.current.pause();
-      }
-    }
-  }, [item.media, isPlaying]);
-
-  const loadTweet = (tweetUrl: string) => {
-    if (!tweetContainerRef.current) return;
-    
-    // Extract the tweet ID from the URL
-    const tweetId = tweetUrl.split('/').pop();
-    if (!tweetId) return;
-    
-    // Clear any existing content
-    tweetContainerRef.current.innerHTML = '';
-    
-    // Create a container for the tweet
-    const tweetElement = document.createElement('div');
-    tweetContainerRef.current.appendChild(tweetElement);
-    
-    // Use Twitter's API to render the tweet
-    window.twttr.widgets.createTweet(
-      tweetId, 
-      tweetElement, 
-      {
-        theme: 'light',
-        align: 'center',
-        dnt: true
-      }
-    ).then(() => {
-      setTweetLoaded(true);
-      toast.success("Tweet loaded successfully");
-    }).catch(() => {
-      toast.error("Failed to load tweet");
-    });
-  };
-
   if (!item.media || item.media.length === 0) {
     return null;
   }
@@ -100,187 +36,35 @@ export const MediaContent: React.FC<MediaContentProps> = ({
   switch (media.type) {
     case 'music':
       return (
-        <div className="rounded-md bg-black aspect-video relative overflow-hidden glow-effect">
-          {/* Hidden audio element for actual playback */}
-          <audio 
-            ref={audioRef}
-            src={media.url || "/assets/sample-audio.mp3"} 
-            preload="metadata"
-            onError={() => toast.error("Audio file could not be loaded")}
-          />
-          
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <Music className="h-16 w-16 text-primary mb-4 animate-float" />
-            <div className="text-lg font-medium text-white">{item.title}</div>
-            <div className="text-sm text-gray-400 mt-2">{item.author}</div>
-          </div>
-          
-          {/* Metadata Overlay */}
-          <div className="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/70 to-transparent">
-            <div className="text-xs text-white/70">Now Playing</div>
-            <div className="flex justify-between items-center mt-1">
-              <div className="text-white text-sm truncate">{item.title}</div>
-              <div className="text-white/70 text-xs">4:56</div>
-            </div>
-          </div>
-          
-          <div className="absolute bottom-0 left-0 right-0 p-4">
-            <div className="h-1 bg-gray-700 rounded-full w-full">
-              <div className="h-1 bg-primary rounded-full" style={{ width: '30%' }}></div>
-            </div>
-            <div className="flex justify-between text-xs text-gray-400 mt-1">
-              <span>1:23</span>
-              <span>4:56</span>
-            </div>
-            
-            <div className="flex items-center justify-center gap-4 mt-4">
-              <Button variant="ghost" size="icon" className="rounded-full text-white">
-                <SkipBack className="h-6 w-6" />
-              </Button>
-              <Button 
-                variant="outline" 
-                size="icon" 
-                className="rounded-full h-12 w-12 text-white border-white hover-glow"
-                onClick={togglePlayPause}
-              >
-                {isPlaying ? (
-                  <Pause className="h-6 w-6" />
-                ) : (
-                  <Play className="h-6 w-6" />
-                )}
-              </Button>
-              <Button variant="ghost" size="icon" className="rounded-full text-white">
-                <SkipForward className="h-6 w-6" />
-              </Button>
-              <Button variant="ghost" size="icon" className="rounded-full text-white">
-                <Volume2 className="h-6 w-6" />
-              </Button>
-            </div>
-          </div>
-        </div>
+        <AudioPlayer
+          title={item.title}
+          author={item.author}
+          url={media.url}
+          isPlaying={isPlaying}
+          togglePlayPause={togglePlayPause}
+        />
       );
     
     case 'video':
       return (
-        <div className="rounded-md bg-black aspect-video relative overflow-hidden glow-effect">
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <Video className="h-16 w-16 text-primary mb-4 animate-float" />
-            <div className="text-lg font-medium text-white">{item.title}</div>
-          </div>
-          
-          {/* Metadata Overlay */}
-          <div className="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/70 to-transparent">
-            <div className="flex justify-between items-center">
-              <div>
-                <div className="text-white text-sm truncate">{item.title}</div>
-                <div className="text-white/70 text-xs">{item.author}</div>
-              </div>
-              <div className="bg-red-600 text-white text-xs px-2 py-0.5 rounded">LIVE</div>
-            </div>
-          </div>
-          
-          <Button 
-            variant="outline" 
-            size="icon" 
-            className="rounded-full h-16 w-16 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white border-white hover-glow"
-            onClick={togglePlayPause}
-          >
-            {isPlaying ? (
-              <Pause className="h-8 w-8" />
-            ) : (
-              <Play className="h-8 w-8" />
-            )}
-          </Button>
-          
-          <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
-            <div className="h-1 bg-gray-700 rounded-full w-full">
-              <div className="h-1 bg-primary rounded-full" style={{ width: '15%' }}></div>
-            </div>
-            <div className="flex justify-between text-xs text-gray-400 mt-1">
-              <span>2:45</span>
-              <span>18:30</span>
-            </div>
-          </div>
-        </div>
+        <VideoPlayer
+          title={item.title}
+          author={item.author}
+          isPlaying={isPlaying}
+          togglePlayPause={togglePlayPause}
+        />
       );
     
     case 'text':
-      return (
-        <div className="rounded-md bg-muted/30 p-6 border border-border/40 my-4">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <FileText className="h-10 w-10 text-primary/70" />
-            <div className="text-lg font-medium">{item.title}</div>
-          </div>
-          <div className="text-muted-foreground text-center mt-2">
-            <p>Text content available for reading</p>
-          </div>
-        </div>
-      );
+      return <TextContent title={item.title} />;
     
     case 'website':
-      const isTwitter = media.url && (
-        media.url.includes('twitter.com') || 
-        media.url.includes('x.com')
-      );
-      
-      if (isTwitter) {
-        return (
-          <div className="rounded-md overflow-hidden bg-white dark:bg-black h-full min-h-[400px] max-h-[600px] flex justify-center items-center">
-            {!tweetLoaded && (
-              <div className="flex flex-col items-center justify-center p-6">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
-                <p className="text-sm text-muted-foreground">Loading tweet...</p>
-              </div>
-            )}
-            <div 
-              ref={tweetContainerRef} 
-              className="w-full h-full flex items-center justify-center p-4"
-            ></div>
-          </div>
-        );
-      }
-      
-      return (
-        <div className="rounded-md border h-96 relative overflow-hidden">
-          {media.url ? (
-            <iframe 
-              src={media.url} 
-              className="w-full h-full rounded-md" 
-              title={item.title}
-              sandbox="allow-same-origin allow-scripts allow-popups"
-            />
-          ) : (
-            <div className="flex items-center justify-center h-full bg-muted">
-              <span className="text-muted-foreground">Website URL not provided</span>
-            </div>
-          )}
-        </div>
-      );
+      return <WebsiteContent title={item.title} url={media.url} />;
       
     case 'image':
-      return (
-        <div className="rounded-md overflow-hidden">
-          <img 
-            src={media.url || "/placeholder.svg"} 
-            alt={item.title}
-            className="w-full h-auto object-cover rounded-md"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = "/placeholder.svg";
-              toast.error("Image could not be loaded");
-            }}
-          />
-        </div>
-      );
+      return <ImageContent title={item.title} url={media.url} />;
       
     default:
-      // Show a simple text explanation instead of a fallback to music/video
-      return (
-        <div className="rounded-md bg-muted/30 p-6 border border-border/40 text-center">
-          <p className="text-muted-foreground">
-            Content type "{media.type}" is not supported for preview
-          </p>
-        </div>
-      );
+      return <UnsupportedContent mediaType={media.type} />;
   }
 };
