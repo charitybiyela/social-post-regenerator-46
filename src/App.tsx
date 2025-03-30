@@ -65,8 +65,6 @@ const App = () => {
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <TooltipProvider>
             <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors">
-              <Toaster />
-              <Sonner />
               <BrowserRouter>
                 <PersonalizationProvider>
                   <ScrollToTop />
@@ -82,6 +80,9 @@ const App = () => {
                   </main>
                 </PersonalizationProvider>
               </BrowserRouter>
+              {/* Move Toaster components outside of the Router context but still inside React context */}
+              <Toaster />
+              <Sonner />
             </div>
           </TooltipProvider>
         </ThemeProvider>

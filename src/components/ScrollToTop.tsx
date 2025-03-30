@@ -13,4 +13,5 @@ const ScrollToTop = () => {
   return null;
 };
 
+// Only use this component when it's inside a Router
 export default ScrollToTop;
