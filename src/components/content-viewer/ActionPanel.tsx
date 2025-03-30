@@ -55,18 +55,8 @@ export const ActionPanel = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="fixed bottom-4 left-1/2 transform -translate-x-1/2 neo-blur rounded-full px-2 py-1.5 shadow-lg z-50 glow-effect flex items-center"
+      className="fixed bottom-4 left-1/2 transform -translate-x-1/2 neo-blur rounded-full px-2 py-1.5 shadow-lg z-50 glow-effect flex items-center justify-center"
     >
-      <Button 
-        variant="ghost" 
-        size="icon"
-        className="h-8 w-8 rounded-full mr-1"
-        onClick={toggleMinimized}
-        title={isMinimized ? "Expand" : "Minimize"}
-      >
-        {isMinimized ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-      </Button>
-      
       {!isMinimized && (
         <div className="flex items-center space-x-2">
           <Button 
@@ -94,6 +84,21 @@ export const ActionPanel = ({
           <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" title="Articles">
             <FileText className="h-4 w-4" />
           </Button>
+        </div>
+      )}
+      
+      <Button 
+        variant="ghost" 
+        size="icon"
+        className="h-8 w-8 rounded-full mx-1"
+        onClick={toggleMinimized}
+        title={isMinimized ? "Expand" : "Minimize"}
+      >
+        {isMinimized ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+      </Button>
+      
+      {!isMinimized && (
+        <div className="flex items-center space-x-2">
           <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" title="Notifications">
             <Bell className="h-4 w-4" />
           </Button>
