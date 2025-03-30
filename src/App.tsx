@@ -31,6 +31,14 @@ const App = () => {
     // This ensures the background color transitions are applied
     document.documentElement.classList.add('transition-colors');
     document.body.classList.add('transition-colors');
+    
+    // Force dark mode class for immediate styling
+    const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme === 'dark' || (!storedTheme && prefersDarkMode)) {
+      document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
+    }
   }, []);
 
   return (
@@ -38,7 +46,7 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <TooltipProvider>
-            <div className="min-h-screen flex flex-col bg-background text-foreground">
+            <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors">
               <Toaster />
               <Sonner />
               <BrowserRouter>

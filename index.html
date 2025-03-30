@@ -1,5 +1,6 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,14 +12,31 @@
     
     <!-- Browser compatibility -->
     <meta name="format-detection" content="telephone=no" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1f1f1f" media="(prefers-color-scheme: dark)">
     <meta name="color-scheme" content="light dark" />
+    
+    <!-- Inline script to prevent flash of unstyled content -->
+    <script>
+      // Immediately set dark mode if user preference is dark or has previous dark setting
+      (function() {
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+          document.documentElement.classList.add('dark');
+          document.body.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.body.classList.remove('dark');
+        }
+      })();
+    </script>
     
     <!-- Polyfills for older browsers -->
     <script src="https://unpkg.com/core-js-bundle@3.36.1/minified.min.js"></script>
   </head>
 
-  <body>
+  <body class="bg-background">
     <div id="root"></div>
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>

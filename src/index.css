@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -84,6 +83,11 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
+  html, body {
+    @apply bg-background text-foreground;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
   * {
     @apply border-border;
     scrollbar-width: none;
@@ -95,7 +99,7 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply antialiased;
   }
   
   .glass-morphism {

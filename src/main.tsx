@@ -6,11 +6,8 @@ import './index.css'
 import "keen-slider/keen-slider.min.css"
 import "./styles/keen-slider.css"
 
-// Set dark mode class on html element if user prefers it
-const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-if (prefersDarkMode) {
-  document.documentElement.classList.add('dark');
-}
+// This is now handled by the inline script in index.html
+// to prevent flash of white background
 
 // Ensure we're using the correct DOM root element
 const rootElement = document.getElementById('root');
