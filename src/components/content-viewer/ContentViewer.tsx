@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { 
   ScrollText, 
   Grid3X3
@@ -25,98 +25,85 @@ interface ContentItem {
 
 interface ContentViewerProps {
   items: ContentItem[];
+  activeItem?: ContentItem;
   onSelectItem?: (item: ContentItem) => void;
 }
 
-export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
-  const [viewMode, setViewMode] = useState<"scroll" | "panels">("scroll");
-  const [activeItemId, setActiveItemId] = useState<string | number | null>(
-    items.length > 0 ? items[0].id : null
-  );
+export const ContentViewer = ({ items, activeItem, onSelectItem }: ContentViewerProps) => {
+  const [viewMode, setViewMode] = React.useState<"scroll" | "panels">("scroll");
+  
+  // If no active item is provided, use the first item
+  const currentItem = activeItem || items[0];
   
   const handleItemClick = (item: ContentItem) => {
-    setActiveItemId(item.id);
     if (onSelectItem) onSelectItem(item);
   };
 
   return (
-    <div className="w-full space-y-6">
-      <div className="flex items-center justify-between">
-        <Tabs defaultValue={viewMode} onValueChange={(v) => setViewMode(v as any)}>
-          <TabsList>
+    <div className="w-full h-full">
+      <div className="absolute top-2 right-2 z-10">
+        <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as any)}>
+          <TabsList className="bg-background/50 backdrop-blur-sm">
             <TabsTrigger value="scroll" className="flex items-center gap-1">
-              <ScrollText className="h-4 w-4" />
-              <span className="hidden sm:inline">Scroll</span>
+              <ScrollText className="h-3 w-3" />
             </TabsTrigger>
             <TabsTrigger value="panels" className="flex items-center gap-1">
-              <Grid3X3 className="h-4 w-4" />
-              <span className="hidden sm:inline">Panels</span>
+              <Grid3X3 className="h-3 w-3" />
             </TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
 
       {viewMode === "scroll" && (
-        <div className="space-y-8 px-2">
-          {items.map((item) => (
-            <ContentCard 
-              key={item.id}
-              className="w-full cursor-pointer"
-              active={item.id === activeItemId}
-              onClick={() => handleItemClick(item)}
-            >
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                      {item.author[0]}
-                    </div>
-                    <div>
-                      <div className="font-medium">{item.author}</div>
-                      <div className="text-xs text-muted-foreground">{item.timestamp}</div>
-                    </div>
-                  </div>
-                  {item.isAI && (
-                    <div className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-                      AI Generated
-                    </div>
-                  )}
+        <ScrollArea className="h-full">
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center space-x-3">
+                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                  {currentItem.author[0]}
                 </div>
-
-                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <div className="overflow-auto max-h-[400px]">
-                  <p className="text-muted-foreground mb-4">{item.content}</p>
+                <div>
+                  <div className="font-medium">{currentItem.author}</div>
+                  <div className="text-xs text-muted-foreground">{currentItem.timestamp}</div>
                 </div>
-
-                {item.media && item.media.length > 0 && (
-                  <div className="rounded-md bg-muted aspect-video mb-4 flex items-center justify-center">
-                    <span className="text-muted-foreground">[{item.media[0].type}]</span>
-                  </div>
-                )}
-
-                {item.tags && (
-                  <div className="flex flex-wrap gap-2">
-                    {item.tags.map((tag, i) => (
-                      <div key={i} className="px-3 py-1 rounded-full text-xs bg-muted">
-                        #{tag}
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
-            </ContentCard>
-          ))}
-        </div>
+              {currentItem.isAI && (
+                <div className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                  AI Generated
+                </div>
+              )}
+            </div>
+
+            <h2 className="text-2xl font-semibold mb-4">{currentItem.title}</h2>
+            <p className="text-muted-foreground mb-6">{currentItem.content}</p>
+
+            {currentItem.media && currentItem.media.length > 0 && (
+              <div className="rounded-md bg-muted aspect-video mb-6 flex items-center justify-center">
+                <span className="text-muted-foreground">[{currentItem.media[0].type}]</span>
+              </div>
+            )}
+
+            {currentItem.tags && (
+              <div className="flex flex-wrap gap-2">
+                {currentItem.tags.map((tag, i) => (
+                  <div key={i} className="px-3 py-1 rounded-full text-xs bg-muted">
+                    #{tag}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </ScrollArea>
       )}
 
       {viewMode === "panels" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 h-full">
           {items.map((item, idx) => (
             <ContentCard 
               key={item.id}
               depth={Math.min(idx % 3, 2)}
               className="cursor-pointer"
-              active={item.id === activeItemId}
+              active={item.id === currentItem.id}
               onClick={() => handleItemClick(item)}
             >
               <div className="p-4 h-64 overflow-hidden">
