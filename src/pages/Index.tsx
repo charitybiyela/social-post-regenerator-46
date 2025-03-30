@@ -88,7 +88,13 @@ const Index = () => {
                 onClose={() => setAgentOverlayVisible(false)}
                 onSendToMain={(item) => {
                   // Add the generated item to the mock content temporarily (in a real app, this would be persisted)
-                  const newItem = { ...item, id: Date.now() };
+                  const newItem = { 
+                    ...item, 
+                    id: Date.now(),
+                    isAI: true, // Ensure isAI is set to true
+                    media: item.media || [], // Ensure media is an array
+                    tags: item.tags || [] // Ensure tags is an array
+                  };
                   // For demo purposes, we're just setting it as active
                   setActiveContent(newItem);
                 }}

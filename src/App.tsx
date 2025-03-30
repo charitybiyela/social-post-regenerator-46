@@ -15,34 +15,44 @@ import Personalize from "./pages/Personalize";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 
-const queryClient = new QueryClient();
+// Create a new QueryClient instance outside of the component
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <div className="min-h-screen flex flex-col bg-background">
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <PersonalizationProvider>
-              <ScrollToTop />
-              <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/terms" element={<Terms />} />
-                  <Route path="/privacy" element={<Privacy />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/personalize" element={<Personalize />} />
-                </Routes>
-              </main>
-              <Footer />
-            </PersonalizationProvider>
-          </BrowserRouter>
-        </div>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <div className="min-h-screen flex flex-col bg-background">
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <PersonalizationProvider>
+                <ScrollToTop />
+                <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/privacy" element={<Privacy />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/personalize" element={<Personalize />} />
+                  </Routes>
+                </main>
+                <Footer />
+              </PersonalizationProvider>
+            </BrowserRouter>
+          </div>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </React.StrictMode>
   );
 };
 
