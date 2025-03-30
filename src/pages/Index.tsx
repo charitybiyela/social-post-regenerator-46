@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import { ContentViewer } from "@/components/content-viewer/ContentViewer";
 import { mockContent } from "@/data/mockContent";
@@ -12,6 +12,7 @@ import {
 import { ContentOverlay } from "@/components/content-viewer/ContentOverlay";
 import { AgentOverlay } from "@/components/content-viewer/AgentOverlay";
 import { ActionPanel } from "@/components/content-viewer/ActionPanel";
+import { toast } from "sonner";
 
 // Define the content item type to ensure consistency
 interface ContentItem {
@@ -43,6 +44,29 @@ const Index = () => {
     setIsDimmed(prev => !prev);
   };
 
+  // Switch to media content when mediaType changes
+  useEffect(() => {
+    // Create media content based on selected type
+    const mediaContent: ContentItem = {
+      id: Date.now(),
+      title: mediaType === 'music' ? "Music Player" : "Video Player",
+      content: `This is a ${mediaType} player. In a real application, this would play actual ${mediaType} content.`,
+      author: "Media System",
+      isAI: false,
+      timestamp: new Date().toLocaleString(),
+      media: [{ type: mediaType }],
+      tags: [mediaType, "media", "player"]
+    };
+    
+    setActiveContent(mediaContent);
+    toast.success(`Switched to ${mediaType} player`);
+  }, [mediaType]);
+
+  const handleCreateContent = () => {
+    // Display a toast notification
+    toast.success("Create functionality would open here");
+  };
+
   return (
     <div className="min-h-screen bg-background overflow-hidden">
       <Navigation />
@@ -71,7 +95,7 @@ const Index = () => {
                   <Video className="h-4 w-4" />
                 </Button>
               </div>
-              <Button size="sm" className="gap-1 h-8">
+              <Button size="sm" className="gap-1 h-8" onClick={handleCreateContent}>
                 <Sparkles className="h-3 w-3" />
                 Create
               </Button>
@@ -113,6 +137,9 @@ const Index = () => {
                   };
                   // For demo purposes, we're just setting it as active
                   setActiveContent(newItem);
+                  
+                  // Show success toast
+                  toast.success("Content loaded from agent");
                 }}
               />
               
