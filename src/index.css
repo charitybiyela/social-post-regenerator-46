@@ -99,7 +99,7 @@
   }
   
   .glass-morphism {
-    @apply backdrop-blur-xl bg-background/30 border border-border/30 shadow-sm;
+    @apply backdrop-blur-xl bg-transparent border border-border/30 shadow-sm dark:bg-background/30;
   }
   
   .text-gradient {

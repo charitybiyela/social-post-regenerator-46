@@ -95,7 +95,7 @@ const Index = () => {
         <div className="h-[calc(100vh-3rem)] flex flex-col">
           <div className="relative flex-1 mx-2 mb-2">
             {/* Main content display */}
-            <div className="h-full rounded-xl overflow-hidden bg-muted/40 backdrop-blur-sm relative border border-border/30 shadow-sm">
+            <div className="h-full rounded-xl overflow-hidden backdrop-blur-sm relative border border-border/30 shadow-sm">
               <ContentViewer 
                 items={contentItems} 
                 activeItem={activeContent}
@@ -106,8 +106,8 @@ const Index = () => {
                 mediaType={mediaType}
               />
               
-              {/* Media control overlays - centered in the screen */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-8 z-10">
+              {/* Media control overlays - moved closer to the top */}
+              <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-8 z-10">
                 <Button 
                   variant="outline" 
                   size="icon" 
@@ -158,7 +158,7 @@ const Index = () => {
                 }}
               />
               
-              {/* Action panel at the bottom */}
+              {/* Action panel now on the left side */}
               <ActionPanel 
                 onTogglePosts={() => setPostsOverlayVisible(prev => !prev)}
                 postsVisible={postsOverlayVisible}
