@@ -137,7 +137,9 @@ export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
                 </div>
 
                 <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <p className="text-muted-foreground mb-4">{item.content}</p>
+                <div className="overflow-auto max-h-[400px]">
+                  <p className="text-muted-foreground mb-4">{item.content}</p>
+                </div>
 
                 {item.media && item.media.length > 0 && (
                   <div className="rounded-md bg-muted aspect-video mb-4 flex items-center justify-center">
@@ -211,9 +213,11 @@ export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
                         </div>
                       )}
                       
-                      <p className="text-muted-foreground flex-grow overflow-y-auto">
-                        {item.content}
-                      </p>
+                      <ScrollArea className="flex-grow">
+                        <p className="text-muted-foreground pr-4">
+                          {item.content}
+                        </p>
+                      </ScrollArea>
                       
                       {item.tags && (
                         <div className="flex flex-wrap gap-2 mt-6">
@@ -267,9 +271,12 @@ export const ContentViewer = ({ items, onSelectItem }: ContentViewerProps) => {
                   </div>
                 )}
                 
-                <p className="text-xs text-muted-foreground line-clamp-3">
-                  {item.content}
-                </p>
+                <div className="relative">
+                  <p className="text-xs text-muted-foreground line-clamp-3">
+                    {item.content}
+                  </p>
+                  <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-background to-transparent"></div>
+                </div>
               </div>
             </ContentCard>
           ))}

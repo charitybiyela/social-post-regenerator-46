@@ -1,9 +1,11 @@
+
 import React from 'react';
 import { NewsCardHeader } from './news/NewsCardHeader';
 import { NewsCardMedia } from './news/NewsCardMedia';
 import { NewsCardFooter } from './news/NewsCardFooter';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { ThumbsUp, MessageSquare, Share2 } from 'lucide-react';
 
 interface NewsCardProps {
@@ -31,6 +33,8 @@ interface NewsCardProps {
 }
 
 export const NewsCard = ({ article, viewMode }: NewsCardProps) => {
+  const isFullContent = viewMode === 'text';
+  
   return (
     <div 
       className="bg-background border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 animate-fadeIn"
@@ -71,11 +75,36 @@ export const NewsCard = ({ article, viewMode }: NewsCardProps) => {
             </div>
           )}
 
-          <p className={`text-muted-foreground text-sm ${
-            viewMode === 'text' ? '' : 'line-clamp-3 hover:line-clamp-none'
-          } transition-all duration-200`}>
-            {article.content}
-          </p>
+          <div className={isFullContent ? '' : 'max-h-[300px] overflow-hidden relative'}>
+            <p className="text-muted-foreground text-sm">
+              {article.content}
+            </p>
+            
+            {!isFullContent && article.content.length > 300 && (
+              <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-background to-transparent"></div>
+            )}
+          </div>
+          
+          {!isFullContent && article.content.length > 300 && (
+            <Button
+              variant="ghost" 
+              size="sm" 
+              className="text-xs text-accent w-full"
+              onClick={(e) => {
+                e.stopPropagation();
+                const target = e.currentTarget.previousElementSibling;
+                if (target) {
+                  target.classList.toggle('max-h-[300px]');
+                  e.currentTarget.textContent = 
+                    target.classList.contains('max-h-[300px]') 
+                      ? 'Read More' 
+                      : 'Read Less';
+                }
+              }}
+            >
+              Read More
+            </Button>
+          )}
         </div>
 
         <div className="mt-6">
